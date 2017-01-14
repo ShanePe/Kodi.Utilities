@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("lastplayed",
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
+        typeof(DateTime),
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+SmartPlayList.Types.Movies,
+SmartPlayList.Types.Episodes,
+SmartPlayList.Types.MusicVideos,
+SmartPlayList.Types.Mixed)]
     public class Lastplayed : IRule
     { }
 }

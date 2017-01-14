@@ -1,4 +1,4 @@
-﻿using Kodi.Utilities.Attributes;
+using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,14 +10,14 @@ namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("genre",
         typeof(string),
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Artists,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+SmartPlayList.Types.Albums,
+SmartPlayList.Types.Artists,
+SmartPlayList.Types.Movies,
+SmartPlayList.Types.TVShows,
+SmartPlayList.Types.Episodes,
+SmartPlayList.Types.MusicVideos,
+SmartPlayList.Types.Mixed)]
     public class Genre : IRule
     { }
 }

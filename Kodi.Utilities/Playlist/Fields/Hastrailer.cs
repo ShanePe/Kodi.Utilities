@@ -9,13 +9,9 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("hastrailer",
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
+        typeof(bool),
         SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+        SmartPlayList.Types.Mixed)]
     public class Hastrailer : IRule
     { }
 }

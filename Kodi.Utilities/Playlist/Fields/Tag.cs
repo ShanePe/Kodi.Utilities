@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("tag",
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
+        typeof(string),
         SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+SmartPlayList.Types.TVShows,
+SmartPlayList.Types.MusicVideos,
+SmartPlayList.Types.Mixed)]
     public class Tag : IRule
     { }
 }

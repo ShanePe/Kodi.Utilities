@@ -46,31 +46,33 @@
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
     <Compile Include="Exceptions\MissingFieldAttributeException.cs" />
     <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
+    <Compile Include="Formatters\BoolFormatter.cs" />
     <Compile Include="Formatters\DateFormatter.cs" />
     <Compile Include="Formatters\IntFormatter.cs" />
     <Compile Include="Formatters\StringFormatter.cs" />
     <Compile Include="Interfaces\IFormatter.cs" />
     <Compile Include="Interfaces\IRule.cs" />
     <Compile Include="Playlist\Fields\Actor.cs" />
-    <Compile Include="Playlist\Fields\AirDate.cs" />
+    <Compile Include="Playlist\Fields\AirDateTime.cs" />
     <Compile Include="Playlist\Fields\Album.cs" />
-    <Compile Include="Playlist\Fields\AlbumArtist.cs" />
+    <Compile Include="Playlist\Fields\Albumartist.cs" />
     <Compile Include="Playlist\Fields\Artist.cs" />
-    <Compile Include="Playlist\Fields\AudioChannels.cs" />
+    <Compile Include="Playlist\Fields\Audiochannels.cs" />
     <Compile Include="Playlist\Fields\Audiocodec.cs" />
     <Compile Include="Playlist\Fields\Audiolanguage.cs" />
-    <Compile Include="Playlist\Fields\BandFormed.cs" />
+    <Compile Include="Playlist\Fields\Bandformed.cs" />
     <Compile Include="Playlist\Fields\Biography.cs" />
     <Compile Include="Playlist\Fields\Born.cs" />
     <Compile Include="Playlist\Fields\Comment.cs" />
     <Compile Include="Playlist\Fields\Country.cs" />
-    <Compile Include="Playlist\Fields\Dateadded.cs" />
+    <Compile Include="Playlist\Fields\DateTimeadded.cs" />
     <Compile Include="Playlist\Fields\Died.cs" />
     <Compile Include="Playlist\Fields\Director.cs" />
     <Compile Include="Playlist\Fields\Disbanded.cs" />
     <Compile Include="Playlist\Fields\Episode.cs" />
     <Compile Include="Playlist\Fields\Episodetitle.cs" />
     <Compile Include="Playlist\Fields\Filename.cs" />
+    <Compile Include="Playlist\Fields\Genre.cs" />
     <Compile Include="Playlist\Fields\Hastrailer.cs" />
     <Compile Include="Playlist\Fields\Inprogress.cs" />
     <Compile Include="Playlist\Fields\Instruments.cs" />
@@ -82,7 +84,7 @@
     <Compile Include="Playlist\Fields\Numwatched.cs" />
     <Compile Include="Playlist\Fields\Path.cs" />
     <Compile Include="Playlist\Fields\Playcount.cs" />
-    <Compile Include="Playlist\Fields\Playlist.cs" />
+    <Compile Include="Playlist\Fields\PlayList.cs" />
     <Compile Include="Playlist\Fields\Plot.cs" />
     <Compile Include="Playlist\Fields\Plotoutline.cs" />
     <Compile Include="Playlist\Fields\Rating.cs" />
@@ -99,9 +101,9 @@
     <Compile Include="Playlist\Fields\Time.cs" />
     <Compile Include="Playlist\Fields\Title.cs" />
     <Compile Include="Playlist\Fields\Top250.cs" />
-    <Compile Include="Playlist\Fields\Tracknumber.cs" />
+    <Compile Include="Playlist\Fields\Trackint.cs" />
     <Compile Include="Playlist\Fields\Tvshow.cs" />
-    <Compile Include="Playlist\Fields\Type.cs" />
+    <Compile Include="Playlist\Fields\MediaType.cs" />
     <Compile Include="Playlist\Fields\Videoaspect.cs" />
     <Compile Include="Playlist\Fields\Videocodec.cs" />
     <Compile Include="Playlist\Fields\Videoresolution.cs" />
@@ -109,7 +111,6 @@
     <Compile Include="Playlist\Fields\Writers.cs" />
     <Compile Include="Playlist\Fields\Year.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Playlist\Fields\Genre.cs" />
     <Compile Include="Playlist\SmartPlaylist.cs" />
   </ItemGroup>
   <ItemGroup>

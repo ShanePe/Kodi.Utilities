@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
-    [FieldAllocationAttribute("numepisodes",
-        typeof(int),
-        SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Mixed)]
-    public class Numepisodes : IRule
+    [FieldAllocationAttribute("datetimeadded",
+        typeof(DateTime),
+        SmartPlayList.Types.Movies)]
+    public class DateTimeadded : IRule
     { }
 }

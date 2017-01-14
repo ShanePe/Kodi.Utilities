@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("rating",
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
+        typeof(int),
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+SmartPlayList.Types.Albums,
+SmartPlayList.Types.Movies,
+SmartPlayList.Types.TVShows,
+SmartPlayList.Types.Episodes,
+SmartPlayList.Types.Mixed)]
     public class Rating : IRule
     { }
 }

@@ -9,13 +9,10 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("inprogress",
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
+        typeof(bool),
         SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+SmartPlayList.Types.Episodes,
+SmartPlayList.Types.Mixed)]
     public class Inprogress : IRule
     { }
 }

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
-    [FieldAllocationAttribute("numepisodes",
-        typeof(int),
-        SmartPlayList.Types.TVShows,
+    [FieldAllocationAttribute("airdatetime",
+        typeof(DateTime),
+        SmartPlayList.Types.Episodes,
 SmartPlayList.Types.Mixed)]
-    public class Numepisodes : IRule
+    public class AirDateTime : IRule
     { }
 }

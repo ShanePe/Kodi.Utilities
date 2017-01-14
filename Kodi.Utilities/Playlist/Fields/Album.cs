@@ -10,10 +10,10 @@ namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("album",
         typeof(string),
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Mixed,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Songs)]
+        SmartPlayList.Types.Songs,
+SmartPlayList.Types.Albums,
+SmartPlayList.Types.MusicVideos,
+SmartPlayList.Types.Mixed)]
     public class Album : IRule
     { }
 }

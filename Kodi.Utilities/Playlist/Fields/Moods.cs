@@ -9,14 +9,10 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("moods",
+        typeof(string),
         SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Artists,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Songs,
-        SmartPlayList.Types.TVShows)]
+SmartPlayList.Types.Artists,
+SmartPlayList.Types.Mixed)]
     public class Moods : IRule
     { }
 }

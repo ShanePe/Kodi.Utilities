@@ -10,10 +10,10 @@ namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("title",
         typeof(string),
-        SmartPlayList.Types.Mixed,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Songs)]
+        SmartPlayList.Types.Songs,
+SmartPlayList.Types.Movies,
+SmartPlayList.Types.MusicVideos,
+SmartPlayList.Types.Mixed)]
     public class Title : IRule
     { }
 }
