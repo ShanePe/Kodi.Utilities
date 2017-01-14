@@ -35,14 +35,82 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Attributes\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="SmartPlayList\Fields\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FieldAllocationAttribute.cs" />
+    <Compile Include="Attributes\FormatterTypeAttribute.cs" />
+    <Compile Include="Collection\RuleCollection.cs" />
+    <Compile Include="Collection\ValueCollection.cs" />
+    <Compile Include="Exceptions\FieldExistsException.cs" />
+    <Compile Include="Exceptions\InvalidFieldTypeValue.cs" />
+    <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
+    <Compile Include="Exceptions\MissingFieldAttributeException.cs" />
+    <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
+    <Compile Include="Formatters\DateFormatter.cs" />
+    <Compile Include="Formatters\IntFormatter.cs" />
+    <Compile Include="Formatters\StringFormatter.cs" />
+    <Compile Include="Interfaces\IFormatter.cs" />
+    <Compile Include="Interfaces\IRule.cs" />
+    <Compile Include="Playlist\Fields\Actor.cs" />
+    <Compile Include="Playlist\Fields\AirDate.cs" />
+    <Compile Include="Playlist\Fields\Album.cs" />
+    <Compile Include="Playlist\Fields\AlbumArtist.cs" />
+    <Compile Include="Playlist\Fields\Artist.cs" />
+    <Compile Include="Playlist\Fields\AudioChannels.cs" />
+    <Compile Include="Playlist\Fields\Audiocodec.cs" />
+    <Compile Include="Playlist\Fields\Audiolanguage.cs" />
+    <Compile Include="Playlist\Fields\BandFormed.cs" />
+    <Compile Include="Playlist\Fields\Biography.cs" />
+    <Compile Include="Playlist\Fields\Born.cs" />
+    <Compile Include="Playlist\Fields\Comment.cs" />
+    <Compile Include="Playlist\Fields\Country.cs" />
+    <Compile Include="Playlist\Fields\Dateadded.cs" />
+    <Compile Include="Playlist\Fields\Died.cs" />
+    <Compile Include="Playlist\Fields\Director.cs" />
+    <Compile Include="Playlist\Fields\Disbanded.cs" />
+    <Compile Include="Playlist\Fields\Episode.cs" />
+    <Compile Include="Playlist\Fields\Episodetitle.cs" />
+    <Compile Include="Playlist\Fields\Filename.cs" />
+    <Compile Include="Playlist\Fields\Hastrailer.cs" />
+    <Compile Include="Playlist\Fields\Inprogress.cs" />
+    <Compile Include="Playlist\Fields\Instruments.cs" />
+    <Compile Include="Playlist\Fields\Label.cs" />
+    <Compile Include="Playlist\Fields\Lastplayed.cs" />
+    <Compile Include="Playlist\Fields\Moods.cs" />
+    <Compile Include="Playlist\Fields\Mpaarating.cs" />
+    <Compile Include="Playlist\Fields\Numepisodes.cs" />
+    <Compile Include="Playlist\Fields\Numwatched.cs" />
+    <Compile Include="Playlist\Fields\Path.cs" />
+    <Compile Include="Playlist\Fields\Playcount.cs" />
+    <Compile Include="Playlist\Fields\Playlist.cs" />
+    <Compile Include="Playlist\Fields\Plot.cs" />
+    <Compile Include="Playlist\Fields\Plotoutline.cs" />
+    <Compile Include="Playlist\Fields\Rating.cs" />
+    <Compile Include="Playlist\Fields\Review.cs" />
+    <Compile Include="Playlist\Fields\Season.cs" />
+    <Compile Include="Playlist\Fields\Set.cs" />
+    <Compile Include="Playlist\Fields\Status.cs" />
+    <Compile Include="Playlist\Fields\Studio.cs" />
+    <Compile Include="Playlist\Fields\Styles.cs" />
+    <Compile Include="Playlist\Fields\Subtitlelanguage.cs" />
+    <Compile Include="Playlist\Fields\Tag.cs" />
+    <Compile Include="Playlist\Fields\Tagline.cs" />
+    <Compile Include="Playlist\Fields\Themes.cs" />
+    <Compile Include="Playlist\Fields\Time.cs" />
+    <Compile Include="Playlist\Fields\Title.cs" />
+    <Compile Include="Playlist\Fields\Top250.cs" />
+    <Compile Include="Playlist\Fields\Tracknumber.cs" />
+    <Compile Include="Playlist\Fields\Tvshow.cs" />
+    <Compile Include="Playlist\Fields\Type.cs" />
+    <Compile Include="Playlist\Fields\Videoaspect.cs" />
+    <Compile Include="Playlist\Fields\Videocodec.cs" />
+    <Compile Include="Playlist\Fields\Videoresolution.cs" />
+    <Compile Include="Playlist\Fields\Votes.cs" />
+    <Compile Include="Playlist\Fields\Writers.cs" />
+    <Compile Include="Playlist\Fields\Year.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmartPlayList\Playlist.cs" />
+    <Compile Include="Playlist\Fields\Genre.cs" />
+    <Compile Include="Playlist\SmartPlaylist.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
