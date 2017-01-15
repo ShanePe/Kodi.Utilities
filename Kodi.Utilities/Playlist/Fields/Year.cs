@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// Year field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("year",
         typeof(int),
         SmartPlayList.Types.Songs,

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// Comment Field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("comment",
         typeof(string),
         SmartPlayList.Types.Songs,

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// Country Field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("country",
         typeof(string),
         SmartPlayList.Types.Movies,

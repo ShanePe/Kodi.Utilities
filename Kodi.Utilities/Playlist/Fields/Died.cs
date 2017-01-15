@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// Died field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("died",
         typeof(string),
         SmartPlayList.Types.Artists)]

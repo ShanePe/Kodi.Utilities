@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// Actor Field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("actor",
         typeof(string),
         SmartPlayList.Types.Movies,

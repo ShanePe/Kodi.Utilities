@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// MPAA Ratng ~  format: Rated G, Rated PG, Rated PG-13, Rated, Rated R
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("mpaarating",
         typeof(string),
         SmartPlayList.Types.Movies,

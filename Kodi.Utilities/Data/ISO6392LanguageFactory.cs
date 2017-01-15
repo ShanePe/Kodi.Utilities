@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Data
 {
+    /// <summary>
+    /// Creates a list of the supported ISO 639-2 Languages
+    /// </summary>
     public class ISO6392LanguageFactory
     {
         private static List<ISO6392Language> _langs = null;
 
+        /// <summary>
+        /// Gets the languages.
+        /// </summary>
+        /// <value>
+        /// The languages.
+        /// </value>
         public static List<ISO6392Language> Languages
         {
             get
@@ -23,18 +32,35 @@ namespace Kodi.Utilities.Data
             }
         }
 
+        /// <summary>
+        /// Gets the language by code.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <returns></returns>
         public static ISO6392Language GetByCode(string code)
         {
             return Languages.FirstOrDefault(l => l.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Gets the language by name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static ISO6392Language GetByName(string name)
         {
             return Languages.FirstOrDefault(l => l.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Prevents a default instance of the <see cref="ISO6392LanguageFactory"/> class from being created.
+        /// </summary>
         private ISO6392LanguageFactory() { }
 
+        /// <summary>
+        /// Builds this instance.
+        /// </summary>
+        /// <returns></returns>
         private List<ISO6392Language> Build()
         {
             List<ISO6392Language> l = new List<ISO6392Language>();

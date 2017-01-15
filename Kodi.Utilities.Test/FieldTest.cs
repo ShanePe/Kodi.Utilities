@@ -139,8 +139,8 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TrackintFieldAllocation()
         {
-            Trackint field = new Trackint();
-            Assert.AreEqual("trackint", field.Name);
+            TrackNumber field = new TrackNumber();
+            Assert.AreEqual("tracknumber", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -625,7 +625,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void EpisodetitleFieldAllocation()
         {
-            Episodetitle field = new Episodetitle();
+            EpisodeTitle field = new EpisodeTitle();
             Assert.AreEqual("episodetitle", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 

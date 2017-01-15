@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kodi.Utilities.Playlist;
 using Kodi.Utilities.Collection;
 using Kodi.Utilities.Playlist.Fields;
+using Kodi.Utilities.Parsers;
 
 namespace Kodi.Utilities.Test
 {
@@ -31,7 +32,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNotNull(rules[typeof(Time)]);
-            Assert.IsNotNull(rules[typeof(Trackint)]);
+            Assert.IsNotNull(rules[typeof(TrackNumber)]);
             Assert.IsNotNull(rules[typeof(Filename)]);
             Assert.IsNotNull(rules[typeof(Path)]);
             Assert.IsNotNull(rules[typeof(PlayCount)]);
@@ -58,7 +59,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
-            Assert.IsNull(rules[typeof(Episodetitle)]);
+            Assert.IsNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNull(rules[typeof(Review)]);
             Assert.IsNull(rules[typeof(Themes)]);
             Assert.IsNull(rules[typeof(Moods)]);
@@ -96,7 +97,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNull(rules[typeof(Time)]);
-            Assert.IsNull(rules[typeof(Trackint)]);
+            Assert.IsNull(rules[typeof(TrackNumber)]);
             Assert.IsNull(rules[typeof(Filename)]);
             Assert.IsNull(rules[typeof(Path)]);
             Assert.IsNull(rules[typeof(PlayCount)]);
@@ -123,7 +124,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
-            Assert.IsNull(rules[typeof(Episodetitle)]);
+            Assert.IsNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNotNull(rules[typeof(Review)]);
             Assert.IsNotNull(rules[typeof(Themes)]);
             Assert.IsNotNull(rules[typeof(Moods)]);
@@ -161,7 +162,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Title)]);
             Assert.IsNull(rules[typeof(Year)]);
             Assert.IsNull(rules[typeof(Time)]);
-            Assert.IsNull(rules[typeof(Trackint)]);
+            Assert.IsNull(rules[typeof(TrackNumber)]);
             Assert.IsNull(rules[typeof(Filename)]);
             Assert.IsNull(rules[typeof(Path)]);
             Assert.IsNull(rules[typeof(PlayCount)]);
@@ -188,7 +189,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
-            Assert.IsNull(rules[typeof(Episodetitle)]);
+            Assert.IsNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNull(rules[typeof(Review)]);
             Assert.IsNull(rules[typeof(Themes)]);
             Assert.IsNotNull(rules[typeof(Moods)]);
@@ -226,7 +227,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNotNull(rules[typeof(Time)]);
-            Assert.IsNull(rules[typeof(Trackint)]);
+            Assert.IsNull(rules[typeof(TrackNumber)]);
             Assert.IsNotNull(rules[typeof(Filename)]);
             Assert.IsNotNull(rules[typeof(Path)]);
             Assert.IsNotNull(rules[typeof(PlayCount)]);
@@ -253,7 +254,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
-            Assert.IsNull(rules[typeof(Episodetitle)]);
+            Assert.IsNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNull(rules[typeof(Review)]);
             Assert.IsNull(rules[typeof(Themes)]);
             Assert.IsNull(rules[typeof(Moods)]);
@@ -291,7 +292,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNull(rules[typeof(Time)]);
-            Assert.IsNull(rules[typeof(Trackint)]);
+            Assert.IsNull(rules[typeof(TrackNumber)]);
             Assert.IsNull(rules[typeof(Filename)]);
             Assert.IsNotNull(rules[typeof(Path)]);
             Assert.IsNotNull(rules[typeof(PlayCount)]);
@@ -318,7 +319,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNotNull(rules[typeof(TVShow)]);
-            Assert.IsNull(rules[typeof(Episodetitle)]);
+            Assert.IsNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNull(rules[typeof(Review)]);
             Assert.IsNull(rules[typeof(Themes)]);
             Assert.IsNull(rules[typeof(Moods)]);
@@ -356,7 +357,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNotNull(rules[typeof(Time)]);
-            Assert.IsNull(rules[typeof(Trackint)]);
+            Assert.IsNull(rules[typeof(TrackNumber)]);
             Assert.IsNotNull(rules[typeof(Filename)]);
             Assert.IsNotNull(rules[typeof(Path)]);
             Assert.IsNotNull(rules[typeof(PlayCount)]);
@@ -383,7 +384,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Episode)]);
             Assert.IsNotNull(rules[typeof(Season)]);
             Assert.IsNotNull(rules[typeof(TVShow)]);
-            Assert.IsNotNull(rules[typeof(Episodetitle)]);
+            Assert.IsNotNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNull(rules[typeof(Review)]);
             Assert.IsNull(rules[typeof(Themes)]);
             Assert.IsNull(rules[typeof(Moods)]);
@@ -421,7 +422,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNotNull(rules[typeof(Time)]);
-            Assert.IsNull(rules[typeof(Trackint)]);
+            Assert.IsNull(rules[typeof(TrackNumber)]);
             Assert.IsNotNull(rules[typeof(Filename)]);
             Assert.IsNotNull(rules[typeof(Path)]);
             Assert.IsNotNull(rules[typeof(PlayCount)]);
@@ -448,7 +449,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
-            Assert.IsNull(rules[typeof(Episodetitle)]);
+            Assert.IsNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNull(rules[typeof(Review)]);
             Assert.IsNull(rules[typeof(Themes)]);
             Assert.IsNull(rules[typeof(Moods)]);
@@ -486,7 +487,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Title)]);
             Assert.IsNotNull(rules[typeof(Year)]);
             Assert.IsNotNull(rules[typeof(Time)]);
-            Assert.IsNotNull(rules[typeof(Trackint)]);
+            Assert.IsNotNull(rules[typeof(TrackNumber)]);
             Assert.IsNotNull(rules[typeof(Filename)]);
             Assert.IsNotNull(rules[typeof(Path)]);
             Assert.IsNotNull(rules[typeof(PlayCount)]);
@@ -513,7 +514,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Episode)]);
             Assert.IsNotNull(rules[typeof(Season)]);
             Assert.IsNotNull(rules[typeof(TVShow)]);
-            Assert.IsNotNull(rules[typeof(Episodetitle)]);
+            Assert.IsNotNull(rules[typeof(EpisodeTitle)]);
             Assert.IsNotNull(rules[typeof(Review)]);
             Assert.IsNotNull(rules[typeof(Themes)]);
             Assert.IsNotNull(rules[typeof(Moods)]);
@@ -537,9 +538,15 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+        }
 
-
+        [TestMethod]
+        public void ParseXmlPlaylist()
+        {
+            SmartPlayList playlist = SmartPlayList.LoadFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Random.xsp", new XmlParser());
 
         }
     }
+
+
 }

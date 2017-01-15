@@ -4,11 +4,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Collection
 {
+    /// <summary>
+    /// Collection of vlaues for the rule
+    /// </summary>
+    /// <seealso cref="System.Collections.Generic.List{System.Object}" />
+    [ComVisible(false)]
     public class ValueCollection : List<object>
     {
         public Type UnderlyingType { get; set; }

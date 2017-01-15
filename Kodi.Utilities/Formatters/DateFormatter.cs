@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Formatters
 {
+    /// <summary>
+    /// Handles Date Fields
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
     [FormatterTypeAttribute(typeof(DateTime))]
     public class DateFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the available operators.
+        /// </summary>
+        /// <returns></returns>
         public override IOperator[] GetAvailableOperators()
         {
             return new IOperator[]
@@ -21,6 +29,11 @@ namespace Kodi.Utilities.Formatters
             };
         }
 
+        /// <summary>
+        /// Gets the formatted value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public override string GetFormattedValue(object value)
         {
             DateTime date = (DateTime)value;

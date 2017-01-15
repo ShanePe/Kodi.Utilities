@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Formatters
 {
+    /// <summary>
+    /// Handles number fields
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
     [FormatterTypeAttribute(typeof(int))]
     public class IntFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the available operators.
+        /// </summary>
+        /// <returns></returns>
         public override IOperator[] GetAvailableOperators()
         {
             return new IOperator[]
@@ -23,6 +31,11 @@ namespace Kodi.Utilities.Formatters
             };
         }
 
+        /// <summary>
+        /// Gets the formatted value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public override string GetFormattedValue(object value)
         {
             int i = (int)value;

@@ -8,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
-    [FieldAllocationAttribute("trackint",
+    /// <summary>
+    /// Track number field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+    [FieldAllocationAttribute("tracknumber",
         typeof(int),
         SmartPlayList.Types.Songs,
         SmartPlayList.Types.Mixed)]
-    public class Trackint : IRule
+    public class TrackNumber : IRule
     { }
 }

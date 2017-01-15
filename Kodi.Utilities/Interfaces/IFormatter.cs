@@ -11,11 +11,29 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Interfaces
 {
+    /// <summary>
+    /// Abstract class to handle field value formatting
+    /// </summary>
     public abstract class IFormatter
     {
+        /// <summary>
+        /// Gets the formatted value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public abstract string GetFormattedValue(object value);
+        /// <summary>
+        /// Gets the available operators.
+        /// </summary>
+        /// <returns></returns>
         public abstract IOperator[] GetAvailableOperators();
 
+        /// <summary>
+        /// Gets the formatter.
+        /// </summary>
+        /// <param name="underlyingType">Type of the underlying.</param>
+        /// <returns></returns>
+        /// <exception cref="Kodi.Utilities.Exceptions.MissingFormatterTypeAttrException"></exception>
         public static IFormatter GetFormatter(Type underlyingType)
         {
             TypeInfo typeInfo = typeof(IFormatter).GetTypeInfo();
@@ -36,6 +54,12 @@ namespace Kodi.Utilities.Interfaces
             return null;
         }
 
+        /// <summary>
+        /// Formats the specified underlying type.
+        /// </summary>
+        /// <param name="underlyingType">Type of the underlying.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public static string Format(Type underlyingType, object value)
         {
             IFormatter formatter = GetFormatter(underlyingType);

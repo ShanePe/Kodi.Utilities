@@ -45,6 +45,7 @@
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
     <Compile Include="Exceptions\MissingFieldAttributeException.cs" />
     <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
+    <Compile Include="Exceptions\RuleParseException.cs" />
     <Compile Include="Extensions\String.cs" />
     <Compile Include="Formatters\BoolFormatter.cs" />
     <Compile Include="Formatters\DurationFormatter.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Formatters\StringFormatter.cs" />
     <Compile Include="Interfaces\IFormatter.cs" />
     <Compile Include="Interfaces\IOperator.cs" />
+    <Compile Include="Interfaces\IParser.cs" />
     <Compile Include="Interfaces\IRule.cs" />
     <Compile Include="Data\ISO6392Language.cs" />
     <Compile Include="Operators\After.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Operators\NotInTheLast.cs" />
     <Compile Include="Operators\StartsWith.cs" />
     <Compile Include="Operators\True.cs" />
+    <Compile Include="Parsers\XmlParser.cs" />
     <Compile Include="Playlist\Fields\Actor.cs" />
     <Compile Include="Playlist\Fields\AirDateTime.cs" />
     <Compile Include="Playlist\Fields\Album.cs" />
@@ -78,7 +81,7 @@
     <Compile Include="Playlist\Fields\AudioChannels.cs" />
     <Compile Include="Playlist\Fields\AudioCodec.cs" />
     <Compile Include="Playlist\Fields\AudioLanguage.cs" />
-    <Compile Include="Playlist\Fields\Bandformed.cs" />
+    <Compile Include="Playlist\Fields\BandFormed.cs" />
     <Compile Include="Playlist\Fields\Biography.cs" />
     <Compile Include="Playlist\Fields\Born.cs" />
     <Compile Include="Playlist\Fields\Comment.cs" />
@@ -88,7 +91,7 @@
     <Compile Include="Playlist\Fields\Director.cs" />
     <Compile Include="Playlist\Fields\Disbanded.cs" />
     <Compile Include="Playlist\Fields\Episode.cs" />
-    <Compile Include="Playlist\Fields\Episodetitle.cs" />
+    <Compile Include="Playlist\Fields\EpisodeTitle.cs" />
     <Compile Include="Playlist\Fields\Filename.cs" />
     <Compile Include="Playlist\Fields\Genre.cs" />
     <Compile Include="Playlist\Fields\HasTrailer.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Playlist\Fields\PlayList.cs" />
     <Compile Include="Playlist\Fields\Plot.cs" />
     <Compile Include="Playlist\Fields\PlotOutline.cs" />
+    <Compile Include="Playlist\Fields\Random.cs" />
     <Compile Include="Playlist\Fields\Rating.cs" />
     <Compile Include="Playlist\Fields\Review.cs" />
     <Compile Include="Playlist\Fields\Season.cs" />
@@ -119,7 +123,7 @@
     <Compile Include="Playlist\Fields\Time.cs" />
     <Compile Include="Playlist\Fields\Title.cs" />
     <Compile Include="Playlist\Fields\Top250.cs" />
-    <Compile Include="Playlist\Fields\Trackint.cs" />
+    <Compile Include="Playlist\Fields\TrackNumber.cs" />
     <Compile Include="Playlist\Fields\TVShow.cs" />
     <Compile Include="Playlist\Fields\MediaType.cs" />
     <Compile Include="Playlist\Fields\VideoAspect.cs" />

@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
+    /// <summary>
+    /// SubtitleLanguage field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocationAttribute("subtitlelanguage",
         typeof(ISO6392Language),
         SmartPlayList.Types.Movies,

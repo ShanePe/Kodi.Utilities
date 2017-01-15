@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Operators
 {
+    /// <summary>
+    /// Greater operator
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IOperator" />
     public class GreaterThan : IOperator
     {
+        /// <summary>
+        /// Gets the user readable name of the operator
+        /// </summary>
+        /// <value>
+        /// Name
+        /// </value>
         public string FriendlyName
         {
             get
@@ -18,6 +28,12 @@ namespace Kodi.Utilities.Operators
             }
         }
 
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name
         {
             get
