@@ -1,5 +1,6 @@
 ﻿using Kodi.Utilities.Collection;
 using Kodi.Utilities.Interfaces;
+using Kodi.Utilities.Validators;
 using PCLStorage;
 using System;
 using System.IO;
@@ -82,7 +83,7 @@ namespace Kodi.Utilities.Playlist
         /// <value>
         /// The rules.
         /// </value>
-        public RuleCollection Rules { get; set; } = new RuleCollection();
+        public RuleCollection Rules { get; set; }
         /// <summary>
         /// Gets or sets the match.
         /// </summary>
@@ -112,11 +113,15 @@ namespace Kodi.Utilities.Playlist
         /// </summary>
         /// <param name="name">The name.</param>
         public SmartPlayList(string name)
+            : this()
         {
             this.Name = name;
         }
 
-        internal SmartPlayList() { }
+        internal SmartPlayList()
+        {
+            Rules = new RuleCollection(this);
+        }
         #endregion
 
         #region Static Methods
@@ -190,6 +195,42 @@ namespace Kodi.Utilities.Playlist
             }
             return _available;
         }
+
+        public void WriteToStream(Stream stream, IParser parser)
+        {
+            PlaylistValidator validator = new PlaylistValidator();
+            validator.Validate(this);
+
+            parser.WriteToStream(stream, this);
+        }
+
+        public void WriteToFile(string path, bool overwrite, IParser parser)
+        {
+            WriteToFileStream(path, overwrite, parser);
+        }
+
+        internal async void WriteToFileStream(string path, bool overwrite, IParser parser)
+        {
+            IFile file = await FileSystem.Current.GetFileFromPathAsync(path);
+            if (file != null && !overwrite)
+                throw new IOException($"{path} already exists.");
+            else if (file != null && overwrite)
+                await file.DeleteAsync();
+
+            file = await FileSystem.Current.LocalStorage.CreateFileAsync(path, CreationCollisionOption.ReplaceExisting);
+
+            using (Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
+            {
+                WriteToStream(stream, parser);
+            }
+            file = null;
+        }
+
+        internal string GetPlayListEnumAsString(Type enumType, object value)
+        {
+            return Enum.GetName(enumType, value).ToLower();
+        }
+
         #endregion
     }
 }

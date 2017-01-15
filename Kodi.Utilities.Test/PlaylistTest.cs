@@ -592,7 +592,10 @@ namespace Kodi.Utilities.Test
         public void ParseXmlPlaylist()
         {
             SmartPlayList playlist = SmartPlayList.LoadFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Random.xsp", new XmlParser());
-
+            playlist.WriteToFile(
+                AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Test.xsp",
+                true,
+                new XmlParser());
         }
     }
 

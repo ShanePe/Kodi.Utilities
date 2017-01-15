@@ -48,9 +48,10 @@
     <Compile Include="Exceptions\InvalidRatingException.cs" />
     <Compile Include="Exceptions\MissingFieldAttributeException.cs" />
     <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
+    <Compile Include="Exceptions\MissingValueException.cs" />
     <Compile Include="Exceptions\NonPositiveIntegerException.cs" />
     <Compile Include="Exceptions\RuleParseException.cs" />
-    <Compile Include="Exceptions\TypeNoIValidatorException.cs" />
+    <Compile Include="Exceptions\FieldNotValidForTypeException.cs" />
     <Compile Include="Extensions\String.cs" />
     <Compile Include="Formatters\BoolFormatter.cs" />
     <Compile Include="Formatters\DoubleFormatter.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Playlist\Fields\Year.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Playlist\SmartPlaylist.cs" />
+    <Compile Include="Validators\PlaylistValidator.cs" />
     <Compile Include="Validators\PositiveIntValidator.cs" />
     <Compile Include="Validators\TimeValidator.cs" />
     <Compile Include="Validators\RatingValidator.cs" />

@@ -11,6 +11,7 @@ namespace Kodi.Utilities.Interfaces
     public abstract class IParser
     {
         public abstract SmartPlayList ParserStream(Stream stream);
+        public abstract void WriteToStream(Stream stream, SmartPlayList playlistToWrite);
 
         public virtual void SetPlaylistType(string type, ref SmartPlayList playlist)
         {

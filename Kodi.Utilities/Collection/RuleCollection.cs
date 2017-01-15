@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 using Kodi.Utilities.Exceptions;
 using System.Reflection;
+using Kodi.Utilities.Playlist;
 
 namespace Kodi.Utilities.Collection
 {
@@ -15,7 +16,7 @@ namespace Kodi.Utilities.Collection
     public class RuleCollection : IList<IRule>
     {
         Dictionary<Type, IRule> _dataStore = new Dictionary<Type, IRule>();
-
+        SmartPlayList _playlist;
         /// <summary>
         /// Gets or sets the <see cref="IRule"/> with the specified type.
         /// </summary>
@@ -91,6 +92,13 @@ namespace Kodi.Utilities.Collection
             }
         }
 
+        internal RuleCollection(SmartPlayList playlist)
+        {
+            _playlist = playlist;
+        }
+
+        internal RuleCollection() { }
+
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
@@ -98,6 +106,10 @@ namespace Kodi.Utilities.Collection
         /// <exception cref="FieldExistsException"></exception>
         public void Add(IRule item)
         {
+            if (_playlist != null)
+                if (!item.IsAllowedForPlaylistType(_playlist.Type))
+                    throw new FieldNotValidForTypeException(item, _playlist);
+
             if (_dataStore.ContainsKey(item.GetType()))
                 throw new FieldExistsException(item);
 
