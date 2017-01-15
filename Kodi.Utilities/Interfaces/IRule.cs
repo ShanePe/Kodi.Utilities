@@ -14,14 +14,13 @@ namespace Kodi.Utilities.Interfaces
 {
     public abstract class IRule
     {
-        public enum Operators { Contains, DoesNotContain, Is, IsNot, StartsWith, EndsWith, LessThan, GreaterThan, After, Before, InTheLast, NotInTheLast }
         public enum SortOptions { None, Asending, Desending }
 
         #region Private
         #endregion
 
         #region Properties
-        public Operators Operator { get; set; } = Operators.Is;
+        public IOperator Operator { get; set; }
         public SortOptions Sort { get; set; } = SortOptions.None;
         public ValueCollection Values { get; set; }
         public string Name
@@ -40,6 +39,7 @@ namespace Kodi.Utilities.Interfaces
         public IRule()
         {
             Values = new ValueCollection(GetFieldAllocation().UnderlyingType);
+            Operator = GetAvailableOperators()?[0];
         }
         #endregion
 
@@ -60,6 +60,11 @@ namespace Kodi.Utilities.Interfaces
                 throw new MissingFieldAttributeException(this);
 
             return attr;
+        }
+
+        public IOperator[] GetAvailableOperators()
+        {
+            return IFormatter.GetFormatter(UnderlyingType)?.GetAvailableOperators();
         }
 
         public bool IsAllowedForPlaylistType(SmartPlayList.Types type)

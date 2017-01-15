@@ -11,9 +11,9 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("videoaspect",
         typeof(int),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
-    public class Videoaspect : IRule
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
+    public class VideoAspect : IRule
     { }
 }

@@ -11,11 +11,11 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("path",
         typeof(string),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
     public class Path : IRule
     { }
 }

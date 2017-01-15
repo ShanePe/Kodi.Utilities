@@ -11,9 +11,9 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("audiochannels",
         typeof(int),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
-    public class Audiochannels : IRule
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
+    public class AudioChannels : IRule
     { }
 }

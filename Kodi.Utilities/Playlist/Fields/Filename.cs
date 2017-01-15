@@ -11,10 +11,10 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("filename",
         typeof(string),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
     public class Filename : IRule
     { }
 }

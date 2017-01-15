@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("status",
         typeof(string),
         SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class Status : IRule
     { }
 }

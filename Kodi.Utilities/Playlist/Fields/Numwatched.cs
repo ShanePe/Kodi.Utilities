@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("numwatched",
         typeof(int),
         SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Mixed)]
-    public class Numwatched : IRule
+        SmartPlayList.Types.Mixed)]
+    public class NumWatched : IRule
     { }
 }

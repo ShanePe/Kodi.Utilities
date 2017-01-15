@@ -11,13 +11,13 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("genre",
         typeof(string),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Albums,
-SmartPlayList.Types.Artists,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Albums,
+        SmartPlayList.Types.Artists,
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
     public class Genre : IRule
     { }
 }

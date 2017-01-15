@@ -11,6 +11,6 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("datetimeadded",
         typeof(DateTime),
         SmartPlayList.Types.Movies)]
-    public class DateTimeadded : IRule
+    public class DateTimeAdded : IRule
     { }
 }

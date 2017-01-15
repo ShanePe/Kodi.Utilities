@@ -11,9 +11,9 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("mpaarating",
         typeof(string),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
-    public class Mpaarating : IRule
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.Mixed)]
+    public class MPAARating : IRule
     { }
 }

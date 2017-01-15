@@ -1,4 +1,5 @@
 using Kodi.Utilities.Attributes;
+using Kodi.Utilities.Data;
 using Kodi.Utilities.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     [FieldAllocationAttribute("lastplayed",
-        typeof(DateTime),
+        typeof(Duration),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
-    public class Lastplayed : IRule
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
+    public class LastPlayed : IRule
     { }
 }

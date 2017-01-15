@@ -11,6 +11,6 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("bandformed",
         typeof(string),
         SmartPlayList.Types.Artists)]
-    public class Bandformed : IRule
+    public class BandFormed : IRule
     { }
 }

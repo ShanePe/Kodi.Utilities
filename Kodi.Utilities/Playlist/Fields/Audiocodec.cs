@@ -11,9 +11,9 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("audiocodec",
         typeof(string),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
-    public class Audiocodec : IRule
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
+    public class AudioCodec : IRule
     { }
 }

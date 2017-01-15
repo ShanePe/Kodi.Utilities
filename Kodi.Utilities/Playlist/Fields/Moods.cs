@@ -11,8 +11,8 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("moods",
         typeof(string),
         SmartPlayList.Types.Albums,
-SmartPlayList.Types.Artists,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Artists,
+        SmartPlayList.Types.Mixed)]
     public class Moods : IRule
     { }
 }

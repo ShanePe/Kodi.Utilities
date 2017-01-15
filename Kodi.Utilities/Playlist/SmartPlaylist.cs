@@ -27,6 +27,8 @@ namespace Kodi.Utilities.Playlist
             Mixed
         };
 
+        public enum MatchOptions { All, One }
+
         #region Privates
         #endregion
 
@@ -34,6 +36,15 @@ namespace Kodi.Utilities.Playlist
         public string Name { get; set; }
         public Types Type { get; set; } = Types.Songs;
         public RuleCollection Rules { get; set; } = new RuleCollection();
+        public MatchOptions Match { get; set; } = MatchOptions.All;
+        public int Limit { get; set; } = 50;
+        public IRule SortField
+        {
+            get
+            {
+                return Rules?.FirstOrDefault(r => r.Sort != IRule.SortOptions.None);
+            }
+        }
         #endregion
 
         #region Constructors

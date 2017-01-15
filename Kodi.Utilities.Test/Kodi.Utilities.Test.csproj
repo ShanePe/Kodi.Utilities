@@ -53,6 +53,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FieldTest.cs" />
+    <Compile Include="Formatters.cs" />
+    <Compile Include="LanguagesTest.cs" />
     <Compile Include="PlaylistTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

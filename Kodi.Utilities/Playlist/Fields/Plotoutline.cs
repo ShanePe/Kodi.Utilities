@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("plotoutline",
         typeof(string),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Mixed)]
-    public class Plotoutline : IRule
+        SmartPlayList.Types.Mixed)]
+    public class PlotOutline : IRule
     { }
 }

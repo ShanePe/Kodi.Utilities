@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("comment",
         typeof(string),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class Comment : IRule
     { }
 }

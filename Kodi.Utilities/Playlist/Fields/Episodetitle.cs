@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("episodetitle",
         typeof(string),
         SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class Episodetitle : IRule
     { }
 }

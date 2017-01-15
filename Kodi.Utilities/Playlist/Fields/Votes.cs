@@ -11,9 +11,9 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("votes",
         typeof(int),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.Mixed)]
     public class Votes : IRule
     { }
 }

@@ -11,11 +11,11 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("rating",
         typeof(int),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Albums,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Albums,
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.Mixed)]
     public class Rating : IRule
     { }
 }

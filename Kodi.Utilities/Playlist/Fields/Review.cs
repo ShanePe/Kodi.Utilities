@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("review",
         typeof(string),
         SmartPlayList.Types.Albums,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class Review : IRule
     { }
 }

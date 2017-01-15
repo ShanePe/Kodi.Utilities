@@ -11,8 +11,8 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("inprogress",
         typeof(bool),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
-    public class Inprogress : IRule
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.Mixed)]
+    public class InProgress : IRule
     { }
 }

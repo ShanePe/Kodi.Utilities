@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("tagline",
         typeof(string),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class Tagline : IRule
     { }
 }

@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("top250",
         typeof(int),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class Top250 : IRule
     { }
 }

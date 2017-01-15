@@ -11,11 +11,11 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("playcount",
         typeof(int),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
-    public class Playcount : IRule
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
+    public class PlayCount : IRule
     { }
 }

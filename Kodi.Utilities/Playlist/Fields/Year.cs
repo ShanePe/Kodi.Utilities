@@ -11,12 +11,12 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("year",
         typeof(int),
         SmartPlayList.Types.Songs,
-SmartPlayList.Types.Albums,
-SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Albums,
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
     public class Year : IRule
     { }
 }

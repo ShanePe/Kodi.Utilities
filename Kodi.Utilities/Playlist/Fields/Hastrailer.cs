@@ -12,6 +12,6 @@ namespace Kodi.Utilities.Playlist.Fields
         typeof(bool),
         SmartPlayList.Types.Movies,
         SmartPlayList.Types.Mixed)]
-    public class Hastrailer : IRule
+    public class HasTrailer : IRule
     { }
 }

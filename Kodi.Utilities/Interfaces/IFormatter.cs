@@ -14,8 +14,9 @@ namespace Kodi.Utilities.Interfaces
     public abstract class IFormatter
     {
         public abstract string GetFormattedValue(object value);
+        public abstract IOperator[] GetAvailableOperators();
 
-        public static string Format(Type underlyType, object value)
+        public static IFormatter GetFormatter(Type underlyingType)
         {
             TypeInfo typeInfo = typeof(IFormatter).GetTypeInfo();
             foreach (TypeInfo ti in typeInfo.Assembly.DefinedTypes
@@ -25,13 +26,21 @@ namespace Kodi.Utilities.Interfaces
                 if (attr == null)
                     throw new MissingFormatterTypeAttrException(ti.AsType());
 
-                if (attr.UnderlyingType == underlyType)
+                if (attr.UnderlyingType == underlyingType)
                 {
                     IFormatter formatter = (IFormatter)Activator.CreateInstance(ti.AsType());
-                    return formatter.GetFormattedValue(value);
+                    return formatter;
                 }
             }
 
+            return null;
+        }
+
+        public static string Format(Type underlyingType, object value)
+        {
+            IFormatter formatter = GetFormatter(underlyingType);
+            if (formatter != null)
+                return formatter.GetFormattedValue(value);
             return value.ToString();
         }
 

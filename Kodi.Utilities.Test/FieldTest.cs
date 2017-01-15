@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kodi.Utilities.Playlist.Fields;
 using Kodi.Utilities.Playlist;
+using System.Globalization;
+using Kodi.Utilities.Data;
 
 namespace Kodi.Utilities.Test
 {
@@ -65,7 +67,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void AlbumartistFieldAllocation()
         {
-            Albumartist field = new Albumartist();
+            AlbumArtist field = new AlbumArtist();
             Assert.AreEqual("albumartist", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
@@ -191,7 +193,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void PlaycountFieldAllocation()
         {
-            Playcount field = new Playcount();
+            PlayCount field = new PlayCount();
             Assert.AreEqual("playcount", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
@@ -209,9 +211,9 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void LastplayedFieldAllocation()
         {
-            Lastplayed field = new Lastplayed();
+            LastPlayed field = new LastPlayed();
             Assert.AreEqual("lastplayed", field.Name);
-            Assert.AreEqual(typeof(DateTime), field.UnderlyingType);
+            Assert.AreEqual(typeof(Duration), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
@@ -227,7 +229,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void InprogressFieldAllocation()
         {
-            Inprogress field = new Inprogress();
+            InProgress field = new InProgress();
             Assert.AreEqual("inprogress", field.Name);
             Assert.AreEqual(typeof(bool), field.UnderlyingType);
 
@@ -281,7 +283,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void DateTimeaddedFieldAllocation()
         {
-            DateTimeadded field = new DateTimeadded();
+            DateTimeAdded field = new DateTimeAdded();
             Assert.AreEqual("datetimeadded", field.Name);
             Assert.AreEqual(typeof(DateTime), field.UnderlyingType);
 
@@ -317,7 +319,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void PlotoutlineFieldAllocation()
         {
-            Plotoutline field = new Plotoutline();
+            PlotOutline field = new PlotOutline();
             Assert.AreEqual("plotoutline", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
@@ -353,7 +355,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void MpaaratingFieldAllocation()
         {
-            Mpaarating field = new Mpaarating();
+            MPAARating field = new MPAARating();
             Assert.AreEqual("mpaarating", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
@@ -497,7 +499,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void NumepisodesFieldAllocation()
         {
-            Numepisodes field = new Numepisodes();
+            NumEpisodes field = new NumEpisodes();
             Assert.AreEqual("numepisodes", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
@@ -515,7 +517,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void NumwatchedFieldAllocation()
         {
-            Numwatched field = new Numwatched();
+            NumWatched field = new NumWatched();
             Assert.AreEqual("numwatched", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
@@ -605,7 +607,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TvshowFieldAllocation()
         {
-            Tvshow field = new Tvshow();
+            TVShow field = new TVShow();
             Assert.AreEqual("tvshow", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
@@ -749,7 +751,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void HastrailerFieldAllocation()
         {
-            Hastrailer field = new Hastrailer();
+            HasTrailer field = new HasTrailer();
             Assert.AreEqual("hastrailer", field.Name);
             Assert.AreEqual(typeof(bool), field.UnderlyingType);
 
@@ -767,7 +769,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void VideoresolutionFieldAllocation()
         {
-            Videoresolution field = new Videoresolution();
+            VideoResolution field = new VideoResolution();
             Assert.AreEqual("videoresolution", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
@@ -785,7 +787,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void AudiochannelsFieldAllocation()
         {
-            Audiochannels field = new Audiochannels();
+            AudioChannels field = new AudioChannels();
             Assert.AreEqual("audiochannels", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
@@ -803,7 +805,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void VideocodecFieldAllocation()
         {
-            Videocodec field = new Videocodec();
+            VideoCodec field = new VideoCodec();
             Assert.AreEqual("videocodec", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
@@ -821,7 +823,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void AudiocodecFieldAllocation()
         {
-            Audiocodec field = new Audiocodec();
+            AudioCodec field = new AudioCodec();
             Assert.AreEqual("audiocodec", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
@@ -839,9 +841,10 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void AudiolanguageFieldAllocation()
         {
-            Audiolanguage field = new Audiolanguage();
+            AudioLanguage field = new AudioLanguage();
+            
             Assert.AreEqual("audiolanguage", field.Name);
-            Assert.AreEqual(typeof(string), field.UnderlyingType);
+            Assert.AreEqual(typeof(ISO6392Language), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
@@ -857,9 +860,9 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void SubtitlelanguageFieldAllocation()
         {
-            Subtitlelanguage field = new Subtitlelanguage();
+            SubtitleLanguage field = new SubtitleLanguage();
             Assert.AreEqual("subtitlelanguage", field.Name);
-            Assert.AreEqual(typeof(string), field.UnderlyingType);
+            Assert.AreEqual(typeof(ISO6392Language), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
@@ -875,7 +878,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void VideoaspectFieldAllocation()
         {
-            Videoaspect field = new Videoaspect();
+            VideoAspect field = new VideoAspect();
             Assert.AreEqual("videoaspect", field.Name);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
@@ -983,7 +986,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void BandformedFieldAllocation()
         {
-            Bandformed field = new Bandformed();
+            BandFormed field = new BandFormed();
             Assert.AreEqual("bandformed", field.Name);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 

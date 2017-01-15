@@ -11,8 +11,8 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("writers",
         typeof(string),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.Mixed)]
     public class Writers : IRule
     { }
 }

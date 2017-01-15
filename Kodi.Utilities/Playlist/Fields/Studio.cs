@@ -11,10 +11,10 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("studio",
         typeof(string),
         SmartPlayList.Types.Movies,
-SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Episodes,
-SmartPlayList.Types.MusicVideos,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
+        SmartPlayList.Types.Mixed)]
     public class Studio : IRule
     { }
 }

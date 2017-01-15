@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("numepisodes",
         typeof(int),
         SmartPlayList.Types.TVShows,
-SmartPlayList.Types.Mixed)]
-    public class Numepisodes : IRule
+        SmartPlayList.Types.Mixed)]
+    public class NumEpisodes : IRule
     { }
 }

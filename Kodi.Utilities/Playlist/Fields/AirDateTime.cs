@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Playlist.Fields
     [FieldAllocationAttribute("airdatetime",
         typeof(DateTime),
         SmartPlayList.Types.Episodes,
-SmartPlayList.Types.Mixed)]
+        SmartPlayList.Types.Mixed)]
     public class AirDateTime : IRule
     { }
 }
