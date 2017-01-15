@@ -12,7 +12,7 @@ namespace Kodi.Utilities.Test
     [TestClass]
     public class LanguagesTest
     {
-     
+      
         [TestMethod]
         [Priority(0)]
         public void LanguageCacheBuild()
