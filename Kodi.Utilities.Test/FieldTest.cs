@@ -281,10 +281,10 @@ namespace Kodi.Utilities.Test
         }
 
         [TestMethod]
-        public void DateTimeaddedFieldAllocation()
+        public void DateAddedFieldAllocation()
         {
-            DateTimeAdded field = new DateTimeAdded();
-            Assert.AreEqual("datetimeadded", field.Name);
+            DateAdded field = new DateAdded();
+            Assert.AreEqual("dateadded", field.Name);
             Assert.AreEqual(typeof(DateTime), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -551,10 +551,10 @@ namespace Kodi.Utilities.Test
         }
 
         [TestMethod]
-        public void AirDateTimeFieldAllocation()
+        public void AirDateFieldAllocation()
         {
-            AirDateTime field = new AirDateTime();
-            Assert.AreEqual("airdatetime", field.Name);
+            AirDate field = new AirDate();
+            Assert.AreEqual("airdate", field.Name);
             Assert.AreEqual(typeof(DateTime), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -842,7 +842,7 @@ namespace Kodi.Utilities.Test
         public void AudiolanguageFieldAllocation()
         {
             AudioLanguage field = new AudioLanguage();
-            
+
             Assert.AreEqual("audiolanguage", field.Name);
             Assert.AreEqual(typeof(ISO6392Language), field.UnderlyingType);
 
@@ -1055,6 +1055,112 @@ namespace Kodi.Utilities.Test
 
         }
 
+        [TestMethod]
+        public void VirtualFolderFieldAllocation()
+        {
+            VirtualFolder field = new VirtualFolder();
+            Assert.AreEqual("virtualfolder", field.Name);
+            Assert.AreEqual(typeof(string), field.UnderlyingType);
 
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Artists));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Movies));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.TVShows));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Episodes));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+
+        }
+
+        [TestMethod]
+        public void RoleFieldAllocation()
+        {
+            Role field = new Role();
+            Assert.AreEqual("role", field.Name);
+            Assert.AreEqual(typeof(string), field.UnderlyingType);
+
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Artists));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Movies));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.TVShows));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Episodes));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+
+        }
+
+        [TestMethod]
+        public void CompilationFieldAllocation()
+        {
+            Compilation field = new Compilation();
+            Assert.AreEqual("compilation", field.Name);
+            Assert.AreEqual(typeof(bool), field.UnderlyingType);
+
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Artists));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Movies));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.TVShows));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Episodes));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+
+        }
+
+        [TestMethod]
+        public void UserRatingFieldAllocation()
+        {
+            UserRating field = new UserRating();
+            Assert.AreEqual("userrating", field.Name);
+            Assert.AreEqual(typeof(string), field.UnderlyingType);
+
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Artists));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Movies));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.TVShows));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Episodes));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+
+        }
+
+        [TestMethod]
+        public void AudioCountFieldAllocation()
+        {
+            AudioCount field = new AudioCount();
+            Assert.AreEqual("audiocount", field.Name);
+            Assert.AreEqual(typeof(int), field.UnderlyingType);
+
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Artists));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Movies));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.TVShows));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Episodes));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+
+        }
+
+        [TestMethod]
+        public void SubtitleCountFieldAllocation()
+        {
+            SubtitleCount field = new SubtitleCount();
+            Assert.AreEqual("subtitlecount", field.Name);
+            Assert.AreEqual(typeof(int), field.UnderlyingType);
+
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Artists));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Movies));
+            Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.TVShows));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Episodes));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
+            Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+
+        }
     }
 }

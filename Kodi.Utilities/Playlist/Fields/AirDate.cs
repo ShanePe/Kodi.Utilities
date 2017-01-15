@@ -9,21 +9,13 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Num Watch Field
+    /// Air Date Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("numwatched",
-        typeof(int),
-        SmartPlayList.Types.TVShows,
+    [FieldAllocationAttribute("airdate",
+        typeof(DateTime),
+        SmartPlayList.Types.Episodes,
         SmartPlayList.Types.Mixed)]
-    public class NumWatched : IRule
-    {
-        public override string FriendlyName
-        {
-            get
-            {
-                return "Number of watched episodes";
-            }
-        }
-    }
+    public class AirDate : IRule
+    { }
 }

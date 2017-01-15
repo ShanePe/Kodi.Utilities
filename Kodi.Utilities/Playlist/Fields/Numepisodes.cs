@@ -17,5 +17,13 @@ namespace Kodi.Utilities.Playlist.Fields
         SmartPlayList.Types.TVShows,
         SmartPlayList.Types.Mixed)]
     public class NumEpisodes : IRule
-    { }
+    {
+        public override string FriendlyName
+        {
+            get
+            {
+                return "Number of episodes";
+            }
+        }
+    }
 }

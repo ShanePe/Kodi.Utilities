@@ -40,7 +40,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(InProgress)]);
             Assert.IsNotNull(rules[typeof(Rating)]);
             Assert.IsNotNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNull(rules[typeof(Plot)]);
             Assert.IsNull(rules[typeof(PlotOutline)]);
             Assert.IsNull(rules[typeof(Tagline)]);
@@ -55,7 +55,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(NumEpisodes)]);
             Assert.IsNull(rules[typeof(NumWatched)]);
             Assert.IsNull(rules[typeof(Writers)]);
-            Assert.IsNull(rules[typeof(AirDateTime)]);
+            Assert.IsNull(rules[typeof(AirDate)]);
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
@@ -69,6 +69,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(HasTrailer)]);
             Assert.IsNull(rules[typeof(VideoResolution)]);
             Assert.IsNull(rules[typeof(AudioChannels)]);
+            Assert.IsNull(rules[typeof(AudioCount)]);
+            Assert.IsNull(rules[typeof(SubtitleCount)]);
             Assert.IsNull(rules[typeof(VideoCodec)]);
             Assert.IsNull(rules[typeof(AudioCodec)]);
             Assert.IsNull(rules[typeof(AudioLanguage)]);
@@ -83,6 +85,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNotNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -105,7 +111,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(InProgress)]);
             Assert.IsNotNull(rules[typeof(Rating)]);
             Assert.IsNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNull(rules[typeof(Plot)]);
             Assert.IsNull(rules[typeof(PlotOutline)]);
             Assert.IsNull(rules[typeof(Tagline)]);
@@ -120,7 +126,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(NumEpisodes)]);
             Assert.IsNull(rules[typeof(NumWatched)]);
             Assert.IsNull(rules[typeof(Writers)]);
-            Assert.IsNull(rules[typeof(AirDateTime)]);
+            Assert.IsNull(rules[typeof(AirDate)]);
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
@@ -134,6 +140,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(HasTrailer)]);
             Assert.IsNull(rules[typeof(VideoResolution)]);
             Assert.IsNull(rules[typeof(AudioChannels)]);
+            Assert.IsNull(rules[typeof(AudioCount)]);
+            Assert.IsNull(rules[typeof(SubtitleCount)]);
             Assert.IsNull(rules[typeof(VideoCodec)]);
             Assert.IsNull(rules[typeof(AudioCodec)]);
             Assert.IsNull(rules[typeof(AudioLanguage)]);
@@ -148,6 +156,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNotNull(rules[typeof(Compilation)]);
+            Assert.IsNotNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -170,7 +182,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(InProgress)]);
             Assert.IsNull(rules[typeof(Rating)]);
             Assert.IsNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNull(rules[typeof(Plot)]);
             Assert.IsNull(rules[typeof(PlotOutline)]);
             Assert.IsNull(rules[typeof(Tagline)]);
@@ -185,7 +197,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(NumEpisodes)]);
             Assert.IsNull(rules[typeof(NumWatched)]);
             Assert.IsNull(rules[typeof(Writers)]);
-            Assert.IsNull(rules[typeof(AirDateTime)]);
+            Assert.IsNull(rules[typeof(AirDate)]);
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
@@ -199,6 +211,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(HasTrailer)]);
             Assert.IsNull(rules[typeof(VideoResolution)]);
             Assert.IsNull(rules[typeof(AudioChannels)]);
+            Assert.IsNull(rules[typeof(AudioCount)]);
+            Assert.IsNull(rules[typeof(SubtitleCount)]);
             Assert.IsNull(rules[typeof(VideoCodec)]);
             Assert.IsNull(rules[typeof(AudioCodec)]);
             Assert.IsNull(rules[typeof(AudioLanguage)]);
@@ -213,6 +227,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(Disbanded)]);
             Assert.IsNotNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNotNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -235,7 +253,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(InProgress)]);
             Assert.IsNotNull(rules[typeof(Rating)]);
             Assert.IsNull(rules[typeof(Comment)]);
-            Assert.IsNotNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNotNull(rules[typeof(DateAdded)]);
             Assert.IsNotNull(rules[typeof(Plot)]);
             Assert.IsNotNull(rules[typeof(PlotOutline)]);
             Assert.IsNotNull(rules[typeof(Tagline)]);
@@ -250,7 +268,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(NumEpisodes)]);
             Assert.IsNull(rules[typeof(NumWatched)]);
             Assert.IsNotNull(rules[typeof(Writers)]);
-            Assert.IsNull(rules[typeof(AirDateTime)]);
+            Assert.IsNull(rules[typeof(AirDate)]);
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
@@ -264,6 +282,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(HasTrailer)]);
             Assert.IsNotNull(rules[typeof(VideoResolution)]);
             Assert.IsNotNull(rules[typeof(AudioChannels)]);
+            Assert.IsNotNull(rules[typeof(AudioCount)]);
+            Assert.IsNotNull(rules[typeof(SubtitleCount)]);
             Assert.IsNotNull(rules[typeof(VideoCodec)]);
             Assert.IsNotNull(rules[typeof(AudioCodec)]);
             Assert.IsNotNull(rules[typeof(AudioLanguage)]);
@@ -278,6 +298,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNotNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -300,7 +324,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(InProgress)]);
             Assert.IsNotNull(rules[typeof(Rating)]);
             Assert.IsNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNotNull(rules[typeof(Plot)]);
             Assert.IsNull(rules[typeof(PlotOutline)]);
             Assert.IsNull(rules[typeof(Tagline)]);
@@ -315,7 +339,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(NumEpisodes)]);
             Assert.IsNotNull(rules[typeof(NumWatched)]);
             Assert.IsNull(rules[typeof(Writers)]);
-            Assert.IsNull(rules[typeof(AirDateTime)]);
+            Assert.IsNull(rules[typeof(AirDate)]);
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNotNull(rules[typeof(TVShow)]);
@@ -329,6 +353,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(HasTrailer)]);
             Assert.IsNull(rules[typeof(VideoResolution)]);
             Assert.IsNull(rules[typeof(AudioChannels)]);
+            Assert.IsNull(rules[typeof(AudioCount)]);
+            Assert.IsNull(rules[typeof(SubtitleCount)]);
             Assert.IsNull(rules[typeof(VideoCodec)]);
             Assert.IsNull(rules[typeof(AudioCodec)]);
             Assert.IsNull(rules[typeof(AudioLanguage)]);
@@ -343,6 +369,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNotNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -365,7 +395,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(InProgress)]);
             Assert.IsNotNull(rules[typeof(Rating)]);
             Assert.IsNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNotNull(rules[typeof(Plot)]);
             Assert.IsNull(rules[typeof(PlotOutline)]);
             Assert.IsNull(rules[typeof(Tagline)]);
@@ -380,7 +410,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(NumEpisodes)]);
             Assert.IsNull(rules[typeof(NumWatched)]);
             Assert.IsNotNull(rules[typeof(Writers)]);
-            Assert.IsNotNull(rules[typeof(AirDateTime)]);
+            Assert.IsNotNull(rules[typeof(AirDate)]);
             Assert.IsNotNull(rules[typeof(Episode)]);
             Assert.IsNotNull(rules[typeof(Season)]);
             Assert.IsNotNull(rules[typeof(TVShow)]);
@@ -394,6 +424,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(HasTrailer)]);
             Assert.IsNotNull(rules[typeof(VideoResolution)]);
             Assert.IsNotNull(rules[typeof(AudioChannels)]);
+            Assert.IsNotNull(rules[typeof(AudioCount)]);
+            Assert.IsNotNull(rules[typeof(SubtitleCount)]);
             Assert.IsNotNull(rules[typeof(VideoCodec)]);
             Assert.IsNotNull(rules[typeof(AudioCodec)]);
             Assert.IsNotNull(rules[typeof(AudioLanguage)]);
@@ -408,6 +440,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNotNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -430,7 +466,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(InProgress)]);
             Assert.IsNull(rules[typeof(Rating)]);
             Assert.IsNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNotNull(rules[typeof(Plot)]);
             Assert.IsNull(rules[typeof(PlotOutline)]);
             Assert.IsNull(rules[typeof(Tagline)]);
@@ -445,7 +481,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(NumEpisodes)]);
             Assert.IsNull(rules[typeof(NumWatched)]);
             Assert.IsNull(rules[typeof(Writers)]);
-            Assert.IsNull(rules[typeof(AirDateTime)]);
+            Assert.IsNull(rules[typeof(AirDate)]);
             Assert.IsNull(rules[typeof(Episode)]);
             Assert.IsNull(rules[typeof(Season)]);
             Assert.IsNull(rules[typeof(TVShow)]);
@@ -459,6 +495,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(HasTrailer)]);
             Assert.IsNotNull(rules[typeof(VideoResolution)]);
             Assert.IsNotNull(rules[typeof(AudioChannels)]);
+            Assert.IsNotNull(rules[typeof(SubtitleCount)]);
+            Assert.IsNotNull(rules[typeof(AudioCount)]);
             Assert.IsNotNull(rules[typeof(VideoCodec)]);
             Assert.IsNotNull(rules[typeof(AudioCodec)]);
             Assert.IsNotNull(rules[typeof(AudioLanguage)]);
@@ -473,6 +511,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNotNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]
@@ -495,7 +537,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(InProgress)]);
             Assert.IsNotNull(rules[typeof(Rating)]);
             Assert.IsNotNull(rules[typeof(Comment)]);
-            Assert.IsNull(rules[typeof(DateTimeAdded)]);
+            Assert.IsNull(rules[typeof(DateAdded)]);
             Assert.IsNotNull(rules[typeof(Plot)]);
             Assert.IsNotNull(rules[typeof(PlotOutline)]);
             Assert.IsNotNull(rules[typeof(Tagline)]);
@@ -510,7 +552,7 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(NumEpisodes)]);
             Assert.IsNotNull(rules[typeof(NumWatched)]);
             Assert.IsNotNull(rules[typeof(Writers)]);
-            Assert.IsNotNull(rules[typeof(AirDateTime)]);
+            Assert.IsNotNull(rules[typeof(AirDate)]);
             Assert.IsNotNull(rules[typeof(Episode)]);
             Assert.IsNotNull(rules[typeof(Season)]);
             Assert.IsNotNull(rules[typeof(TVShow)]);
@@ -524,6 +566,8 @@ namespace Kodi.Utilities.Test
             Assert.IsNotNull(rules[typeof(HasTrailer)]);
             Assert.IsNotNull(rules[typeof(VideoResolution)]);
             Assert.IsNotNull(rules[typeof(AudioChannels)]);
+            Assert.IsNotNull(rules[typeof(AudioCount)]);
+            Assert.IsNotNull(rules[typeof(SubtitleCount)]);
             Assert.IsNotNull(rules[typeof(VideoCodec)]);
             Assert.IsNotNull(rules[typeof(AudioCodec)]);
             Assert.IsNotNull(rules[typeof(AudioLanguage)]);
@@ -538,6 +582,10 @@ namespace Kodi.Utilities.Test
             Assert.IsNull(rules[typeof(Disbanded)]);
             Assert.IsNull(rules[typeof(Died)]);
             Assert.IsNotNull(rules[typeof(PlayList)]);
+            Assert.IsNotNull(rules[typeof(VirtualFolder)]);
+            Assert.IsNull(rules[typeof(Role)]);
+            Assert.IsNull(rules[typeof(Compilation)]);
+            Assert.IsNull(rules[typeof(UserRating)]);
         }
 
         [TestMethod]

@@ -1,4 +1,4 @@
-using Kodi.Utilities.Attributes;
+﻿using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,21 +9,16 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Num Watch Field
+    /// Audio Count Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("numwatched",
+    [FieldAllocationAttribute("audiocount",
         typeof(int),
-        SmartPlayList.Types.TVShows,
+        SmartPlayList.Types.Movies,
+        SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
         SmartPlayList.Types.Mixed)]
-    public class NumWatched : IRule
+    public class AudioCount : IRule
     {
-        public override string FriendlyName
-        {
-            get
-            {
-                return "Number of watched episodes";
-            }
-        }
     }
 }

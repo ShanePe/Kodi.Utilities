@@ -1,4 +1,4 @@
-using Kodi.Utilities.Attributes;
+﻿using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Air Date Field
+    /// Subtitle Count Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("airdatetime",
-        typeof(DateTime),
+    [FieldAllocationAttribute("subtitlecount",
+        typeof(int),
+        SmartPlayList.Types.Movies,
         SmartPlayList.Types.Episodes,
+        SmartPlayList.Types.MusicVideos,
         SmartPlayList.Types.Mixed)]
-    public class AirDateTime : IRule
-    { }
+    public class SubtitleCount : IRule
+    {
+    }
 }

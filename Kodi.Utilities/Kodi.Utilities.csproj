@@ -74,19 +74,21 @@
     <Compile Include="Operators\True.cs" />
     <Compile Include="Parsers\XmlParser.cs" />
     <Compile Include="Playlist\Fields\Actor.cs" />
-    <Compile Include="Playlist\Fields\AirDateTime.cs" />
+    <Compile Include="Playlist\Fields\AirDate.cs" />
     <Compile Include="Playlist\Fields\Album.cs" />
     <Compile Include="Playlist\Fields\AlbumArtist.cs" />
     <Compile Include="Playlist\Fields\Artist.cs" />
     <Compile Include="Playlist\Fields\AudioChannels.cs" />
     <Compile Include="Playlist\Fields\AudioCodec.cs" />
+    <Compile Include="Playlist\Fields\AudioCount.cs" />
     <Compile Include="Playlist\Fields\AudioLanguage.cs" />
     <Compile Include="Playlist\Fields\BandFormed.cs" />
     <Compile Include="Playlist\Fields\Biography.cs" />
     <Compile Include="Playlist\Fields\Born.cs" />
     <Compile Include="Playlist\Fields\Comment.cs" />
+    <Compile Include="Playlist\Fields\Compilation.cs" />
     <Compile Include="Playlist\Fields\Country.cs" />
-    <Compile Include="Playlist\Fields\DateTimeAdded.cs" />
+    <Compile Include="Playlist\Fields\DateAdded.cs" />
     <Compile Include="Playlist\Fields\Died.cs" />
     <Compile Include="Playlist\Fields\Director.cs" />
     <Compile Include="Playlist\Fields\Disbanded.cs" />
@@ -111,11 +113,13 @@
     <Compile Include="Playlist\Fields\Random.cs" />
     <Compile Include="Playlist\Fields\Rating.cs" />
     <Compile Include="Playlist\Fields\Review.cs" />
+    <Compile Include="Playlist\Fields\Role.cs" />
     <Compile Include="Playlist\Fields\Season.cs" />
     <Compile Include="Playlist\Fields\Set.cs" />
     <Compile Include="Playlist\Fields\Status.cs" />
     <Compile Include="Playlist\Fields\Studio.cs" />
     <Compile Include="Playlist\Fields\Styles.cs" />
+    <Compile Include="Playlist\Fields\SubtitleCount.cs" />
     <Compile Include="Playlist\Fields\SubtitleLanguage.cs" />
     <Compile Include="Playlist\Fields\Tag.cs" />
     <Compile Include="Playlist\Fields\Tagline.cs" />
@@ -126,9 +130,11 @@
     <Compile Include="Playlist\Fields\TrackNumber.cs" />
     <Compile Include="Playlist\Fields\TVShow.cs" />
     <Compile Include="Playlist\Fields\MediaType.cs" />
+    <Compile Include="Playlist\Fields\UserRating.cs" />
     <Compile Include="Playlist\Fields\VideoAspect.cs" />
     <Compile Include="Playlist\Fields\VideoCodec.cs" />
     <Compile Include="Playlist\Fields\VideoResolution.cs" />
+    <Compile Include="Playlist\Fields\VirtualFolder.cs" />
     <Compile Include="Playlist\Fields\Votes.cs" />
     <Compile Include="Playlist\Fields\Writers.cs" />
     <Compile Include="Playlist\Fields\Year.cs" />
@@ -150,7 +156,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

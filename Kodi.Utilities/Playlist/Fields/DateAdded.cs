@@ -12,9 +12,9 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Date Time Added Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("datetimeadded",
+    [FieldAllocationAttribute("dateadded",
         typeof(DateTime),
         SmartPlayList.Types.Movies)]
-    public class DateTimeAdded : IRule
+    public class DateAdded : IRule
     { }
 }
