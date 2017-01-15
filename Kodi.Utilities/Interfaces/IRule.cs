@@ -2,14 +2,10 @@
 using Kodi.Utilities.Collection;
 using Kodi.Utilities.Exceptions;
 using Kodi.Utilities.Extensions;
-using Kodi.Utilities.Formatters;
 using Kodi.Utilities.Playlist;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Interfaces
 {
@@ -18,6 +14,8 @@ namespace Kodi.Utilities.Interfaces
     /// </summary>
     public abstract class IRule
     {
+        private FieldAllocationAttribute _attr = null;
+        private IFormatter _formatter = null;
         /// <summary>
         /// Sort options
         /// </summary>
@@ -48,16 +46,22 @@ namespace Kodi.Utilities.Interfaces
         /// The values.
         /// </value>
         public ValueCollection Values { get; set; }
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name
         {
             get { return GetFieldAllocation().FieldName; }
         }
-
+      
         /// <summary>
-        /// Gets the type of the underlying.
+        /// Gets the underlying type.
         /// </summary>
         /// <value>
-        /// The type of the underlying.
+        /// The underlying type.
         /// </value>
         public Type UnderlyingType
         {
@@ -75,12 +79,26 @@ namespace Kodi.Utilities.Interfaces
             get { return Name.SplitCamel().ToTitleCase(); }
         }
 
+        /// <summary>
+        /// Gets the validator.
+        /// </summary>
+        /// <value>
+        /// The validator.
+        /// </value>
+        public virtual IValidator Validator
+        {
+            get { return null; }
+        }
+
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IRule"/> class.
+        /// </summary>
         public IRule()
         {
-            Values = new ValueCollection(GetFieldAllocation().UnderlyingType);
+            Values = new ValueCollection(this);
             Operator = GetAvailableOperators()?[0];
         }
         #endregion
@@ -89,25 +107,47 @@ namespace Kodi.Utilities.Interfaces
         #endregion
 
         #region Virtual
+
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the field allocation.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="MissingFieldAttributeException"></exception>
         private FieldAllocationAttribute GetFieldAllocation()
         {
-            TypeInfo typeInfo = this.GetType().GetTypeInfo();
-            FieldAllocationAttribute attr = (FieldAllocationAttribute)
-                typeInfo.GetCustomAttribute<FieldAllocationAttribute>();
+            if (_attr == null)
+            {
+                TypeInfo typeInfo = this.GetType().GetTypeInfo();
+                _attr = (FieldAllocationAttribute)
+                    typeInfo.GetCustomAttribute<FieldAllocationAttribute>();
 
-            if (attr == null)
-                throw new MissingFieldAttributeException(this);
-            return attr;
+                if (_attr == null)
+                    throw new MissingFieldAttributeException(this);
+            }
+            return _attr;
         }
 
+        /// <summary>
+        /// Gets the available operators.
+        /// </summary>
+        /// <returns></returns>
         public IOperator[] GetAvailableOperators()
         {
-            return IFormatter.GetFormatter(UnderlyingType)?.GetAvailableOperators();
+            if (_formatter == null)
+                _formatter = IFormatter.GetFormatter(UnderlyingType);
+            return _formatter?.GetAvailableOperators();
         }
 
+        /// <summary>
+        /// Determines whether [is allowed for playlist type] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [is allowed for playlist type] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
         public bool IsAllowedForPlaylistType(SmartPlayList.Types type)
         {
             return GetFieldAllocation().AllowedTypes.Contains(type);

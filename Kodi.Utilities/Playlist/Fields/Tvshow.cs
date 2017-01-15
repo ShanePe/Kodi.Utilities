@@ -1,10 +1,5 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,7 +7,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// TV Show field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("tvshow",
+    [FieldAllocation("tvshow",
         typeof(string),
         SmartPlayList.Types.TVShows,
         SmartPlayList.Types.Episodes,

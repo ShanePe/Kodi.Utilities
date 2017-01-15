@@ -43,11 +43,17 @@
     <Compile Include="Exceptions\FieldExistsException.cs" />
     <Compile Include="Exceptions\InvalidFieldTypeValue.cs" />
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
+    <Compile Include="Exceptions\InvalidTimeFormatException.cs" />
+    <Compile Include="Exceptions\InvalidTypeException.cs" />
+    <Compile Include="Exceptions\InvalidRatingException.cs" />
     <Compile Include="Exceptions\MissingFieldAttributeException.cs" />
     <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
+    <Compile Include="Exceptions\NonPositiveIntegerException.cs" />
     <Compile Include="Exceptions\RuleParseException.cs" />
+    <Compile Include="Exceptions\TypeNoIValidatorException.cs" />
     <Compile Include="Extensions\String.cs" />
     <Compile Include="Formatters\BoolFormatter.cs" />
+    <Compile Include="Formatters\DoubleFormatter.cs" />
     <Compile Include="Formatters\DurationFormatter.cs" />
     <Compile Include="Formatters\LanguageFormatter.cs" />
     <Compile Include="Formatters\DateFormatter.cs" />
@@ -58,6 +64,7 @@
     <Compile Include="Interfaces\IParser.cs" />
     <Compile Include="Interfaces\IRule.cs" />
     <Compile Include="Data\ISO6392Language.cs" />
+    <Compile Include="Interfaces\IValidator.cs" />
     <Compile Include="Operators\After.cs" />
     <Compile Include="Operators\Before.cs" />
     <Compile Include="Operators\False.cs" />
@@ -140,6 +147,9 @@
     <Compile Include="Playlist\Fields\Year.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Playlist\SmartPlaylist.cs" />
+    <Compile Include="Validators\PositiveIntValidator.cs" />
+    <Compile Include="Validators\TimeValidator.cs" />
+    <Compile Include="Validators\RatingValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">

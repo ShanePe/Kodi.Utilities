@@ -1,10 +1,6 @@
 ﻿using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,7 +8,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Audio Count Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("audiocount",
+    [FieldAllocation("audiocount",
         typeof(int),
         SmartPlayList.Types.Movies,
         SmartPlayList.Types.Episodes,
@@ -20,5 +16,12 @@ namespace Kodi.Utilities.Playlist.Fields
         SmartPlayList.Types.Mixed)]
     public class AudioCount : IRule
     {
+        public override IValidator Validator
+        {
+            get
+            {
+                return new PositiveIntValidator();
+            }
+        }
     }
 }

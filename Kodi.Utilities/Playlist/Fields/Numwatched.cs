@@ -1,10 +1,6 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,7 +8,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Num Watch Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("numwatched",
+    [FieldAllocation("numwatched",
         typeof(int),
         SmartPlayList.Types.TVShows,
         SmartPlayList.Types.Mixed)]
@@ -23,6 +19,14 @@ namespace Kodi.Utilities.Playlist.Fields
             get
             {
                 return "Number of watched episodes";
+            }
+        }
+
+        public override IValidator Validator
+        {
+            get
+            {
+                return new PositiveIntValidator();
             }
         }
     }

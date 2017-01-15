@@ -1,10 +1,6 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,12 +8,20 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Votes field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("votes",
+    [FieldAllocation("votes",
         typeof(int),
         SmartPlayList.Types.Movies,
         SmartPlayList.Types.TVShows,
         SmartPlayList.Types.Episodes,
         SmartPlayList.Types.Mixed)]
     public class Votes : IRule
-    { }
+    {
+        public override IValidator Validator
+        {
+            get
+            {
+                return new PositiveIntValidator();
+            }
+        }
+    }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kodi.Utilities.Data
+﻿namespace Kodi.Utilities.Data
 {
     /// <summary>
     /// Resent an ISO 639-2 Language code

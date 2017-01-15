@@ -1,15 +1,13 @@
 ﻿using System.Resources;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Kodi.Utilities")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Kodi Smart Play List Manager")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Shane Pennicott")]
 [assembly: AssemblyProduct("Kodi.Utilities")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Attributes
 {
@@ -14,21 +10,22 @@ namespace Kodi.Utilities.Attributes
     public class FormatterTypeAttribute : Attribute
     {
         readonly Type _underlyingType;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="FormatterTypeAttribute"/> class.
         /// </summary>
-        /// <param name="underlyingType">Type of the underlying.</param>
+        /// <param name="underlyingType">The underlying type.</param>
         public FormatterTypeAttribute(Type underlyingType)
         {
             _underlyingType = underlyingType;
         }
 
+
         /// <summary>
-        /// Gets the type of the underlying.
+        /// Gets the underlying type.
         /// </summary>
         /// <value>
-        /// The type of the underlying.
+        /// The underlying type.
         /// </value>
         public Type UnderlyingType
         {

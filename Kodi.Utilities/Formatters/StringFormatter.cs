@@ -1,11 +1,6 @@
 ﻿using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Operators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Formatters
 {
@@ -13,7 +8,7 @@ namespace Kodi.Utilities.Formatters
     /// Handles Text Fields.
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterTypeAttribute(typeof(string))]
+    [FormatterType(typeof(string))]
     public class StringFormatter : IFormatter
     {
         /// <summary>
@@ -40,6 +35,17 @@ namespace Kodi.Utilities.Formatters
         /// <returns></returns>
         public override string GetFormattedValue(object value)
         {
+            if (value == null)
+                return string.Empty;
+
+            return value.ToString();
+        }
+
+        public override object SetToType(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
             return value.ToString();
         }
     }

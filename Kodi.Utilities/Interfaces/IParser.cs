@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Interfaces
 {
@@ -46,7 +44,7 @@ namespace Kodi.Utilities.Interfaces
             playlist.Limit = int.Parse(value);
         }
 
-        public virtual void AddPlaylistRule(string name, string oper, string values, ref SmartPlayList playlist)
+        public virtual void AddPlaylistRule(string name, string oper, List<string> values, ref SmartPlayList playlist)
         {
             if (playlist == null)
                 playlist = new SmartPlayList();
@@ -66,7 +64,7 @@ namespace Kodi.Utilities.Interfaces
             if (oper == null)
                 throw new RuleParseException("Operator", field.FriendlyName, oper);
 
-            field.Values.AddRange(values.Split('¿'));
+            field.Values.AddRange(values);
             field.Operator = operatr;
             playlist.Rules.Add(field);
         }

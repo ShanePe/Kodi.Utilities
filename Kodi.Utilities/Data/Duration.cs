@@ -1,10 +1,5 @@
-﻿using Kodi.Utilities.Formatters;
-using Kodi.Utilities.Interfaces;
+﻿using Kodi.Utilities.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Data
 {

@@ -1,13 +1,8 @@
 ﻿using Kodi.Utilities.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Kodi.Utilities.Playlist;
 using System.IO;
 using System.Xml;
-using System.Collections.Specialized;
 
 namespace Kodi.Utilities.Parsers
 {
@@ -40,22 +35,19 @@ namespace Kodi.Utilities.Parsers
                 case "rule":
                     string field = reader.GetAttribute("field");
                     string op = reader.GetAttribute("operator");
-                    StringBuilder values = new StringBuilder();
+                    List<string> values = new List<string>();
 
                     while (reader.Read())
                     {
                         if (reader.Name.ToLower() == "rule" && reader.NodeType == XmlNodeType.EndElement)
                             break;
                         if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "value")
-                        {
-                            if (values.Length != 0)
-                                values.Append("¿");
-                            values.Append(reader.ReadElementContentAsString());
-                        }
+                           values.Add(reader.ReadElementContentAsString());
+                        
                     }
 
-                    if (values.Length != 0)
-                        AddPlaylistRule(field, op, values.ToString(), ref playlist);
+                    if (values.Count != 0)
+                        AddPlaylistRule(field, op, values, ref playlist);
 
                     break;
 

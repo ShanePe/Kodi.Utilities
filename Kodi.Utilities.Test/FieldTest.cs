@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kodi.Utilities.Playlist.Fields;
 using Kodi.Utilities.Playlist;
-using System.Globalization;
 using Kodi.Utilities.Data;
 
 namespace Kodi.Utilities.Test
@@ -123,7 +122,7 @@ namespace Kodi.Utilities.Test
         {
             Time field = new Time();
             Assert.AreEqual("time", field.Name);
-            Assert.AreEqual(typeof(int), field.UnderlyingType);
+            Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));
@@ -1114,7 +1113,7 @@ namespace Kodi.Utilities.Test
         {
             UserRating field = new UserRating();
             Assert.AreEqual("userrating", field.Name);
-            Assert.AreEqual(typeof(string), field.UnderlyingType);
+            Assert.AreEqual(typeof(double), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Albums));

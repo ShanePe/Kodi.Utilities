@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kodi.Utilities.Interfaces
+﻿namespace Kodi.Utilities.Interfaces
 {
     /// <summary>
     /// For rule field operators

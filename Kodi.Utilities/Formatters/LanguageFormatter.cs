@@ -3,11 +3,6 @@ using Kodi.Utilities.Data;
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Operators;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Formatters
 {
@@ -15,7 +10,7 @@ namespace Kodi.Utilities.Formatters
     /// Handles Language Fields.
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterTypeAttribute(typeof(ISO6392Language))]
+    [FormatterType(typeof(ISO6392Language))]
     public class LanguageFormatter : IFormatter
     {
         /// <summary>
@@ -38,8 +33,26 @@ namespace Kodi.Utilities.Formatters
         /// <returns></returns>
         public override string GetFormattedValue(object value)
         {
+            if (value == null)
+                return string.Empty;
+
             ISO6392Language cult = (ISO6392Language)value;
             return cult.Code;
+        }
+
+        public override object SetToType(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                throw new InvalidCastException($"{value} is not a valid language code or name.");
+
+            ISO6392Language language = ISO6392LanguageFactory.GetByCode(value.Trim());
+            if (language == null)
+                language = ISO6392LanguageFactory.GetByName(value.Trim());
+
+            if (language == null)
+                throw new InvalidCastException($"{value} is not a valid language code or name.");
+
+            return language;
         }
     }
 }

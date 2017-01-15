@@ -2,10 +2,6 @@
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Operators;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Formatters
 {
@@ -13,7 +9,7 @@ namespace Kodi.Utilities.Formatters
     /// Handles boolean fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterTypeAttribute(typeof(bool))]
+    [FormatterType(typeof(bool))]
     public class BoolFormatter : IFormatter
     {
         /// <summary>
@@ -36,8 +32,40 @@ namespace Kodi.Utilities.Formatters
         /// <returns></returns>
         public override string GetFormattedValue(object value)
         {
+            if (value == null)
+                return string.Empty;
+
             bool bo = (bool)value;
             return bo.ToString().ToLower();
+        }
+
+        /// <summary>
+        /// Sets the value to the correct underlying type.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public override object SetToType(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            bool ret = false;
+
+            if (Boolean.TryParse(value, out ret))
+                return ret;
+
+            switch (value.ToLower().Trim())
+            {
+                case "true":
+                case "1":
+                case "yes":
+                    return true;
+                case "false":
+                case "0":
+                case "no":
+                    return false;
+                default: throw new InvalidCastException($"'{value}' is not a valid boolean,");
+            }
         }
     }
 }

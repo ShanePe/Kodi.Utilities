@@ -1,10 +1,5 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,7 +7,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Path Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("path",
+    [FieldAllocation("path",
         typeof(string),
         SmartPlayList.Types.Songs,
         SmartPlayList.Types.Movies,

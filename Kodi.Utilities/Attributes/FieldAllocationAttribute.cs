@@ -14,12 +14,11 @@ namespace Kodi.Utilities.Attributes
         readonly string _fieldName;
         readonly Type _underlingType;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldAllocationAttribute" /> class.
         /// </summary>
-        /// <param name="fieldName">Name of the field.</param>
-        /// <param name="underlyingType">Type of the underlying.</param>
+        /// <param name="fieldName">The field name.</param>
+        /// <param name="underlyingType">The underlying type.</param>
         /// <param name="allowedTypes">The allowed types.</param>
         public FieldAllocationAttribute(string fieldName, Type underlyingType, params SmartPlayList.Types[] allowedTypes)
         {
@@ -27,6 +26,15 @@ namespace Kodi.Utilities.Attributes
             _underlingType = underlyingType;
             _allowedTypes = allowedTypes;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldAllocationAttribute"/> class.
+        /// </summary>
+        /// <param name="fieldName">The field name.</param>
+        /// <param name="underlyingType">The underlying type.</param>
+        public FieldAllocationAttribute(string fieldName, Type underlyingType)
+           : this(fieldName, underlyingType, null)
+        { }
 
         /// <summary>
         /// Gets the allowed types.
@@ -51,14 +59,15 @@ namespace Kodi.Utilities.Attributes
         }
 
         /// <summary>
-        /// Gets the type of the underlying.
+        /// Gets the underlying type.
         /// </summary>
         /// <value>
-        /// The type of the underlying.
+        /// The underlying type.
         /// </value>
         public Type UnderlyingType
         {
             get { return _underlingType; }
         }
+
     }
 }

@@ -1,10 +1,6 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,10 +8,18 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Track number field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("tracknumber",
+    [FieldAllocation("tracknumber",
         typeof(int),
         SmartPlayList.Types.Songs,
         SmartPlayList.Types.Mixed)]
     public class TrackNumber : IRule
-    { }
+    {
+        public override IValidator Validator
+        {
+            get
+            {
+                return new PositiveIntValidator();
+            }
+        }
+    }
 }

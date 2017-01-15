@@ -1,10 +1,6 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,7 +8,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Year field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("year",
+    [FieldAllocation("year",
         typeof(int),
         SmartPlayList.Types.Songs,
         SmartPlayList.Types.Albums,
@@ -22,5 +18,13 @@ namespace Kodi.Utilities.Playlist.Fields
         SmartPlayList.Types.MusicVideos,
         SmartPlayList.Types.Mixed)]
     public class Year : IRule
-    { }
+    {
+        public override IValidator Validator
+        {
+            get
+            {
+                return new PositiveIntValidator();
+            }
+        }
+    }
 }

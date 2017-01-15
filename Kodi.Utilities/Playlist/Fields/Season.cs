@@ -1,10 +1,6 @@
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,10 +8,19 @@ namespace Kodi.Utilities.Playlist.Fields
     /// Season Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocationAttribute("season",
+    [FieldAllocation("season",
         typeof(int),
         SmartPlayList.Types.Episodes,
         SmartPlayList.Types.Mixed)]
     public class Season : IRule
-    { }
+    {
+
+        public override IValidator Validator
+        {
+            get
+            {
+                return new PositiveIntValidator();
+            }
+        }
+    }
 }

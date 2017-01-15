@@ -2,14 +2,10 @@
 using Kodi.Utilities.Interfaces;
 using PCLStorage;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Kodi.Utilities.Playlist
 {
@@ -18,6 +14,8 @@ namespace Kodi.Utilities.Playlist
     /// </summary>
     public class SmartPlayList
     {
+        private RuleCollection _available = null;
+        private Types _type = Types.Songs;
         /// <summary>
         /// Playlist types
         /// </summary>
@@ -65,7 +63,19 @@ namespace Kodi.Utilities.Playlist
         /// <value>
         /// The type.
         /// </value>
-        public Types Type { get; set; } = Types.Songs;
+        public Types Type
+        {
+            get { return _type; }
+            set
+            {
+                if (_available != null)
+                {
+                    _available.Clear();
+                    _available = null;
+                }
+                _type = value;
+            }
+        }
         /// <summary>
         /// Gets or sets the rules.
         /// </summary>
@@ -167,16 +177,18 @@ namespace Kodi.Utilities.Playlist
         /// <returns></returns>
         public RuleCollection GetAvailableFields()
         {
-            RuleCollection available = new RuleCollection();
+            if (_available == null)
+            {
+                TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
+                Assembly assembly = IRuleTInfo.Assembly;
 
-            TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
-            Assembly assembly = IRuleTInfo.Assembly;
+                _available = new RuleCollection();
 
-            available.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
-                                 .Select(r => (IRule)Activator.CreateInstance(r.AsType()))
-                                 .Where(ri => ri.IsAllowedForPlaylistType(Type)));
-
-            return available;
+                _available.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
+                                     .Select(r => (IRule)Activator.CreateInstance(r.AsType()))
+                                     .Where(ri => ri.IsAllowedForPlaylistType(Type)));
+            }
+            return _available;
         }
         #endregion
     }
