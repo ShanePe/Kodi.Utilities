@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocation("writers",
         typeof(string),
+        true,
         SmartPlayList.Types.Movies,
         SmartPlayList.Types.Episodes,
         SmartPlayList.Types.Mixed)]

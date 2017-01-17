@@ -27,7 +27,7 @@ namespace Kodi.Utilities.Test
             IFormatter formatter = IFormatter.GetFormatter(typeof(DateTime));
             Assert.IsInstanceOfType(formatter, typeof(DateFormatter));
             Assert.AreEqual(formatter.GetAvailableOperators().Length, 2);
-            Assert.AreEqual(formatter.GetFormattedValue(tester), tester.ToString("dd MM yyyy"));
+            Assert.AreEqual(formatter.GetFormattedValue(tester), tester.ToString("yyyy-MM-dd"));
 
         }
 
@@ -41,7 +41,7 @@ namespace Kodi.Utilities.Test
             IFormatter formatter = IFormatter.GetFormatter(typeof(Duration));
             Assert.IsInstanceOfType(formatter, typeof(DurationFormatter));
             Assert.AreEqual(formatter.GetAvailableOperators().Length, 4);
-            Assert.AreEqual(formatter.GetFormattedValue(d1), d1.Date.Value.ToString("dd MM yyyy"));
+            Assert.AreEqual(formatter.GetFormattedValue(d1), d1.Date.Value.ToString("yyyy-MM-dd"));
             Assert.AreEqual(formatter.GetFormattedValue(d2), "2 weeks");
 
         }

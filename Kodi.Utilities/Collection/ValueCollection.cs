@@ -1,4 +1,5 @@
-﻿using Kodi.Utilities.Interfaces;
+﻿using Kodi.Utilities.Exceptions;
+using Kodi.Utilities.Interfaces;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -32,13 +33,20 @@ namespace Kodi.Utilities.Collection
             if (o == null)
                 return;
 
+            if (_parentRule.Operator.NoValue)
+                throw new NoValueAllowedForRuleException(_parentRule);
+
             if (o.GetType() != _parentRule.UnderlyingType)
                 o = IFormatter.GetFormatter(_parentRule.UnderlyingType).SetToType(o.ToString());
 
             if (_parentRule.Validator != null)
                 _parentRule.Validator.Validate(o);
 
-            base.Add(o);
+            if (!_parentRule.IsMultipleValuesAllowed && Count > 0)
+                Clear();
+
+            if (!Contains(o))
+                base.Add(o);
         }
 
         /// <summary>

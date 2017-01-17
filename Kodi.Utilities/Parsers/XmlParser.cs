@@ -108,12 +108,13 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteAttributeString(XmlFileDefinition.RuleFieldAttr, rule.Name);
                 writer.WriteAttributeString(XmlFileDefinition.RuleOperatorAttr, rule.Operator.Name.ToLower());
 
-                foreach (object o in rule.Values)
-                {
-                    writer.WriteStartElement(XmlFileDefinition.ValueNode);
-                    writer.WriteValue(IFormatter.Format(rule.UnderlyingType, o));
-                    writer.WriteEndElement();
-                }
+                if (!rule.Operator.NoValue)
+                    foreach (object o in rule.Values)
+                    {
+                        writer.WriteStartElement(XmlFileDefinition.ValueNode);
+                        writer.WriteValue(IFormatter.Format(rule.UnderlyingType, o));
+                        writer.WriteEndElement();
+                    }
 
                 writer.WriteEndElement();
             }

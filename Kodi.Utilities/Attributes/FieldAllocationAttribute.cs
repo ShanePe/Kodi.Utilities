@@ -13,6 +13,22 @@ namespace Kodi.Utilities.Attributes
         readonly SmartPlayList.Types[] _allowedTypes;
         readonly string _fieldName;
         readonly Type _underlingType;
+        readonly bool _allowMultipleValues;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldAllocationAttribute" /> class.
+        /// </summary>
+        /// <param name="fieldName">The field name.</param>
+        /// <param name="underlyingType">The underlying type.</param>
+        /// <param name="allowMultiValues">if set to <c>true</c> [allow multi values].</param>
+        /// <param name="allowedTypes">The allowed types.</param>
+        public FieldAllocationAttribute(string fieldName, Type underlyingType, bool allowMultiValues, params SmartPlayList.Types[] allowedTypes)
+        {
+            _fieldName = fieldName;
+            _underlingType = underlyingType;
+            _allowedTypes = allowedTypes;
+            _allowMultipleValues = allowMultiValues;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldAllocationAttribute" /> class.
@@ -21,11 +37,8 @@ namespace Kodi.Utilities.Attributes
         /// <param name="underlyingType">The underlying type.</param>
         /// <param name="allowedTypes">The allowed types.</param>
         public FieldAllocationAttribute(string fieldName, Type underlyingType, params SmartPlayList.Types[] allowedTypes)
-        {
-            _fieldName = fieldName;
-            _underlingType = underlyingType;
-            _allowedTypes = allowedTypes;
-        }
+            : this(fieldName, underlyingType, false, allowedTypes)
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldAllocationAttribute"/> class.
@@ -33,7 +46,7 @@ namespace Kodi.Utilities.Attributes
         /// <param name="fieldName">The field name.</param>
         /// <param name="underlyingType">The underlying type.</param>
         public FieldAllocationAttribute(string fieldName, Type underlyingType)
-           : this(fieldName, underlyingType, null)
+           : this(fieldName, underlyingType, false, null)
         { }
 
         /// <summary>
@@ -69,5 +82,15 @@ namespace Kodi.Utilities.Attributes
             get { return _underlingType; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether multiple values are allowed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if multiple values are allowed; otherwise, <c>false</c>.
+        /// </value>
+        public bool AllowMultipleValues
+        {
+            get { return _allowMultipleValues; }
+        }
     }
 }

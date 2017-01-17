@@ -32,7 +32,7 @@ namespace Kodi.Utilities.Interfaces
         /// <param name="value">The value.</param>
         /// <returns></returns>
         public abstract object SetToType(string value);
-
+        
         /// <summary>
         /// Gets the formatter.
         /// </summary>
@@ -79,6 +79,5 @@ namespace Kodi.Utilities.Interfaces
                 return formatter.GetFormattedValue(value);
             return value.ToString();
         }
-
     }
 }

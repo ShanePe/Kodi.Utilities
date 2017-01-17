@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
                 return "NotInTheLast";
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
+        /// </value>
+        public bool NoValue
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

@@ -16,10 +16,11 @@ namespace Kodi.Utilities.Interfaces
     {
         private FieldAllocationAttribute _attr = null;
         private IFormatter _formatter = null;
+        IOperator _operator = null;
         /// <summary>
         /// Sort options
         /// </summary>
-        public enum SortOptions { None, Ascendingg, Descending }
+        public enum SortOptions { None, Ascending, Descending }
 
         #region Private
         #endregion
@@ -31,7 +32,16 @@ namespace Kodi.Utilities.Interfaces
         /// <value>
         /// The operator.
         /// </value>
-        public IOperator Operator { get; set; }
+        public IOperator Operator
+        {
+            get { return _operator; }
+            set
+            {
+                _operator = value;
+                if (_operator.NoValue && Values.Count > 0)
+                    Values.Clear();
+            }
+        }
         /// <summary>
         /// Gets or sets the sort.
         /// </summary>
@@ -56,7 +66,7 @@ namespace Kodi.Utilities.Interfaces
         {
             get { return GetFieldAllocation().FieldName; }
         }
-      
+
         /// <summary>
         /// Gets the underlying type.
         /// </summary>
@@ -88,6 +98,17 @@ namespace Kodi.Utilities.Interfaces
         public virtual IValidator Validator
         {
             get { return null; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is allowed multiple values.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is allowed multiple values ; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMultipleValuesAllowed
+        {
+            get { return GetFieldAllocation().AllowMultipleValues; }
         }
 
         #endregion

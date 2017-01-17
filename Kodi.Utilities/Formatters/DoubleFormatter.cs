@@ -1,4 +1,5 @@
-﻿using Kodi.Utilities.Attributes;
+﻿using System;
+using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Operators;
 
@@ -11,6 +12,7 @@ namespace Kodi.Utilities.Formatters
     [FormatterType(typeof(double))]
     public class DoubleFormatter : IFormatter
     {
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>

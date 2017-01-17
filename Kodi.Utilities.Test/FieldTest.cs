@@ -1,8 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kodi.Utilities.Playlist.Fields;
+﻿using Kodi.Utilities.Data;
+using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Playlist;
-using Kodi.Utilities.Data;
+using Kodi.Utilities.Playlist.Fields;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace Kodi.Utilities.Test
 {
@@ -1160,6 +1162,53 @@ namespace Kodi.Utilities.Test
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.MusicVideos));
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
 
+        }
+
+        [TestMethod]
+        public void TestMultiValues()
+        {
+            foreach (IRule rule in SmartPlayList.GetAllFields()
+                                        .Where(r => r.IsMultipleValuesAllowed))
+            {
+                object[] o = GetTestValue(rule.UnderlyingType);
+                rule.Values.Add(o[0]);
+                rule.Values.Add(o[1]);
+
+                Assert.AreEqual(rule.Values.Count, 2);
+            }
+
+            foreach (IRule rule in SmartPlayList.GetAllFields()
+                                        .Where(r => !r.IsMultipleValuesAllowed && !r.Operator.NoValue))
+            {
+                object[] o = GetTestValue(rule.UnderlyingType);
+                rule.Values.Add(o[0]);
+                rule.Values.Add(o[1]);
+                
+                Assert.AreEqual(rule.Values.Count, 1);
+            }
+
+        }
+
+        private object[] GetTestValue(Type t)
+        {
+            if (t == typeof(string))
+                return new string[] { "12:00:00", "13:00:00" };
+            else if (t == typeof(int))
+                return new object[] { 1, 2 };
+            else if (t == typeof(double))
+                return new object[] { 0.0, 1.0 };
+            else if (t == typeof(Duration))
+                return new object[] { new Duration(1, Duration.Periods.Days), new Duration(DateTime.Now) };
+            else if (t == typeof(ISO6392Language))
+                return new object[] { ISO6392LanguageFactory.GetByCode("eng"), ISO6392LanguageFactory.GetByCode("afr") };
+            else if (t == typeof(bool))
+                return new object[] { true, false };
+            else if (t == typeof(DateTime))
+                return new object[] { DateTime.Now, DateTime.Now.AddYears(1) };
+            else
+                Assert.Fail($"Invalid type {t.ToString()}");
+
+            return null;
         }
     }
 }

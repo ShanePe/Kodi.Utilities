@@ -2,6 +2,7 @@
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Operators;
 using System;
+using System.Globalization;
 
 namespace Kodi.Utilities.Formatters
 {
@@ -12,6 +13,8 @@ namespace Kodi.Utilities.Formatters
     [FormatterType(typeof(DateTime))]
     public class DateFormatter : IFormatter
     {
+        private const string _format = "yyyy-MM-dd";
+        
         /// <summary>
         /// Gets the available operators.
         /// </summary>
@@ -36,7 +39,7 @@ namespace Kodi.Utilities.Formatters
                 return string.Empty;
 
             DateTime date = (DateTime)value;
-            return date.ToString("dd MM yyyy");
+            return date.ToString(_format);
         }
 
         /// <summary>
@@ -44,10 +47,14 @@ namespace Kodi.Utilities.Formatters
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public override object SetToType(string value)
         {
-            throw new NotImplementedException();
+            DateTime dt = DateTime.Now;
+
+            if (!DateTime.TryParseExact(value, _format, CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+                throw new Exceptions.InvalidFieldTypeValue(typeof(DateTime));
+
+            return dt;
         }
     }
 }

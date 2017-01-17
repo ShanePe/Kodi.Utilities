@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [FieldAllocation("title",
         typeof(string),
+        true,
         SmartPlayList.Types.Songs,
         SmartPlayList.Types.Movies,
         SmartPlayList.Types.MusicVideos,

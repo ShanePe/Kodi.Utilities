@@ -184,18 +184,30 @@ namespace Kodi.Utilities.Playlist
         {
             if (_available == null)
             {
-                TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
-                Assembly assembly = IRuleTInfo.Assembly;
-
                 _available = new RuleCollection();
-
-                _available.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
-                                     .Select(r => (IRule)Activator.CreateInstance(r.AsType()))
-                                     .Where(ri => ri.IsAllowedForPlaylistType(Type)));
+                _available.AddRange(SmartPlayList.GetAllFields()
+                                              .Where(ri => ri.IsAllowedForPlaylistType(Type)));
             }
             return _available;
         }
 
+        public static RuleCollection GetAllFields()
+        {
+            TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
+            Assembly assembly = IRuleTInfo.Assembly;
+
+            RuleCollection rules = new RuleCollection();
+            rules.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
+                   .Select(r => (IRule)Activator.CreateInstance(r.AsType())));
+
+            return rules;
+        }
+
+        /// <summary>
+        /// Writes to stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="parser">The parser.</param>
         public void WriteToStream(Stream stream, IParser parser)
         {
             PlaylistValidator validator = new PlaylistValidator();
@@ -204,11 +216,24 @@ namespace Kodi.Utilities.Playlist
             parser.WriteToStream(stream, this);
         }
 
+        /// <summary>
+        /// Writes to file.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+        /// <param name="parser">The parser.</param>
         public void WriteToFile(string path, bool overwrite, IParser parser)
         {
             WriteToFileStream(path, overwrite, parser);
         }
 
+        /// <summary>
+        /// Writes to file stream.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+        /// <param name="parser">The parser.</param>
+        /// <exception cref="System.IO.IOException"></exception>
         internal async void WriteToFileStream(string path, bool overwrite, IParser parser)
         {
             IFile file = await FileSystem.Current.GetFileFromPathAsync(path);

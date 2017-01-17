@@ -13,6 +13,7 @@ namespace Kodi.Utilities.Formatters
     [FormatterType(typeof(ISO6392Language))]
     public class LanguageFormatter : IFormatter
     {
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>

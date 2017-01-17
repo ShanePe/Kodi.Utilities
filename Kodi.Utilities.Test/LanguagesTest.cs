@@ -14,14 +14,14 @@ namespace Kodi.Utilities.Test
         [Priority(0)]
         public void LanguageCacheBuild()
         {
-            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 371);
+            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 184);
         }
 
         [TestMethod]
         [Priority(1)]
         public void LanguageCacheRead()
         {
-            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 371);
+            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 184);
         }
 
         [TestMethod]

@@ -1,4 +1,6 @@
-﻿namespace Kodi.Utilities.Data
+﻿using System;
+
+namespace Kodi.Utilities.Data
 {
     /// <summary>
     /// Resent an ISO 639-2 Language code
@@ -27,6 +29,8 @@
         /// <param name="name">The name.</param>
         internal ISO6392Language(string code, string name)
         {
+            if (code.Length != 3)
+                throw new Exception($"Invalid language code {code}");
             Code = code;
             Name = name;
         }
