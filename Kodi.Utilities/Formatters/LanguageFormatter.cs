@@ -10,9 +10,15 @@ namespace Kodi.Utilities.Formatters
     /// Handles Language Fields.
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(ISO6392Language))]
     public class LanguageFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(ISO6392Language); } }
 
         /// <summary>
         /// Gets the available operators.

@@ -32,7 +32,15 @@ namespace Kodi.Utilities.Interfaces
         /// <param name="value">The value.</param>
         /// <returns></returns>
         public abstract object SetToType(string value);
-        
+
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public abstract Type UnderlyingType { get; }
+
         /// <summary>
         /// Gets the formatter.
         /// </summary>
@@ -44,22 +52,12 @@ namespace Kodi.Utilities.Interfaces
             if (!_formatters.ContainsKey(underlyingType))
             {
                 TypeInfo typeInfo = typeof(IFormatter).GetTypeInfo();
-                foreach (TypeInfo ti in typeInfo.Assembly.DefinedTypes
-                                            .Where(t => typeInfo.IsAssignableFrom(t) && !t.IsAbstract))
-                {
-                    FormatterTypeAttribute attr = (FormatterTypeAttribute)ti.GetCustomAttribute(typeof(FormatterTypeAttribute));
-                    if (attr == null)
-                        throw new MissingFormatterTypeAttrException(ti.AsType());
+                IFormatter formatter = typeInfo.Assembly.DefinedTypes
+                                            .Where(t => typeInfo.IsAssignableFrom(t) && !t.IsAbstract)
+                                            .Select(t => (IFormatter)Activator.CreateInstance(t.AsType()))
+                                            .FirstOrDefault(t => t.UnderlyingType == underlyingType);
 
-                    if (attr.UnderlyingType == underlyingType)
-                    {
-                        IFormatter formatter = (IFormatter)Activator.CreateInstance(ti.AsType());
-                        _formatters.Add(underlyingType, formatter);
-                        break;
-                    }
-                }
-                if (!_formatters.ContainsKey(underlyingType))
-                    _formatters.Add(underlyingType, null);
+                _formatters.Add(underlyingType, formatter);
             }
 
             return _formatters[underlyingType];

@@ -34,7 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FormatterTypeAttribute.cs" />
     <Compile Include="Attributes\ListTypeAllocationAttribute.cs" />
     <Compile Include="Collection\RuleCollection.cs" />
     <Compile Include="Collection\ValueCollection.cs" />
@@ -59,7 +58,7 @@
     <Compile Include="Formatters\DurationFormatter.cs" />
     <Compile Include="Formatters\LanguageFormatter.cs" />
     <Compile Include="Formatters\DateFormatter.cs" />
-    <Compile Include="Formatters\IntFormatter.cs" />
+    <Compile Include="Formatters\IntegerFormatter.cs" />
     <Compile Include="Formatters\StringFormatter.cs" />
     <Compile Include="Interfaces\IFormatter.cs" />
     <Compile Include="Interfaces\IGroup.cs" />

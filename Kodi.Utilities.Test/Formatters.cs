@@ -50,7 +50,7 @@ namespace Kodi.Utilities.Test
         public void IntFormatter()
         {
             IFormatter formatter = IFormatter.GetFormatter(typeof(int));
-            Assert.IsInstanceOfType(formatter, typeof(IntFormatter));
+            Assert.IsInstanceOfType(formatter, typeof(IntegerFormatter));
             Assert.AreEqual(formatter.GetAvailableOperators().Length, 4);
             Assert.AreEqual(formatter.GetFormattedValue(10), "10");
         }

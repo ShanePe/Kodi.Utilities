@@ -9,9 +9,16 @@ namespace Kodi.Utilities.Formatters
     /// Handles Text Fields.
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(string))]
     public class StringFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(string); } }
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>

@@ -14,6 +14,8 @@ namespace Kodi.Utilities.Playlist.Fields
 		SmartPlayList.Types.TVShows,
 		SmartPlayList.Types.Episodes,
 		SmartPlayList.Types.Mixed)]
+    [ListTypeAllocation(AppliesTos.OrderBy),
+        ]
     public class Actor : IRule
     {
         /// <summary>

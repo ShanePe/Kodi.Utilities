@@ -10,9 +10,16 @@ namespace Kodi.Utilities.Formatters
     /// Handles duration fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(Duration))]
     public class DurationFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(Duration); } }
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>

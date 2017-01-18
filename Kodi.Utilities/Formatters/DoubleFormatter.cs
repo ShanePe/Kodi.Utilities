@@ -9,10 +9,16 @@ namespace Kodi.Utilities.Formatters
     /// Handles double fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(double))]
     public class DoubleFormatter : IFormatter
     {
-
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(double); } }
+        
         /// <summary>
         /// Gets the available operators.
         /// </summary>

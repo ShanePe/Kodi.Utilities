@@ -9,9 +9,16 @@ namespace Kodi.Utilities.Formatters
     /// Handles number fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(int))]
-    public class IntFormatter : IFormatter
+    public class IntegerFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(int); } }
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>

@@ -9,9 +9,16 @@ namespace Kodi.Utilities.Formatters
     /// Handles boolean fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(bool))]
     public class BoolFormatter : IFormatter
     {
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(bool); } }
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>

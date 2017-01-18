@@ -10,10 +10,17 @@ namespace Kodi.Utilities.Formatters
     /// Handles Date Fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IFormatter" />
-    [FormatterType(typeof(DateTime))]
     public class DateFormatter : IFormatter
     {
         private const string _format = "yyyy-MM-dd";
+
+        /// <summary>
+        /// Gets the underlying type.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(DateTime); } }
         
         /// <summary>
         /// Gets the available operators.
