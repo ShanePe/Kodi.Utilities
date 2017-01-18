@@ -133,15 +133,13 @@ namespace Kodi.Utilities.Interfaces
         /// <exception cref="MissingFieldAttributeException"></exception>
         private ListTypeAllocationAttribute GetFieldAllocation()
         {
-            //FIx!!!
             if (_listAllocationAttr == null)
             {
                 TypeInfo typeInfo = this.GetType().GetTypeInfo();
-                _listAllocationAttr = (ListTypeAllocationAttribute)
-                    typeInfo.GetCustomAttribute<ListTypeAllocationAttribute>();
-
+                _listAllocationAttr = typeInfo.GetCustomAttributes<ListTypeAllocationAttribute>()
+                                        .FirstOrDefault(a => a.AppliesTo == ListTypeAllocationAttribute.AppliesTos.SmartPlaylist);
                 if (_listAllocationAttr == null)
-                    throw new MissingFieldAttributeException(this);
+                    _listAllocationAttr = new ListTypeAllocationAttribute(ListTypeAllocationAttribute.AppliesTos.SmartPlaylist, new SmartPlayList.Types[0]);
             }
             return _listAllocationAttr;
         }
