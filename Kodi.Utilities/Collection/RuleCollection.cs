@@ -107,7 +107,7 @@ namespace Kodi.Utilities.Collection
         public void Add(IRule item)
         {
             if (_playlist != null)
-                if (!item.IsAllowedForPlaylistType(_playlist.Type))
+                if (!item.IsFieldForPlaylist(_playlist.Type))
                     throw new FieldNotValidForTypeException(item, _playlist);
 
             if (_dataStore.ContainsKey(item.GetType()))

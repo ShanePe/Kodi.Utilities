@@ -3,10 +3,12 @@ using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Validators;
 using PCLStorage;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using lta = Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist
 {
@@ -15,7 +17,7 @@ namespace Kodi.Utilities.Playlist
     /// </summary>
     public class SmartPlayList
     {
-        private RuleCollection _available = null;
+        private Dictionary<lta.AppliesTos, RuleCollection> _available = new Dictionary<lta.AppliesTos, RuleCollection>();
         private Types _type = Types.Songs;
         /// <summary>
         /// Playlist types
@@ -69,11 +71,7 @@ namespace Kodi.Utilities.Playlist
             get { return _type; }
             set
             {
-                if (_available != null)
-                {
-                    _available.Clear();
-                    _available = null;
-                }
+                _available.Clear();
                 _type = value;
             }
         }
@@ -182,13 +180,30 @@ namespace Kodi.Utilities.Playlist
         /// <returns></returns>
         public RuleCollection GetAvailableFields()
         {
-            if (_available == null)
+            if (!_available.ContainsKey(lta.AppliesTos.SmartPlaylist))
             {
-                _available = new RuleCollection();
-                _available.AddRange(SmartPlayList.GetAllFields()
-                                              .Where(ri => ri.IsAllowedForPlaylistType(Type)));
+                RuleCollection col = new RuleCollection();
+                col.AddRange(SmartPlayList.GetAllFields()
+                    .Where(ri => ri.IsFieldForPlaylist(Type)));
+                _available.Add(lta.AppliesTos.SmartPlaylist, col);
             }
-            return _available;
+            return _available[lta.AppliesTos.SmartPlaylist];
+        }
+
+        /// <summary>
+        /// Gets the available order by.
+        /// </summary>
+        /// <returns></returns>
+        public RuleCollection GetAvailableOrderBy()
+        {
+            if (!_available.ContainsKey(lta.AppliesTos.OrderBy))
+            {
+                RuleCollection col = new RuleCollection();
+                col.AddRange(SmartPlayList.GetAllFields()
+                    .Where(ri => ri.IsOrderByForPlaylist(Type)));
+                _available.Add(lta.AppliesTos.SmartPlaylist, col);
+            }
+            return _available[lta.AppliesTos.OrderBy];
         }
 
         public static RuleCollection GetAllFields()

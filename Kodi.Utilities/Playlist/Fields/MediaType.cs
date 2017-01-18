@@ -1,6 +1,8 @@
 using System;
+using Kodi.Utilities.Data;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using Kodi.Utilities.Validators;
 using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist.Fields
@@ -12,6 +14,8 @@ namespace Kodi.Utilities.Playlist.Fields
     [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Albums,
 		SmartPlayList.Types.Mixed)]
+	[ListTypeAllocation(AppliesTos.OrderBy,
+		SmartPlayList.Types.Albums)]
     public class MediaType : IRule
     {
         /// <summary>
@@ -20,7 +24,7 @@ namespace Kodi.Utilities.Playlist.Fields
         /// <value>
         /// The name.
         /// </value>
-        public override string Field { get { return "type"; } }
+        public override string Field { get { return "mediatype"; } }
 
         /// <summary>
         /// Gets the underlying type of the field.

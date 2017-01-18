@@ -1,8 +1,9 @@
 using System;
+using Kodi.Utilities.Data;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 using Kodi.Utilities.Validators;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -12,6 +13,12 @@ namespace Kodi.Utilities.Playlist.Fields
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Songs,
+		SmartPlayList.Types.Movies,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.MusicVideos,
+		SmartPlayList.Types.Mixed)]
+	[ListTypeAllocation(AppliesTos.OrderBy,
+		SmartPlayList.Types.Songs,
 		SmartPlayList.Types.Movies,
 		SmartPlayList.Types.Episodes,
 		SmartPlayList.Types.MusicVideos,
@@ -39,7 +46,7 @@ namespace Kodi.Utilities.Playlist.Fields
         /// <value>
         /// The validator.
         /// </value>
-        public override IValidator Validator { get { return new  TimeValidator(); } }
+        public override IValidator Validator { get { return new TimeValidator(); } }
 
     }
 }

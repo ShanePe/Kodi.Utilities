@@ -1,6 +1,8 @@
 using System;
+using Kodi.Utilities.Data;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using Kodi.Utilities.Validators;
 using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist.Fields
@@ -13,6 +15,7 @@ namespace Kodi.Utilities.Playlist.Fields
         SmartPlayList.Types.Albums,
 		SmartPlayList.Types.Artists,
 		SmartPlayList.Types.Mixed)]
+	
     public class Moods : IRule
     {
         /// <summary>

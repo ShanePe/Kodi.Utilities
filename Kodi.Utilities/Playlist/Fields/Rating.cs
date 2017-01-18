@@ -1,8 +1,9 @@
 using System;
+using Kodi.Utilities.Data;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
-using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 using Kodi.Utilities.Validators;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
@@ -17,6 +18,13 @@ namespace Kodi.Utilities.Playlist.Fields
 		SmartPlayList.Types.TVShows,
 		SmartPlayList.Types.Episodes,
 		SmartPlayList.Types.Mixed)]
+	[ListTypeAllocation(AppliesTos.OrderBy,
+		SmartPlayList.Types.Songs,
+		SmartPlayList.Types.Albums,
+		SmartPlayList.Types.Movies,
+		SmartPlayList.Types.TVShows,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.MusicVideos)]
     public class Rating : IRule
     {
         /// <summary>

@@ -30,7 +30,9 @@ namespace Kodi.Utilities.Validators
                 if (rule.Operator == null)
                     throw new MissingValueException(nameof(rule.Operator), nameof(rule));
 
-                if (!rule.IsAllowedForPlaylistType(playList.Type))
+
+
+                if (!rule.IsFieldForPlaylist(playList.Type))
                     throw new FieldNotValidForTypeException(rule, playList);
             }
         }

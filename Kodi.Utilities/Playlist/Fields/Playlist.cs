@@ -1,12 +1,14 @@
 using System;
+using Kodi.Utilities.Data;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using Kodi.Utilities.Validators;
 using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Represents the Playlist Field
+    /// Represents the PlayList Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [ListTypeAllocation(AppliesTos.SmartPlaylist,
@@ -18,6 +20,7 @@ namespace Kodi.Utilities.Playlist.Fields
 		SmartPlayList.Types.Episodes,
 		SmartPlayList.Types.MusicVideos,
 		SmartPlayList.Types.Mixed)]
+	
     public class PlayList : IRule
     {
         /// <summary>

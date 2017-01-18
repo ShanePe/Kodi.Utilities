@@ -4,9 +4,10 @@ using Kodi.Utilities.Exceptions;
 using Kodi.Utilities.Extensions;
 using Kodi.Utilities.Playlist;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using lta = Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 namespace Kodi.Utilities.Interfaces
 {
     /// <summary>
@@ -14,7 +15,7 @@ namespace Kodi.Utilities.Interfaces
     /// </summary>
     public abstract class IRule
     {
-        private ListTypeAllocationAttribute _listAllocationAttr = null;
+        Dictionary<lta.AppliesTos, lta> _allocationAttr = new Dictionary<lta.AppliesTos, lta>();
         private IFormatter _formatter = null;
         IOperator _operator = null;
         /// <summary>
@@ -131,17 +132,38 @@ namespace Kodi.Utilities.Interfaces
         /// </summary>
         /// <returns></returns>
         /// <exception cref="MissingFieldAttributeException"></exception>
-        private ListTypeAllocationAttribute GetFieldAllocation()
+        private lta GetFieldAllocation()
         {
-            if (_listAllocationAttr == null)
+            return GetAllocation(lta.AppliesTos.SmartPlaylist);
+        }
+
+        /// <summary>
+        /// Gets the order allocation.
+        /// </summary>
+        /// <returns></returns>
+        private lta GetOrderAllocation()
+        {
+            return GetAllocation(lta.AppliesTos.OrderBy);
+        }
+
+        /// <summary>
+        /// Gets the allocation.
+        /// </summary>
+        /// <param name="appliesTo">The applies to.</param>
+        /// <returns></returns>
+        private ListTypeAllocationAttribute GetAllocation(lta.AppliesTos appliesTo)
+        {
+            if (!_allocationAttr.ContainsKey(appliesTo))
             {
                 TypeInfo typeInfo = this.GetType().GetTypeInfo();
-                _listAllocationAttr = typeInfo.GetCustomAttributes<ListTypeAllocationAttribute>()
-                                        .FirstOrDefault(a => a.AppliesTo == ListTypeAllocationAttribute.AppliesTos.SmartPlaylist);
-                if (_listAllocationAttr == null)
-                    _listAllocationAttr = new ListTypeAllocationAttribute(ListTypeAllocationAttribute.AppliesTos.SmartPlaylist, new SmartPlayList.Types[0]);
+                lta attr = typeInfo.GetCustomAttributes<lta>()
+                                        .FirstOrDefault(a => a.AppliesTo == appliesTo);
+                if (attr == null)
+                    attr = new lta(appliesTo, new SmartPlayList.Types[0]);
+
+                _allocationAttr.Add(appliesTo, attr);
             }
-            return _listAllocationAttr;
+            return _allocationAttr[appliesTo];
         }
 
         /// <summary>
@@ -162,9 +184,21 @@ namespace Kodi.Utilities.Interfaces
         /// <returns>
         ///   <c>true</c> if [is allowed for playlist type] [the specified type]; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsAllowedForPlaylistType(SmartPlayList.Types type)
+        public bool IsFieldForPlaylist(SmartPlayList.Types type)
         {
             return GetFieldAllocation().AllowedTypes.Contains(type);
+        }
+
+        /// <summary>
+        /// Determines whether [is order by for playlist] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [is order by for playlist] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsOrderByForPlaylist(SmartPlayList.Types type)
+        {
+            return GetOrderAllocation().AllowedTypes.Contains(type);
         }
         #endregion
     }
