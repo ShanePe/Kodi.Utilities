@@ -1,25 +1,43 @@
+using System;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Track number field
+    /// Represents the TrackNumber Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocation("tracknumber",
-        typeof(int),
+    [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.Mixed)]
+		SmartPlayList.Types.Mixed)]
     public class TrackNumber : IRule
     {
-        public override IValidator Validator
-        {
-            get
-            {
-                return new PositiveIntValidator();
-            }
-        }
+        /// <summary>
+        /// Gets the name of the field.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Field { get { return "tracknumber"; } }
+
+        /// <summary>
+        /// Gets the underlying type of the field.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(int); } }
+				
+		/// <summary>
+        /// Gets the validator.
+        /// </summary>
+        /// <value>
+        /// The validator.
+        /// </value>
+        public override IValidator Validator { get { return new PositiveIntValidator(); } }
+
     }
 }

@@ -1,0 +1,2158 @@
+commit 498aa2ddfd962c4aba392be76e1945c36f48fe08
+tree 0d63ce10d1ee87c97e54dad168eac7af7bd2f90a
+parent 7762a860280396fce83be8395a10b94f986a11da
+author ShanePe <Shane.pennicott@gmail.com> 1484611536 +0000
+committer ShanePe <Shane.pennicott@gmail.com> 1484611536 +0000
+
+    Update
+
+diff --git a/Kodi.Utilities.Test/FieldTest.cs b/Kodi.Utilities.Test/FieldTest.cs
+index 6224464..8b6b9da 100644
+--- a/Kodi.Utilities.Test/FieldTest.cs
++++ b/Kodi.Utilities.Test/FieldTest.cs
+@@ -1,8 +1,10 @@
+-﻿using System;
+-using Microsoft.VisualStudio.TestTools.UnitTesting;
+-using Kodi.Utilities.Playlist.Fields;
++﻿using Kodi.Utilities.Data;
++using Kodi.Utilities.Interfaces;
+ using Kodi.Utilities.Playlist;
+-using Kodi.Utilities.Data;
++using Kodi.Utilities.Playlist.Fields;
++using Microsoft.VisualStudio.TestTools.UnitTesting;
++using System;
++using System.Linq;
+ 
+ namespace Kodi.Utilities.Test
+ {
+@@ -1161,5 +1163,52 @@ namespace Kodi.Utilities.Test
+             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Mixed));
+ 
+         }
++
++        [TestMethod]
++        public void TestMultiValues()
++        {
++            foreach (IRule rule in SmartPlayList.GetAllFields()
++                                        .Where(r => r.IsMultipleValuesAllowed))
++            {
++                object[] o = GetTestValue(rule.UnderlyingType);
++                rule.Values.Add(o[0]);
++                rule.Values.Add(o[1]);
++
++                Assert.AreEqual(rule.Values.Count, 2);
++            }
++
++            foreach (IRule rule in SmartPlayList.GetAllFields()
++                                        .Where(r => !r.IsMultipleValuesAllowed && !r.Operator.NoValue))
++            {
++                object[] o = GetTestValue(rule.UnderlyingType);
++                rule.Values.Add(o[0]);
++                rule.Values.Add(o[1]);
++                
++                Assert.AreEqual(rule.Values.Count, 1);
++            }
++
++        }
++
++        private object[] GetTestValue(Type t)
++        {
++            if (t == typeof(string))
++                return new string[] { "12:00:00", "13:00:00" };
++            else if (t == typeof(int))
++                return new object[] { 1, 2 };
++            else if (t == typeof(double))
++                return new object[] { 0.0, 1.0 };
++            else if (t == typeof(Duration))
++                return new object[] { new Duration(1, Duration.Periods.Days), new Duration(DateTime.Now) };
++            else if (t == typeof(ISO6392Language))
++                return new object[] { ISO6392LanguageFactory.GetByCode("eng"), ISO6392LanguageFactory.GetByCode("afr") };
++            else if (t == typeof(bool))
++                return new object[] { true, false };
++            else if (t == typeof(DateTime))
++                return new object[] { DateTime.Now, DateTime.Now.AddYears(1) };
++            else
++                Assert.Fail($"Invalid type {t.ToString()}");
++
++            return null;
++        }
+     }
+ }
+diff --git a/Kodi.Utilities.Test/Formatters.cs b/Kodi.Utilities.Test/Formatters.cs
+index d9ee46d..41600e6 100644
+--- a/Kodi.Utilities.Test/Formatters.cs
++++ b/Kodi.Utilities.Test/Formatters.cs
+@@ -27,7 +27,7 @@ namespace Kodi.Utilities.Test
+             IFormatter formatter = IFormatter.GetFormatter(typeof(DateTime));
+             Assert.IsInstanceOfType(formatter, typeof(DateFormatter));
+             Assert.AreEqual(formatter.GetAvailableOperators().Length, 2);
+-            Assert.AreEqual(formatter.GetFormattedValue(tester), tester.ToString("dd MM yyyy"));
++            Assert.AreEqual(formatter.GetFormattedValue(tester), tester.ToString("yyyy-MM-dd"));
+ 
+         }
+ 
+@@ -41,7 +41,7 @@ namespace Kodi.Utilities.Test
+             IFormatter formatter = IFormatter.GetFormatter(typeof(Duration));
+             Assert.IsInstanceOfType(formatter, typeof(DurationFormatter));
+             Assert.AreEqual(formatter.GetAvailableOperators().Length, 4);
+-            Assert.AreEqual(formatter.GetFormattedValue(d1), d1.Date.Value.ToString("dd MM yyyy"));
++            Assert.AreEqual(formatter.GetFormattedValue(d1), d1.Date.Value.ToString("yyyy-MM-dd"));
+             Assert.AreEqual(formatter.GetFormattedValue(d2), "2 weeks");
+ 
+         }
+diff --git a/Kodi.Utilities.Test/LanguagesTest.cs b/Kodi.Utilities.Test/LanguagesTest.cs
+index d3b19e3..740a93d 100644
+--- a/Kodi.Utilities.Test/LanguagesTest.cs
++++ b/Kodi.Utilities.Test/LanguagesTest.cs
+@@ -14,14 +14,14 @@ namespace Kodi.Utilities.Test
+         [Priority(0)]
+         public void LanguageCacheBuild()
+         {
+-            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 371);
++            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 184);
+         }
+ 
+         [TestMethod]
+         [Priority(1)]
+         public void LanguageCacheRead()
+         {
+-            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 371);
++            Assert.AreEqual(ISO6392LanguageFactory.Languages.Count, 184);
+         }
+ 
+         [TestMethod]
+diff --git a/Kodi.Utilities/Attributes/FieldAllocationAttribute.cs b/Kodi.Utilities/Attributes/FieldAllocationAttribute.cs
+index 0c68fb2..30121c2 100644
+--- a/Kodi.Utilities/Attributes/FieldAllocationAttribute.cs
++++ b/Kodi.Utilities/Attributes/FieldAllocationAttribute.cs
+@@ -13,27 +13,40 @@ namespace Kodi.Utilities.Attributes
+         readonly SmartPlayList.Types[] _allowedTypes;
+         readonly string _fieldName;
+         readonly Type _underlingType;
++        readonly bool _allowMultipleValues;
+ 
+         /// <summary>
+         /// Initializes a new instance of the <see cref="FieldAllocationAttribute" /> class.
+         /// </summary>
+         /// <param name="fieldName">The field name.</param>
+         /// <param name="underlyingType">The underlying type.</param>
++        /// <param name="allowMultiValues">if set to <c>true</c> [allow multi values].</param>
+         /// <param name="allowedTypes">The allowed types.</param>
+-        public FieldAllocationAttribute(string fieldName, Type underlyingType, params SmartPlayList.Types[] allowedTypes)
++        public FieldAllocationAttribute(string fieldName, Type underlyingType, bool allowMultiValues, params SmartPlayList.Types[] allowedTypes)
+         {
+             _fieldName = fieldName;
+             _underlingType = underlyingType;
+             _allowedTypes = allowedTypes;
++            _allowMultipleValues = allowMultiValues;
+         }
+ 
+         /// <summary>
++        /// Initializes a new instance of the <see cref="FieldAllocationAttribute" /> class.
++        /// </summary>
++        /// <param name="fieldName">The field name.</param>
++        /// <param name="underlyingType">The underlying type.</param>
++        /// <param name="allowedTypes">The allowed types.</param>
++        public FieldAllocationAttribute(string fieldName, Type underlyingType, params SmartPlayList.Types[] allowedTypes)
++            : this(fieldName, underlyingType, false, allowedTypes)
++        { }
++
++        /// <summary>
+         /// Initializes a new instance of the <see cref="FieldAllocationAttribute"/> class.
+         /// </summary>
+         /// <param name="fieldName">The field name.</param>
+         /// <param name="underlyingType">The underlying type.</param>
+         public FieldAllocationAttribute(string fieldName, Type underlyingType)
+-           : this(fieldName, underlyingType, null)
++           : this(fieldName, underlyingType, false, null)
+         { }
+ 
+         /// <summary>
+@@ -69,5 +82,15 @@ namespace Kodi.Utilities.Attributes
+             get { return _underlingType; }
+         }
+ 
++        /// <summary>
++        /// Gets a value indicating whether multiple values are allowed.
++        /// </summary>
++        /// <value>
++        ///   <c>true</c> if multiple values are allowed; otherwise, <c>false</c>.
++        /// </value>
++        public bool AllowMultipleValues
++        {
++            get { return _allowMultipleValues; }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Collection/ValueCollection.cs b/Kodi.Utilities/Collection/ValueCollection.cs
+index a223b56..b832cd5 100644
+--- a/Kodi.Utilities/Collection/ValueCollection.cs
++++ b/Kodi.Utilities/Collection/ValueCollection.cs
+@@ -1,4 +1,5 @@
+-﻿using Kodi.Utilities.Interfaces;
++﻿using Kodi.Utilities.Exceptions;
++using Kodi.Utilities.Interfaces;
+ using System.Collections.Generic;
+ using System.Runtime.InteropServices;
+ 
+@@ -32,13 +33,20 @@ namespace Kodi.Utilities.Collection
+             if (o == null)
+                 return;
+ 
++            if (_parentRule.Operator.NoValue)
++                throw new NoValueAllowedForRuleException(_parentRule);
++
+             if (o.GetType() != _parentRule.UnderlyingType)
+                 o = IFormatter.GetFormatter(_parentRule.UnderlyingType).SetToType(o.ToString());
+ 
+             if (_parentRule.Validator != null)
+                 _parentRule.Validator.Validate(o);
+ 
+-            base.Add(o);
++            if (!_parentRule.IsMultipleValuesAllowed && Count > 0)
++                Clear();
++
++            if (!Contains(o))
++                base.Add(o);
+         }
+ 
+         /// <summary>
+diff --git a/Kodi.Utilities/Data/ISO6392Language.cs b/Kodi.Utilities/Data/ISO6392Language.cs
+index e088fd2..978f7d5 100644
+--- a/Kodi.Utilities/Data/ISO6392Language.cs
++++ b/Kodi.Utilities/Data/ISO6392Language.cs
+@@ -1,4 +1,6 @@
+-﻿namespace Kodi.Utilities.Data
++﻿using System;
++
++namespace Kodi.Utilities.Data
+ {
+     /// <summary>
+     /// Resent an ISO 639-2 Language code
+@@ -27,6 +29,8 @@
+         /// <param name="name">The name.</param>
+         internal ISO6392Language(string code, string name)
+         {
++            if (code.Length != 3)
++                throw new Exception($"Invalid language code {code}");
+             Code = code;
+             Name = name;
+         }
+diff --git a/Kodi.Utilities/Data/ISO6392LanguageFactory.cs b/Kodi.Utilities/Data/ISO6392LanguageFactory.cs
+index 08faaf3..670fbbd 100644
+--- a/Kodi.Utilities/Data/ISO6392LanguageFactory.cs
++++ b/Kodi.Utilities/Data/ISO6392LanguageFactory.cs
+@@ -9,6 +9,9 @@ namespace Kodi.Utilities.Data
+     /// </summary>
+     public class ISO6392LanguageFactory
+     {
++        public delegate void LanguagesLoadedHandler(ref List<ISO6392Language> languages);
++        public static event LanguagesLoadedHandler onLanguagesLoaded;
++
+         private static List<ISO6392Language> _langs = null;
+ 
+         /// <summary>
+@@ -62,377 +65,193 @@ namespace Kodi.Utilities.Data
+         private List<ISO6392Language> Build()
+         {
+             List<ISO6392Language> l = new List<ISO6392Language>();
+-            l.Add(new ISO6392Language("dut", "Dutch; Flemish"));
+-            l.Add(new ISO6392Language("dyu", "Dyula"));
++            l.Add(new ISO6392Language("abk", "Abkhaz"));
++            l.Add(new ISO6392Language("aar", "Afar"));
++            l.Add(new ISO6392Language("afr", "Afrikaans"));
++            l.Add(new ISO6392Language("aka", "Akan"));
++            l.Add(new ISO6392Language("alb", "Albanian"));
++            l.Add(new ISO6392Language("amh", "Amharic"));
++            l.Add(new ISO6392Language("ara", "Arabic"));
++            l.Add(new ISO6392Language("arg", "Aragonese"));
++            l.Add(new ISO6392Language("arm", "Armenian"));
++            l.Add(new ISO6392Language("asm", "Assamese"));
++            l.Add(new ISO6392Language("ava", "Avaric"));
++            l.Add(new ISO6392Language("ave", "Avestan"));
++            l.Add(new ISO6392Language("aym", "Aymara"));
++            l.Add(new ISO6392Language("aze", "Azerbaijani"));
++            l.Add(new ISO6392Language("bam", "Bambara"));
++            l.Add(new ISO6392Language("bak", "Bashkir"));
++            l.Add(new ISO6392Language("eus", "Basque"));
++            l.Add(new ISO6392Language("bel", "Belarusian"));
++            l.Add(new ISO6392Language("ben", "Bengali"));
++            l.Add(new ISO6392Language("bih", "Bihari"));
++            l.Add(new ISO6392Language("bis", "Bislama"));
++            l.Add(new ISO6392Language("bos", "Bosnian"));
++            l.Add(new ISO6392Language("bre", "Breton"));
++            l.Add(new ISO6392Language("bul", "Bulgarian"));
++            l.Add(new ISO6392Language("bur", "Burmese"));
++            l.Add(new ISO6392Language("cat", "Catalan"));
++            l.Add(new ISO6392Language("cha", "Chamorro"));
++            l.Add(new ISO6392Language("che", "Chechen"));
++            l.Add(new ISO6392Language("nya", "Chinyanja"));
++            l.Add(new ISO6392Language("zho", "Chinese"));
++            l.Add(new ISO6392Language("chv", "Chuvash"));
++            l.Add(new ISO6392Language("cor", "Cornish"));
++            l.Add(new ISO6392Language("cos", "Corsican"));
++            l.Add(new ISO6392Language("cre", "Cree"));
++            l.Add(new ISO6392Language("hrv", "Croatian"));
++            l.Add(new ISO6392Language("ces", "Czech"));
++            l.Add(new ISO6392Language("dan", "Danish"));
++            l.Add(new ISO6392Language("div", "Divehi"));
++            l.Add(new ISO6392Language("nld", "Dutch"));
+             l.Add(new ISO6392Language("dzo", "Dzongkha"));
+-            l.Add(new ISO6392Language("efi", "Efik"));
+-            l.Add(new ISO6392Language("egy", "Egyptian (Ancient)"));
+-            l.Add(new ISO6392Language("eka", "Ekajuk"));
+-            l.Add(new ISO6392Language("elx", "Elamite"));
+             l.Add(new ISO6392Language("eng", "English"));
+-            l.Add(new ISO6392Language("enm", "English"));
+             l.Add(new ISO6392Language("epo", "Esperanto"));
+             l.Add(new ISO6392Language("est", "Estonian"));
+             l.Add(new ISO6392Language("ewe", "Ewe"));
+-            l.Add(new ISO6392Language("ewo", "Ewondo"));
+-            l.Add(new ISO6392Language("fan", "Fang"));
+             l.Add(new ISO6392Language("fao", "Faroese"));
+-            l.Add(new ISO6392Language("fat", "Fanti"));
+             l.Add(new ISO6392Language("fij", "Fijian"));
+-            l.Add(new ISO6392Language("fil", "Filipino; Pilipino"));
+             l.Add(new ISO6392Language("fin", "Finnish"));
+-            l.Add(new ISO6392Language("fiu", "Finno-Ugrian languages"));
+-            l.Add(new ISO6392Language("fon", "Fon"));
+-            l.Add(new ISO6392Language("fre", "French"));
+-            l.Add(new ISO6392Language("frm", "French"));
+-            l.Add(new ISO6392Language("fro", "French"));
+-            l.Add(new ISO6392Language("frr", "Northern Frisian"));
+-            l.Add(new ISO6392Language("frs", "Eastern Frisian"));
+-            l.Add(new ISO6392Language("fry", "Western Frisian"));
+-            l.Add(new ISO6392Language("ful", "Fulah"));
+-            l.Add(new ISO6392Language("fur", "Friulian"));
+-            l.Add(new ISO6392Language("gaa", "Ga"));
+-            l.Add(new ISO6392Language("gay", "Gayo"));
+-            l.Add(new ISO6392Language("gba", "Gbaya"));
+-            l.Add(new ISO6392Language("gem", "Germanic languages"));
++            l.Add(new ISO6392Language("fra", "French"));
++            l.Add(new ISO6392Language("ful", "Fula"));
++            l.Add(new ISO6392Language("glg", "Galician"));
+             l.Add(new ISO6392Language("geo", "Georgian"));
+             l.Add(new ISO6392Language("ger", "German"));
+-            l.Add(new ISO6392Language("gez", "Geez"));
+-            l.Add(new ISO6392Language("gil", "Gilbertese"));
+-            l.Add(new ISO6392Language("gla", "Gaelic; Scottish Gaelic"));
+-            l.Add(new ISO6392Language("gle", "Irish"));
+-            l.Add(new ISO6392Language("glg", "Galician"));
+-            l.Add(new ISO6392Language("glv", "Manx"));
+-            l.Add(new ISO6392Language("gmh", "German"));
+-            l.Add(new ISO6392Language("goh", "German"));
+-            l.Add(new ISO6392Language("gon", "Gondi"));
+-            l.Add(new ISO6392Language("gor", "Gorontalo"));
+-            l.Add(new ISO6392Language("got", "Gothic"));
+-            l.Add(new ISO6392Language("grb", "Grebo"));
+-            l.Add(new ISO6392Language("grc", "Greek"));
+-            l.Add(new ISO6392Language("gre", "Greek"));
+-            l.Add(new ISO6392Language("grn", "Guarani"));
+-            l.Add(new ISO6392Language("gsw", "Swiss German; Alemannic; Alsatian"));
++            l.Add(new ISO6392Language("gre", "Greek (modern)"));
++            l.Add(new ISO6392Language("grn", "Guaraní"));
+             l.Add(new ISO6392Language("guj", "Gujarati"));
+-            l.Add(new ISO6392Language("gwi", "Gwich'in"));
+-            l.Add(new ISO6392Language("hai", "Haida"));
+-            l.Add(new ISO6392Language("hat", "Haitian; Haitian Creole"));
++            l.Add(new ISO6392Language("hat", "Haitian"));
+             l.Add(new ISO6392Language("hau", "Hausa"));
+-            l.Add(new ISO6392Language("haw", "Hawaiian"));
+-            l.Add(new ISO6392Language("heb", "Hebrew"));
++            l.Add(new ISO6392Language("heb", "Hebrew (modern)"));
+             l.Add(new ISO6392Language("her", "Herero"));
+-            l.Add(new ISO6392Language("hil", "Hiligaynon"));
+-            l.Add(new ISO6392Language("him", "Himachali languages; Western Pahari languages"));
+             l.Add(new ISO6392Language("hin", "Hindi"));
+-            l.Add(new ISO6392Language("hit", "Hittite"));
+-            l.Add(new ISO6392Language("hmn", "Hmong; Mong"));
+             l.Add(new ISO6392Language("hmo", "Hiri Motu"));
+-            l.Add(new ISO6392Language("hrv", "Croatian"));
+-            l.Add(new ISO6392Language("hsb", "Upper Sorbian"));
+             l.Add(new ISO6392Language("hun", "Hungarian"));
+-            l.Add(new ISO6392Language("hup", "Hupa"));
+-            l.Add(new ISO6392Language("iba", "Iban"));
+-            l.Add(new ISO6392Language("ibo", "Igbo"));
+-            l.Add(new ISO6392Language("ice", "Icelandic"));
+-            l.Add(new ISO6392Language("ido", "Ido"));
+-            l.Add(new ISO6392Language("iii", "Sichuan Yi; Nuosu"));
+-            l.Add(new ISO6392Language("ijo", "Ijo languages"));
+-            l.Add(new ISO6392Language("iku", "Inuktitut"));
+-            l.Add(new ISO6392Language("ile", "Interlingue; Occidental"));
+-            l.Add(new ISO6392Language("ilo", "Iloko"));
+-            l.Add(new ISO6392Language("ina", "Interlingua (International Auxiliary Language Association)"));
+-            l.Add(new ISO6392Language("inc", "Indic languages"));
++            l.Add(new ISO6392Language("ina", "Interlingua"));
+             l.Add(new ISO6392Language("ind", "Indonesian"));
+-            l.Add(new ISO6392Language("ine", "Indo-European languages"));
+-            l.Add(new ISO6392Language("inh", "Ingush"));
++            l.Add(new ISO6392Language("ile", "Interlingue"));
++            l.Add(new ISO6392Language("gle", "Irish"));
++            l.Add(new ISO6392Language("ibo", "Igbo"));
+             l.Add(new ISO6392Language("ipk", "Inupiaq"));
+-            l.Add(new ISO6392Language("ira", "Iranian languages"));
+-            l.Add(new ISO6392Language("iro", "Iroquoian languages"));
++            l.Add(new ISO6392Language("ido", "Ido"));
++            l.Add(new ISO6392Language("ice", "Icelandic"));
+             l.Add(new ISO6392Language("ita", "Italian"));
+-            l.Add(new ISO6392Language("jav", "Javanese"));
+-            l.Add(new ISO6392Language("jbo", "Lojban"));
++            l.Add(new ISO6392Language("iku", "Inuktitut"));
+             l.Add(new ISO6392Language("jpn", "Japanese"));
+-            l.Add(new ISO6392Language("jpr", "Judeo-Persian"));
+-            l.Add(new ISO6392Language("jrb", "Judeo-Arabic"));
+-            l.Add(new ISO6392Language("kaa", "Kara-Kalpak"));
+-            l.Add(new ISO6392Language("kab", "Kabyle"));
+-            l.Add(new ISO6392Language("kac", "Kachin; Jingpho"));
+-            l.Add(new ISO6392Language("kal", "Kalaallisut; Greenlandic"));
+-            l.Add(new ISO6392Language("kam", "Kamba"));
++            l.Add(new ISO6392Language("jav", "Javanese"));
++            l.Add(new ISO6392Language("kal", "Kalaallisut"));
+             l.Add(new ISO6392Language("kan", "Kannada"));
+-            l.Add(new ISO6392Language("kar", "Karen languages"));
+-            l.Add(new ISO6392Language("kas", "Kashmiri"));
+             l.Add(new ISO6392Language("kau", "Kanuri"));
+-            l.Add(new ISO6392Language("kaw", "Kawi"));
++            l.Add(new ISO6392Language("kas", "Kashmiri"));
+             l.Add(new ISO6392Language("kaz", "Kazakh"));
+-            l.Add(new ISO6392Language("kbd", "Kabardian"));
+-            l.Add(new ISO6392Language("kha", "Khasi"));
+-            l.Add(new ISO6392Language("khi", "Khoisan languages"));
+-            l.Add(new ISO6392Language("khm", "Central Khmer"));
+-            l.Add(new ISO6392Language("kho", "Khotanese; Sakan"));
+-            l.Add(new ISO6392Language("kik", "Kikuyu; Gikuyu"));
++            l.Add(new ISO6392Language("khm", "Khmer"));
++            l.Add(new ISO6392Language("kik", "Kikuyu"));
+             l.Add(new ISO6392Language("kin", "Kinyarwanda"));
+-            l.Add(new ISO6392Language("kir", "Kirghiz; Kyrgyz"));
+-            l.Add(new ISO6392Language("kmb", "Kimbundu"));
+-            l.Add(new ISO6392Language("kok", "Konkani"));
++            l.Add(new ISO6392Language("kir", "Kyrgyz"));
+             l.Add(new ISO6392Language("kom", "Komi"));
+             l.Add(new ISO6392Language("kon", "Kongo"));
+             l.Add(new ISO6392Language("kor", "Korean"));
+-            l.Add(new ISO6392Language("kos", "Kosraean"));
+-            l.Add(new ISO6392Language("kpe", "Kpelle"));
+-            l.Add(new ISO6392Language("krc", "Karachay-Balkar"));
+-            l.Add(new ISO6392Language("krl", "Karelian"));
+-            l.Add(new ISO6392Language("kro", "Kru languages"));
+-            l.Add(new ISO6392Language("kru", "Kurukh"));
+-            l.Add(new ISO6392Language("kua", "Kuanyama; Kwanyama"));
+-            l.Add(new ISO6392Language("kum", "Kumyk"));
+             l.Add(new ISO6392Language("kur", "Kurdish"));
+-            l.Add(new ISO6392Language("kut", "Kutenai"));
+-            l.Add(new ISO6392Language("lad", "Ladino"));
+-            l.Add(new ISO6392Language("lah", "Lahnda"));
+-            l.Add(new ISO6392Language("lam", "Lamba"));
+-            l.Add(new ISO6392Language("lao", "Lao"));
++            l.Add(new ISO6392Language("kua", "Kwanyama"));
+             l.Add(new ISO6392Language("lat", "Latin"));
+-            l.Add(new ISO6392Language("lav", "Latvian"));
+-            l.Add(new ISO6392Language("lez", "Lezghian"));
+-            l.Add(new ISO6392Language("lim", "Limburgan; Limburger; Limburgish"));
++            l.Add(new ISO6392Language("ltz", "Luxembourgish"));
++            l.Add(new ISO6392Language("lug", "Ganda"));
++            l.Add(new ISO6392Language("lim", "Limburgish"));
+             l.Add(new ISO6392Language("lin", "Lingala"));
++            l.Add(new ISO6392Language("lao", "Lao"));
+             l.Add(new ISO6392Language("lit", "Lithuanian"));
+-            l.Add(new ISO6392Language("lol", "Mongo"));
+-            l.Add(new ISO6392Language("loz", "Lozi"));
+-            l.Add(new ISO6392Language("ltz", "Luxembourgish; Letzeburgesch"));
+-            l.Add(new ISO6392Language("lua", "Luba-Lulua"));
+             l.Add(new ISO6392Language("lub", "Luba-Katanga"));
+-            l.Add(new ISO6392Language("lug", "Ganda"));
+-            l.Add(new ISO6392Language("lui", "Luiseno"));
+-            l.Add(new ISO6392Language("lun", "Lunda"));
+-            l.Add(new ISO6392Language("luo", "Luo (Kenya and Tanzania)"));
+-            l.Add(new ISO6392Language("lus", "Lushai"));
++            l.Add(new ISO6392Language("lav", "Latvian"));
++            l.Add(new ISO6392Language("glv", "Manx"));
+             l.Add(new ISO6392Language("mac", "Macedonian"));
+-            l.Add(new ISO6392Language("mad", "Madurese"));
+-            l.Add(new ISO6392Language("mag", "Magahi"));
+-            l.Add(new ISO6392Language("mah", "Marshallese"));
+-            l.Add(new ISO6392Language("mai", "Maithili"));
+-            l.Add(new ISO6392Language("mak", "Makasar"));
+-            l.Add(new ISO6392Language("mal", "Malayalam"));
+-            l.Add(new ISO6392Language("man", "Mandingo"));
+-            l.Add(new ISO6392Language("mao", "Maori"));
+-            l.Add(new ISO6392Language("map", "Austronesian languages"));
+-            l.Add(new ISO6392Language("mar", "Marathi"));
+-            l.Add(new ISO6392Language("mas", "Masai"));
+-            l.Add(new ISO6392Language("may", "Malay"));
+-            l.Add(new ISO6392Language("mdf", "Moksha"));
+-            l.Add(new ISO6392Language("mdr", "Mandar"));
+-            l.Add(new ISO6392Language("men", "Mende"));
+-            l.Add(new ISO6392Language("mga", "Irish"));
+-            l.Add(new ISO6392Language("mic", "Mi'kmaq; Micmac"));
+-            l.Add(new ISO6392Language("min", "Minangkabau"));
+-            l.Add(new ISO6392Language("mis", "Uncoded languages"));
+-            l.Add(new ISO6392Language("mkh", "Mon-Khmer languages"));
+             l.Add(new ISO6392Language("mlg", "Malagasy"));
++            l.Add(new ISO6392Language("msa", "Malay"));
++            l.Add(new ISO6392Language("mal", "Malayalam"));
+             l.Add(new ISO6392Language("mlt", "Maltese"));
+-            l.Add(new ISO6392Language("mnc", "Manchu"));
+-            l.Add(new ISO6392Language("mni", "Manipuri"));
+-            l.Add(new ISO6392Language("mno", "Manobo languages"));
+-            l.Add(new ISO6392Language("moh", "Mohawk"));
++            l.Add(new ISO6392Language("mao", "Māori"));
++            l.Add(new ISO6392Language("mar", "Marathi (Marāṭhī)"));
++            l.Add(new ISO6392Language("mah", "Marshallese"));
+             l.Add(new ISO6392Language("mon", "Mongolian"));
+-            l.Add(new ISO6392Language("mos", "Mossi"));
+-            l.Add(new ISO6392Language("mul", "Multiple languages"));
+-            l.Add(new ISO6392Language("mun", "Munda languages"));
+-            l.Add(new ISO6392Language("mus", "Creek"));
+-            l.Add(new ISO6392Language("mwl", "Mirandese"));
+-            l.Add(new ISO6392Language("mwr", "Marwari"));
+-            l.Add(new ISO6392Language("myn", "Mayan languages"));
+-            l.Add(new ISO6392Language("myv", "Erzya"));
+-            l.Add(new ISO6392Language("nah", "Nahuatl languages"));
+-            l.Add(new ISO6392Language("nai", "North American Indian languages"));
+-            l.Add(new ISO6392Language("nap", "Neapolitan"));
+-            l.Add(new ISO6392Language("nau", "Nauru"));
+-            l.Add(new ISO6392Language("nav", "Navajo; Navaho"));
+-            l.Add(new ISO6392Language("nbl", "Ndebele"));
+-            l.Add(new ISO6392Language("nde", "Ndebele"));
+-            l.Add(new ISO6392Language("ndo", "Ndonga"));
+-            l.Add(new ISO6392Language("nds", "Low German; Low Saxon; German"));
++            l.Add(new ISO6392Language("nau", "Nauruan"));
++            l.Add(new ISO6392Language("nav", "Navajo"));
++            l.Add(new ISO6392Language("nde", "Northern Ndebele"));
+             l.Add(new ISO6392Language("nep", "Nepali"));
+-            l.Add(new ISO6392Language("new", "Nepal Bhasa; Newari"));
+-            l.Add(new ISO6392Language("nia", "Nias"));
+-            l.Add(new ISO6392Language("nic", "Niger-Kordofanian languages"));
+-            l.Add(new ISO6392Language("niu", "Niuean"));
+-            l.Add(new ISO6392Language("nno", "Norwegian Nynorsk; Nynorsk"));
+-            l.Add(new ISO6392Language("nob", "Bokmål"));
+-            l.Add(new ISO6392Language("nog", "Nogai"));
+-            l.Add(new ISO6392Language("non", "Norse"));
++            l.Add(new ISO6392Language("ndo", "Ndonga"));
++            l.Add(new ISO6392Language("nob", "Norwegian Bokmål"));
++            l.Add(new ISO6392Language("nno", "Norwegian Nynorsk"));
+             l.Add(new ISO6392Language("nor", "Norwegian"));
+-            l.Add(new ISO6392Language("nqo", "N'Ko"));
+-            l.Add(new ISO6392Language("nso", "Pedi; Sepedi; Northern Sotho"));
+-            l.Add(new ISO6392Language("nub", "Nubian languages"));
+-            l.Add(new ISO6392Language("nwc", "Classical Newari; Old Newari; Classical Nepal Bhasa"));
+-            l.Add(new ISO6392Language("nya", "Chichewa; Chewa; Nyanja"));
+-            l.Add(new ISO6392Language("nym", "Nyamwezi"));
+-            l.Add(new ISO6392Language("nyn", "Nyankole"));
+-            l.Add(new ISO6392Language("nyo", "Nyoro"));
+-            l.Add(new ISO6392Language("nzi", "Nzima"));
+-            l.Add(new ISO6392Language("oci", "Occitan (post 1500); Provençal"));
+-            l.Add(new ISO6392Language("oji", "Ojibwa"));
+-            l.Add(new ISO6392Language("ori", "Oriya"));
++            l.Add(new ISO6392Language("iii", "Nuosu"));
++            l.Add(new ISO6392Language("nbl", "Southern Ndebele"));
++            l.Add(new ISO6392Language("oci", "Occitan"));
++            l.Add(new ISO6392Language("oji", "Ojibwe"));
++            l.Add(new ISO6392Language("chu", "Old Church Slavonic"));
+             l.Add(new ISO6392Language("orm", "Oromo"));
+-            l.Add(new ISO6392Language("osa", "Osage"));
+-            l.Add(new ISO6392Language("oss", "Ossetian; Ossetic"));
+-            l.Add(new ISO6392Language("ota", "Turkish"));
+-            l.Add(new ISO6392Language("oto", "Otomian languages"));
+-            l.Add(new ISO6392Language("paa", "Papuan languages"));
+-            l.Add(new ISO6392Language("pag", "Pangasinan"));
+-            l.Add(new ISO6392Language("pal", "Pahlavi"));
+-            l.Add(new ISO6392Language("pam", "Pampanga; Kapampangan"));
+-            l.Add(new ISO6392Language("pan", "Panjabi; Punjabi"));
+-            l.Add(new ISO6392Language("pap", "Papiamento"));
+-            l.Add(new ISO6392Language("pau", "Palauan"));
+-            l.Add(new ISO6392Language("peo", "Persian"));
+-            l.Add(new ISO6392Language("per", "Persian"));
+-            l.Add(new ISO6392Language("phi", "Philippine languages"));
+-            l.Add(new ISO6392Language("phn", "Phoenician"));
+-            l.Add(new ISO6392Language("pli", "Pali"));
++            l.Add(new ISO6392Language("ori", "Oriya"));
++            l.Add(new ISO6392Language("oss", "Ossetian"));
++            l.Add(new ISO6392Language("pan", "Eastern Punjabi"));
++            l.Add(new ISO6392Language("pli", "Pāli"));
++            l.Add(new ISO6392Language("per", "Persian (Farsi)"));
+             l.Add(new ISO6392Language("pol", "Polish"));
+-            l.Add(new ISO6392Language("pon", "Pohnpeian"));
++            l.Add(new ISO6392Language("pus", "Pashto"));
+             l.Add(new ISO6392Language("por", "Portuguese"));
+-            l.Add(new ISO6392Language("pra", "Prakrit languages"));
+-            l.Add(new ISO6392Language("pro", "Provençal"));
+-            l.Add(new ISO6392Language("pus", "Pushto; Pashto"));
+-            l.Add(new ISO6392Language("qa", "-qtz	Reserved for local use"));
+             l.Add(new ISO6392Language("que", "Quechua"));
+-            l.Add(new ISO6392Language("raj", "Rajasthani"));
+-            l.Add(new ISO6392Language("rap", "Rapanui"));
+-            l.Add(new ISO6392Language("rar", "Rarotongan; Cook Islands Maori"));
+-            l.Add(new ISO6392Language("roa", "Romance languages"));
+             l.Add(new ISO6392Language("roh", "Romansh"));
+-            l.Add(new ISO6392Language("rom", "Romany"));
+-            l.Add(new ISO6392Language("rum", "Romanian; Moldavian; Moldovan"));
+-            l.Add(new ISO6392Language("run", "Rundi"));
+-            l.Add(new ISO6392Language("rup", "Aromanian; Arumanian; Macedo-Romanian"));
++            l.Add(new ISO6392Language("run", "Kirundi"));
++            l.Add(new ISO6392Language("rum", "Romanian"));
+             l.Add(new ISO6392Language("rus", "Russian"));
+-            l.Add(new ISO6392Language("sad", "Sandawe"));
+-            l.Add(new ISO6392Language("sag", "Sango"));
+-            l.Add(new ISO6392Language("sah", "Yakut"));
+-            l.Add(new ISO6392Language("sai", "South American Indian (Other)"));
+-            l.Add(new ISO6392Language("sal", "Salishan languages"));
+-            l.Add(new ISO6392Language("sam", "Samaritan Aramaic"));
+-            l.Add(new ISO6392Language("san", "Sanskrit"));
+-            l.Add(new ISO6392Language("sas", "Sasak"));
+-            l.Add(new ISO6392Language("sat", "Santali"));
+-            l.Add(new ISO6392Language("scn", "Sicilian"));
+-            l.Add(new ISO6392Language("sco", "Scots"));
+-            l.Add(new ISO6392Language("sel", "Selkup"));
+-            l.Add(new ISO6392Language("sem", "Semitic languages"));
+-            l.Add(new ISO6392Language("sga", "Irish"));
+-            l.Add(new ISO6392Language("sgn", "Sign Languages"));
+-            l.Add(new ISO6392Language("shn", "Shan"));
+-            l.Add(new ISO6392Language("sid", "Sidamo"));
+-            l.Add(new ISO6392Language("sin", "Sinhala; Sinhalese"));
+-            l.Add(new ISO6392Language("sio", "Siouan languages"));
+-            l.Add(new ISO6392Language("sit", "Sino-Tibetan languages"));
+-            l.Add(new ISO6392Language("sla", "Slavic languages"));
+-            l.Add(new ISO6392Language("slo", "Slovak"));
+-            l.Add(new ISO6392Language("slv", "Slovenian"));
+-            l.Add(new ISO6392Language("sma", "Southern Sami"));
++            l.Add(new ISO6392Language("san", "Sanskrit (Saṁskṛta)"));
++            l.Add(new ISO6392Language("srd", "Sardinian"));
++            l.Add(new ISO6392Language("snd", "Sindhi"));
+             l.Add(new ISO6392Language("sme", "Northern Sami"));
+-            l.Add(new ISO6392Language("smi", "Sami languages"));
+-            l.Add(new ISO6392Language("smj", "Lule Sami"));
+-            l.Add(new ISO6392Language("smn", "Inari Sami"));
+             l.Add(new ISO6392Language("smo", "Samoan"));
+-            l.Add(new ISO6392Language("sms", "Skolt Sami"));
++            l.Add(new ISO6392Language("sag", "Sango"));
++            l.Add(new ISO6392Language("srp", "Serbian"));
++            l.Add(new ISO6392Language("gla", "Scottish Gaelic"));
+             l.Add(new ISO6392Language("sna", "Shona"));
+-            l.Add(new ISO6392Language("snd", "Sindhi"));
+-            l.Add(new ISO6392Language("snk", "Soninke"));
+-            l.Add(new ISO6392Language("sog", "Sogdian"));
++            l.Add(new ISO6392Language("sin", "Sinhalese"));
++            l.Add(new ISO6392Language("slk", "Slovak"));
++            l.Add(new ISO6392Language("slv", "Slovene"));
+             l.Add(new ISO6392Language("som", "Somali"));
+-            l.Add(new ISO6392Language("son", "Songhai languages"));
+-            l.Add(new ISO6392Language("sot", "Sotho"));
+-            l.Add(new ISO6392Language("spa", "Spanish; Castilian"));
+-            l.Add(new ISO6392Language("srd", "Sardinian"));
+-            l.Add(new ISO6392Language("srn", "Sranan Tongo"));
+-            l.Add(new ISO6392Language("srp", "Serbian"));
+-            l.Add(new ISO6392Language("srr", "Serer"));
+-            l.Add(new ISO6392Language("ssa", "Nilo-Saharan languages"));
+-            l.Add(new ISO6392Language("ssw", "Swati"));
+-            l.Add(new ISO6392Language("suk", "Sukuma"));
++            l.Add(new ISO6392Language("sot", "Southern Sotho"));
++            l.Add(new ISO6392Language("spa", "Spanish"));
+             l.Add(new ISO6392Language("sun", "Sundanese"));
+-            l.Add(new ISO6392Language("sus", "Susu"));
+-            l.Add(new ISO6392Language("sux", "Sumerian"));
+             l.Add(new ISO6392Language("swa", "Swahili"));
++            l.Add(new ISO6392Language("ssw", "Swati"));
+             l.Add(new ISO6392Language("swe", "Swedish"));
+-            l.Add(new ISO6392Language("syc", "Classical Syriac"));
+-            l.Add(new ISO6392Language("syr", "Syriac"));
+-            l.Add(new ISO6392Language("tah", "Tahitian"));
+-            l.Add(new ISO6392Language("tai", "Tai languages"));
+             l.Add(new ISO6392Language("tam", "Tamil"));
+-            l.Add(new ISO6392Language("tat", "Tatar"));
+             l.Add(new ISO6392Language("tel", "Telugu"));
+-            l.Add(new ISO6392Language("tem", "Timne"));
+-            l.Add(new ISO6392Language("ter", "Tereno"));
+-            l.Add(new ISO6392Language("tet", "Tetum"));
+             l.Add(new ISO6392Language("tgk", "Tajik"));
+-            l.Add(new ISO6392Language("tgl", "Tagalog"));
+             l.Add(new ISO6392Language("tha", "Thai"));
+-            l.Add(new ISO6392Language("tib", "Tibetan"));
+-            l.Add(new ISO6392Language("tig", "Tigre"));
+             l.Add(new ISO6392Language("tir", "Tigrinya"));
+-            l.Add(new ISO6392Language("tiv", "Tiv"));
+-            l.Add(new ISO6392Language("tkl", "Tokelau"));
+-            l.Add(new ISO6392Language("tlh", "Klingon; tlhIngan-Hol"));
+-            l.Add(new ISO6392Language("tli", "Tlingit"));
+-            l.Add(new ISO6392Language("tmh", "Tamashek"));
+-            l.Add(new ISO6392Language("tog", "Tonga (Nyasa)"));
+-            l.Add(new ISO6392Language("ton", "Tonga (Tonga Islands)"));
+-            l.Add(new ISO6392Language("tpi", "Tok Pisin"));
+-            l.Add(new ISO6392Language("tsi", "Tsimshian"));
+-            l.Add(new ISO6392Language("tsn", "Tswana"));
+-            l.Add(new ISO6392Language("tso", "Tsonga"));
++            l.Add(new ISO6392Language("bod", "Tibetan Standard"));
+             l.Add(new ISO6392Language("tuk", "Turkmen"));
+-            l.Add(new ISO6392Language("tum", "Tumbuka"));
+-            l.Add(new ISO6392Language("tup", "Tupi languages"));
++            l.Add(new ISO6392Language("tgl", "Tagalog"));
++            l.Add(new ISO6392Language("tsn", "Tswana"));
++            l.Add(new ISO6392Language("ton", "Tonga (Tonga Islands)"));
+             l.Add(new ISO6392Language("tur", "Turkish"));
+-            l.Add(new ISO6392Language("tut", "Altaic languages"));
+-            l.Add(new ISO6392Language("tvl", "Tuvalu"));
++            l.Add(new ISO6392Language("tso", "Tsonga"));
++            l.Add(new ISO6392Language("tat", "Tatar"));
+             l.Add(new ISO6392Language("twi", "Twi"));
+-            l.Add(new ISO6392Language("tyv", "Tuvinian"));
+-            l.Add(new ISO6392Language("udm", "Udmurt"));
+-            l.Add(new ISO6392Language("uga", "Ugaritic"));
+-            l.Add(new ISO6392Language("uig", "Uighur; Uyghur"));
++            l.Add(new ISO6392Language("tah", "Tahitian"));
++            l.Add(new ISO6392Language("uig", "Uyghur"));
+             l.Add(new ISO6392Language("ukr", "Ukrainian"));
+-            l.Add(new ISO6392Language("umb", "Umbundu"));
+-            l.Add(new ISO6392Language("und", "Undetermined"));
+             l.Add(new ISO6392Language("urd", "Urdu"));
+             l.Add(new ISO6392Language("uzb", "Uzbek"));
+-            l.Add(new ISO6392Language("vai", "Vai"));
+             l.Add(new ISO6392Language("ven", "Venda"));
+             l.Add(new ISO6392Language("vie", "Vietnamese"));
+             l.Add(new ISO6392Language("vol", "Volapük"));
+-            l.Add(new ISO6392Language("vot", "Votic"));
+-            l.Add(new ISO6392Language("wak", "Wakashan languages"));
+-            l.Add(new ISO6392Language("wal", "Walamo"));
+-            l.Add(new ISO6392Language("war", "Waray"));
+-            l.Add(new ISO6392Language("was", "Washo"));
+-            l.Add(new ISO6392Language("wel", "Welsh"));
+-            l.Add(new ISO6392Language("wen", "Sorbian languages"));
+             l.Add(new ISO6392Language("wln", "Walloon"));
++            l.Add(new ISO6392Language("wel", "Welsh"));
+             l.Add(new ISO6392Language("wol", "Wolof"));
+-            l.Add(new ISO6392Language("xal", "Kalmyk; Oirat"));
++            l.Add(new ISO6392Language("fry", "Western Frisian"));
+             l.Add(new ISO6392Language("xho", "Xhosa"));
+-            l.Add(new ISO6392Language("yao", "Yao"));
+-            l.Add(new ISO6392Language("yap", "Yapese"));
+             l.Add(new ISO6392Language("yid", "Yiddish"));
+             l.Add(new ISO6392Language("yor", "Yoruba"));
+-            l.Add(new ISO6392Language("ypk", "Yupik languages"));
+-            l.Add(new ISO6392Language("zap", "Zapotec"));
+-            l.Add(new ISO6392Language("zbl", "Blissymbols; Blissymbolics; Bliss"));
+-            l.Add(new ISO6392Language("zen", "Zenaga"));
+-            l.Add(new ISO6392Language("zgh", "Standard Moroccan Tamazight"));
+-            l.Add(new ISO6392Language("zha", "Zhuang; Chuang"));
+-            l.Add(new ISO6392Language("znd", "Zande languages"));
++            l.Add(new ISO6392Language("zha", "Zhuang"));
+             l.Add(new ISO6392Language("zul", "Zulu"));
+-            l.Add(new ISO6392Language("zun", "Zuni"));
+-            l.Add(new ISO6392Language("zxx", "No linguistic content; Not applicable"));
+-            l.Add(new ISO6392Language("zza", "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazak"));
++
++            onLanguagesLoaded?.Invoke(ref l);
++
+             return l;
+         }
+     }
+diff --git a/Kodi.Utilities/Exceptions/NoValueAllowedForRuleException.cs b/Kodi.Utilities/Exceptions/NoValueAllowedForRuleException.cs
+new file mode 100644
+index 0000000..f54a984
+--- /dev/null
++++ b/Kodi.Utilities/Exceptions/NoValueAllowedForRuleException.cs
+@@ -0,0 +1,21 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Exceptions
++{
++    /// <summary>
++    /// handles the no value allowed for rule operator
++    /// </summary>
++    /// <seealso cref="System.Exception" />
++    public class NoValueAllowedForRuleException : Exception
++    {
++        public NoValueAllowedForRuleException(IRule rule)
++            : base($"The rule {rule.Name} does not allow valus for the {rule.Operator.FriendlyName} operator.")
++        {
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Formatters/DateFormatter.cs b/Kodi.Utilities/Formatters/DateFormatter.cs
+index 6ca3f53..614f43f 100644
+--- a/Kodi.Utilities/Formatters/DateFormatter.cs
++++ b/Kodi.Utilities/Formatters/DateFormatter.cs
+@@ -2,6 +2,7 @@
+ using Kodi.Utilities.Interfaces;
+ using Kodi.Utilities.Operators;
+ using System;
++using System.Globalization;
+ 
+ namespace Kodi.Utilities.Formatters
+ {
+@@ -12,6 +13,8 @@ namespace Kodi.Utilities.Formatters
+     [FormatterType(typeof(DateTime))]
+     public class DateFormatter : IFormatter
+     {
++        private const string _format = "yyyy-MM-dd";
++        
+         /// <summary>
+         /// Gets the available operators.
+         /// </summary>
+@@ -36,7 +39,7 @@ namespace Kodi.Utilities.Formatters
+                 return string.Empty;
+ 
+             DateTime date = (DateTime)value;
+-            return date.ToString("dd MM yyyy");
++            return date.ToString(_format);
+         }
+ 
+         /// <summary>
+@@ -44,10 +47,14 @@ namespace Kodi.Utilities.Formatters
+         /// </summary>
+         /// <param name="value">The value.</param>
+         /// <returns></returns>
+-        /// <exception cref="System.NotImplementedException"></exception>
+         public override object SetToType(string value)
+         {
+-            throw new NotImplementedException();
++            DateTime dt = DateTime.Now;
++
++            if (!DateTime.TryParseExact(value, _format, CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
++                throw new Exceptions.InvalidFieldTypeValue(typeof(DateTime));
++
++            return dt;
+         }
+     }
+ }
+diff --git a/Kodi.Utilities/Formatters/DoubleFormatter.cs b/Kodi.Utilities/Formatters/DoubleFormatter.cs
+index 44a2128..63914cf 100644
+--- a/Kodi.Utilities/Formatters/DoubleFormatter.cs
++++ b/Kodi.Utilities/Formatters/DoubleFormatter.cs
+@@ -1,4 +1,5 @@
+-﻿using Kodi.Utilities.Attributes;
++﻿using System;
++using Kodi.Utilities.Attributes;
+ using Kodi.Utilities.Interfaces;
+ using Kodi.Utilities.Operators;
+ 
+@@ -11,6 +12,7 @@ namespace Kodi.Utilities.Formatters
+     [FormatterType(typeof(double))]
+     public class DoubleFormatter : IFormatter
+     {
++
+         /// <summary>
+         /// Gets the available operators.
+         /// </summary>
+diff --git a/Kodi.Utilities/Formatters/IntFormatter.cs b/Kodi.Utilities/Formatters/IntFormatter.cs
+index 5f2bad3..1767a02 100644
+--- a/Kodi.Utilities/Formatters/IntFormatter.cs
++++ b/Kodi.Utilities/Formatters/IntFormatter.cs
+@@ -1,4 +1,5 @@
+-﻿using Kodi.Utilities.Attributes;
++﻿using System;
++using Kodi.Utilities.Attributes;
+ using Kodi.Utilities.Interfaces;
+ using Kodi.Utilities.Operators;
+ 
+diff --git a/Kodi.Utilities/Formatters/LanguageFormatter.cs b/Kodi.Utilities/Formatters/LanguageFormatter.cs
+index 9baf932..102d2a2 100644
+--- a/Kodi.Utilities/Formatters/LanguageFormatter.cs
++++ b/Kodi.Utilities/Formatters/LanguageFormatter.cs
+@@ -13,6 +13,7 @@ namespace Kodi.Utilities.Formatters
+     [FormatterType(typeof(ISO6392Language))]
+     public class LanguageFormatter : IFormatter
+     {
++
+         /// <summary>
+         /// Gets the available operators.
+         /// </summary>
+diff --git a/Kodi.Utilities/Formatters/StringFormatter.cs b/Kodi.Utilities/Formatters/StringFormatter.cs
+index fd7dc3c..3eccf44 100644
+--- a/Kodi.Utilities/Formatters/StringFormatter.cs
++++ b/Kodi.Utilities/Formatters/StringFormatter.cs
+@@ -1,4 +1,5 @@
+-﻿using Kodi.Utilities.Attributes;
++﻿using System;
++using Kodi.Utilities.Attributes;
+ using Kodi.Utilities.Interfaces;
+ using Kodi.Utilities.Operators;
+ 
+diff --git a/Kodi.Utilities/Interfaces/IFormatter.cs b/Kodi.Utilities/Interfaces/IFormatter.cs
+index 1024374..6107546 100644
+--- a/Kodi.Utilities/Interfaces/IFormatter.cs
++++ b/Kodi.Utilities/Interfaces/IFormatter.cs
+@@ -32,7 +32,7 @@ namespace Kodi.Utilities.Interfaces
+         /// <param name="value">The value.</param>
+         /// <returns></returns>
+         public abstract object SetToType(string value);
+-
++        
+         /// <summary>
+         /// Gets the formatter.
+         /// </summary>
+@@ -79,6 +79,5 @@ namespace Kodi.Utilities.Interfaces
+                 return formatter.GetFormattedValue(value);
+             return value.ToString();
+         }
+-
+     }
+ }
+diff --git a/Kodi.Utilities/Interfaces/IGroup.cs b/Kodi.Utilities/Interfaces/IGroup.cs
+new file mode 100644
+index 0000000..84b5255
+--- /dev/null
++++ b/Kodi.Utilities/Interfaces/IGroup.cs
+@@ -0,0 +1,51 @@
++﻿using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Interfaces
++{
++    /// <summary>
++    /// Defines a group
++    /// </summary>
++    /// <typeparam name="R"></typeparam>
++    public abstract class IGroup
++    {
++        private bool _mixed = false;
++
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public abstract string Name { get; }
++
++        /// <summary>
++        /// Gets a value indicating whether [allow mixed].
++        /// </summary>
++        /// <value>
++        ///   <c>true</c> if [allow mixed]; otherwise, <c>false</c>.
++        /// </value>
++        public virtual bool AllowMixed { get { return false; } }
++
++        /// <summary>
++        /// Gets or sets a value indicating whether this <see cref="IGroup"/> is mixed.
++        /// </summary>
++        /// <value>
++        ///   <c>true</c> if mixed; otherwise, <c>false</c>.
++        /// </value>
++        /// <exception cref="System.Exception"></exception>
++        public bool Mixed
++        {
++            get { return _mixed; }
++            set
++            {
++                if (!AllowMixed && value)
++                    throw new Exception($"Group {Name} cannot be set to mixed mode.");
++                _mixed = value;
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Interfaces/IOperator.cs b/Kodi.Utilities/Interfaces/IOperator.cs
+index 34354d6..a928c0c 100644
+--- a/Kodi.Utilities/Interfaces/IOperator.cs
++++ b/Kodi.Utilities/Interfaces/IOperator.cs
+@@ -19,5 +19,12 @@
+         /// Name
+         /// </value>
+         string FriendlyName { get; }
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        ///   <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        bool NoValue { get; }
+     }
+ }
+diff --git a/Kodi.Utilities/Interfaces/IRule.cs b/Kodi.Utilities/Interfaces/IRule.cs
+index 30cdd74..ca09df6 100644
+--- a/Kodi.Utilities/Interfaces/IRule.cs
++++ b/Kodi.Utilities/Interfaces/IRule.cs
+@@ -16,10 +16,11 @@ namespace Kodi.Utilities.Interfaces
+     {
+         private FieldAllocationAttribute _attr = null;
+         private IFormatter _formatter = null;
++        IOperator _operator = null;
+         /// <summary>
+         /// Sort options
+         /// </summary>
+-        public enum SortOptions { None, Ascendingg, Descending }
++        public enum SortOptions { None, Ascending, Descending }
+ 
+         #region Private
+         #endregion
+@@ -31,7 +32,16 @@ namespace Kodi.Utilities.Interfaces
+         /// <value>
+         /// The operator.
+         /// </value>
+-        public IOperator Operator { get; set; }
++        public IOperator Operator
++        {
++            get { return _operator; }
++            set
++            {
++                _operator = value;
++                if (_operator.NoValue && Values.Count > 0)
++                    Values.Clear();
++            }
++        }
+         /// <summary>
+         /// Gets or sets the sort.
+         /// </summary>
+@@ -56,7 +66,7 @@ namespace Kodi.Utilities.Interfaces
+         {
+             get { return GetFieldAllocation().FieldName; }
+         }
+-      
++
+         /// <summary>
+         /// Gets the underlying type.
+         /// </summary>
+@@ -90,6 +100,17 @@ namespace Kodi.Utilities.Interfaces
+             get { return null; }
+         }
+ 
++        /// <summary>
++        /// Gets a value indicating whether this instance is allowed multiple values.
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if this instance is allowed multiple values ; otherwise, <c>false</c>.
++        /// </value>
++        public bool IsMultipleValuesAllowed
++        {
++            get { return GetFieldAllocation().AllowMultipleValues; }
++        }
++
+         #endregion
+ 
+         #region Constructor
+diff --git a/Kodi.Utilities/Kodi.Utilities.csproj b/Kodi.Utilities/Kodi.Utilities.csproj
+index 5476c96..a8ac3e6 100644
+--- a/Kodi.Utilities/Kodi.Utilities.csproj
++++ b/Kodi.Utilities/Kodi.Utilities.csproj
+@@ -50,6 +50,7 @@
+     <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
+     <Compile Include="Exceptions\MissingValueException.cs" />
+     <Compile Include="Exceptions\NonPositiveIntegerException.cs" />
++    <Compile Include="Exceptions\NoValueAllowedForRuleException.cs" />
+     <Compile Include="Exceptions\RuleParseException.cs" />
+     <Compile Include="Exceptions\FieldNotValidForTypeException.cs" />
+     <Compile Include="Extensions\String.cs" />
+@@ -61,6 +62,7 @@
+     <Compile Include="Formatters\IntFormatter.cs" />
+     <Compile Include="Formatters\StringFormatter.cs" />
+     <Compile Include="Interfaces\IFormatter.cs" />
++    <Compile Include="Interfaces\IGroup.cs" />
+     <Compile Include="Interfaces\IOperator.cs" />
+     <Compile Include="Interfaces\IParser.cs" />
+     <Compile Include="Interfaces\IRule.cs" />
+@@ -146,6 +148,18 @@
+     <Compile Include="Playlist\Fields\Votes.cs" />
+     <Compile Include="Playlist\Fields\Writers.cs" />
+     <Compile Include="Playlist\Fields\Year.cs" />
++    <Compile Include="Playlist\Groups\Actors.cs" />
++    <Compile Include="Playlist\Groups\Albums.cs" />
++    <Compile Include="Playlist\Groups\Artists.cs" />
++    <Compile Include="Playlist\Groups\Countries.cs" />
++    <Compile Include="Playlist\Groups\Directors.cs" />
++    <Compile Include="Playlist\Groups\Genres.cs" />
++    <Compile Include="Playlist\Groups\None.cs" />
++    <Compile Include="Playlist\Groups\Sets.cs" />
++    <Compile Include="Playlist\Groups\Studios.cs" />
++    <Compile Include="Playlist\Groups\Tags.cs" />
++    <Compile Include="Playlist\Groups\Writers.cs" />
++    <Compile Include="Playlist\Groups\Years.cs" />
+     <Compile Include="Properties\AssemblyInfo.cs" />
+     <Compile Include="Playlist\SmartPlaylist.cs" />
+     <Compile Include="Validators\PlaylistValidator.cs" />
+diff --git a/Kodi.Utilities/Operators/After.cs b/Kodi.Utilities/Operators/After.cs
+index 69f7873..87e32ae 100644
+--- a/Kodi.Utilities/Operators/After.cs
++++ b/Kodi.Utilities/Operators/After.cs
+@@ -1,4 +1,5 @@
+-﻿using Kodi.Utilities.Interfaces;
++﻿using System;
++using Kodi.Utilities.Interfaces;
+ 
+ namespace Kodi.Utilities.Operators
+ {
+@@ -36,5 +37,19 @@ namespace Kodi.Utilities.Operators
+                 return "After";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/Before.cs b/Kodi.Utilities/Operators/Before.cs
+index 8e6ade7..2f7d655 100644
+--- a/Kodi.Utilities/Operators/Before.cs
++++ b/Kodi.Utilities/Operators/Before.cs
+@@ -35,5 +35,19 @@ namespace Kodi.Utilities.Operators
+                 return "Before";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/Contains.cs b/Kodi.Utilities/Operators/Contains.cs
+index eff5ee1..f08b2ee 100644
+--- a/Kodi.Utilities/Operators/Contains.cs
++++ b/Kodi.Utilities/Operators/Contains.cs
+@@ -35,5 +35,19 @@ namespace Kodi.Utilities.Operators
+                 return "Contains";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/DoesNotContain.cs b/Kodi.Utilities/Operators/DoesNotContain.cs
+index 816bf3e..5e6279d 100644
+--- a/Kodi.Utilities/Operators/DoesNotContain.cs
++++ b/Kodi.Utilities/Operators/DoesNotContain.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "DoesNotContain";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/EndsWith.cs b/Kodi.Utilities/Operators/EndsWith.cs
+index c977086..fc1c95b 100644
+--- a/Kodi.Utilities/Operators/EndsWith.cs
++++ b/Kodi.Utilities/Operators/EndsWith.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "EndsWith";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/False.cs b/Kodi.Utilities/Operators/False.cs
+index b885870..ae46454 100644
+--- a/Kodi.Utilities/Operators/False.cs
++++ b/Kodi.Utilities/Operators/False.cs
+@@ -35,5 +35,19 @@ namespace Kodi.Utilities.Operators
+                 return "False";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return true;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/GreaterThan.cs b/Kodi.Utilities/Operators/GreaterThan.cs
+index 4542ee0..6cad441 100644
+--- a/Kodi.Utilities/Operators/GreaterThan.cs
++++ b/Kodi.Utilities/Operators/GreaterThan.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "GreaterThan";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/InTheLast.cs b/Kodi.Utilities/Operators/InTheLast.cs
+index e107de7..312c6ea 100644
+--- a/Kodi.Utilities/Operators/InTheLast.cs
++++ b/Kodi.Utilities/Operators/InTheLast.cs
+@@ -37,5 +37,19 @@ namespace Kodi.Utilities.Operators
+                 return "InTheLast";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/Is.cs b/Kodi.Utilities/Operators/Is.cs
+index b154049..d42bde0 100644
+--- a/Kodi.Utilities/Operators/Is.cs
++++ b/Kodi.Utilities/Operators/Is.cs
+@@ -35,5 +35,18 @@ namespace Kodi.Utilities.Operators
+                 return "Is";
+             }
+         }
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/IsNot.cs b/Kodi.Utilities/Operators/IsNot.cs
+index 4820b08..ce68db7 100644
+--- a/Kodi.Utilities/Operators/IsNot.cs
++++ b/Kodi.Utilities/Operators/IsNot.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "IsNot";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/LessThan.cs b/Kodi.Utilities/Operators/LessThan.cs
+index 0a78376..044fe6d 100644
+--- a/Kodi.Utilities/Operators/LessThan.cs
++++ b/Kodi.Utilities/Operators/LessThan.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "LessThan";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/NotInTheLast.cs b/Kodi.Utilities/Operators/NotInTheLast.cs
+index 339619f..fb8e2af 100644
+--- a/Kodi.Utilities/Operators/NotInTheLast.cs
++++ b/Kodi.Utilities/Operators/NotInTheLast.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "NotInTheLast";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/StartsWith.cs b/Kodi.Utilities/Operators/StartsWith.cs
+index f0e93b3..be76192 100644
+--- a/Kodi.Utilities/Operators/StartsWith.cs
++++ b/Kodi.Utilities/Operators/StartsWith.cs
+@@ -36,5 +36,19 @@ namespace Kodi.Utilities.Operators
+                 return "StartsWith";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return false;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Operators/True.cs b/Kodi.Utilities/Operators/True.cs
+index 7e1bee7..9a6c1f2 100644
+--- a/Kodi.Utilities/Operators/True.cs
++++ b/Kodi.Utilities/Operators/True.cs
+@@ -35,5 +35,19 @@ namespace Kodi.Utilities.Operators
+                 return "True";
+             }
+         }
++
++        /// <summary>
++        /// Gets a value indicating whether the field has no value for this operator (i.e True/False).
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if the field has no value for this operator; otherwise, <c>false</c>.
++        /// </value>
++        public bool NoValue
++        {
++            get
++            {
++                return true;
++            }
++        }
+     }
+ }
+diff --git a/Kodi.Utilities/Parsers/XmlParser.cs b/Kodi.Utilities/Parsers/XmlParser.cs
+index 08b452d..23e650a 100644
+--- a/Kodi.Utilities/Parsers/XmlParser.cs
++++ b/Kodi.Utilities/Parsers/XmlParser.cs
+@@ -108,12 +108,13 @@ namespace Kodi.Utilities.Parsers
+                 writer.WriteAttributeString(XmlFileDefinition.RuleFieldAttr, rule.Name);
+                 writer.WriteAttributeString(XmlFileDefinition.RuleOperatorAttr, rule.Operator.Name.ToLower());
+ 
+-                foreach (object o in rule.Values)
+-                {
+-                    writer.WriteStartElement(XmlFileDefinition.ValueNode);
+-                    writer.WriteValue(IFormatter.Format(rule.UnderlyingType, o));
+-                    writer.WriteEndElement();
+-                }
++                if (!rule.Operator.NoValue)
++                    foreach (object o in rule.Values)
++                    {
++                        writer.WriteStartElement(XmlFileDefinition.ValueNode);
++                        writer.WriteValue(IFormatter.Format(rule.UnderlyingType, o));
++                        writer.WriteEndElement();
++                    }
+ 
+                 writer.WriteEndElement();
+             }
+diff --git a/Kodi.Utilities/Playlist/Fields/Actor.cs b/Kodi.Utilities/Playlist/Fields/Actor.cs
+index e0fd412..f6fd2ec 100644
+--- a/Kodi.Utilities/Playlist/Fields/Actor.cs
++++ b/Kodi.Utilities/Playlist/Fields/Actor.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("actor",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.TVShows,
+         SmartPlayList.Types.Episodes,
+diff --git a/Kodi.Utilities/Playlist/Fields/Album.cs b/Kodi.Utilities/Playlist/Fields/Album.cs
+index 1bbb792..3e1527d 100644
+--- a/Kodi.Utilities/Playlist/Fields/Album.cs
++++ b/Kodi.Utilities/Playlist/Fields/Album.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("album",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Albums,
+         SmartPlayList.Types.MusicVideos,
+diff --git a/Kodi.Utilities/Playlist/Fields/AlbumArtist.cs b/Kodi.Utilities/Playlist/Fields/AlbumArtist.cs
+index 8716ba9..da6b2bd 100644
+--- a/Kodi.Utilities/Playlist/Fields/AlbumArtist.cs
++++ b/Kodi.Utilities/Playlist/Fields/AlbumArtist.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("albumartist",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Albums,
+         SmartPlayList.Types.MusicVideos,
+diff --git a/Kodi.Utilities/Playlist/Fields/Country.cs b/Kodi.Utilities/Playlist/Fields/Country.cs
+index 0891c54..90ba2e2 100644
+--- a/Kodi.Utilities/Playlist/Fields/Country.cs
++++ b/Kodi.Utilities/Playlist/Fields/Country.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("country",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.Mixed)]
+     public class Country : IRule
+diff --git a/Kodi.Utilities/Playlist/Fields/Director.cs b/Kodi.Utilities/Playlist/Fields/Director.cs
+index 73c35a9..7ba53ca 100644
+--- a/Kodi.Utilities/Playlist/Fields/Director.cs
++++ b/Kodi.Utilities/Playlist/Fields/Director.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("director",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.TVShows,
+         SmartPlayList.Types.Episodes,
+diff --git a/Kodi.Utilities/Playlist/Fields/Genre.cs b/Kodi.Utilities/Playlist/Fields/Genre.cs
+index 9ca5f39..15250b8 100644
+--- a/Kodi.Utilities/Playlist/Fields/Genre.cs
++++ b/Kodi.Utilities/Playlist/Fields/Genre.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("genre",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Albums,
+         SmartPlayList.Types.Artists,
+diff --git a/Kodi.Utilities/Playlist/Fields/Path.cs b/Kodi.Utilities/Playlist/Fields/Path.cs
+index ae213e8..710b4a6 100644
+--- a/Kodi.Utilities/Playlist/Fields/Path.cs
++++ b/Kodi.Utilities/Playlist/Fields/Path.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("path",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.TVShows,
+diff --git a/Kodi.Utilities/Playlist/Fields/Playlist.cs b/Kodi.Utilities/Playlist/Fields/Playlist.cs
+index 78420fb..c26e84e 100644
+--- a/Kodi.Utilities/Playlist/Fields/Playlist.cs
++++ b/Kodi.Utilities/Playlist/Fields/Playlist.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("playlist",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Albums,
+         SmartPlayList.Types.Artists,
+diff --git a/Kodi.Utilities/Playlist/Fields/Role.cs b/Kodi.Utilities/Playlist/Fields/Role.cs
+index 891caad..9018aa7 100644
+--- a/Kodi.Utilities/Playlist/Fields/Role.cs
++++ b/Kodi.Utilities/Playlist/Fields/Role.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("role",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Artists)]
+     public class Role : IRule
+     {
+diff --git a/Kodi.Utilities/Playlist/Fields/Set.cs b/Kodi.Utilities/Playlist/Fields/Set.cs
+index 57aaded..6a565c5 100644
+--- a/Kodi.Utilities/Playlist/Fields/Set.cs
++++ b/Kodi.Utilities/Playlist/Fields/Set.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("set",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.Mixed)]
+     public class Set : IRule
+diff --git a/Kodi.Utilities/Playlist/Fields/Studio.cs b/Kodi.Utilities/Playlist/Fields/Studio.cs
+index 390cf4e..0002a27 100644
+--- a/Kodi.Utilities/Playlist/Fields/Studio.cs
++++ b/Kodi.Utilities/Playlist/Fields/Studio.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("studio",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.TVShows,
+         SmartPlayList.Types.Episodes,
+diff --git a/Kodi.Utilities/Playlist/Fields/Tag.cs b/Kodi.Utilities/Playlist/Fields/Tag.cs
+index 0da2817..8f55be6 100644
+--- a/Kodi.Utilities/Playlist/Fields/Tag.cs
++++ b/Kodi.Utilities/Playlist/Fields/Tag.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("tag",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.TVShows,
+         SmartPlayList.Types.MusicVideos,
+diff --git a/Kodi.Utilities/Playlist/Fields/Title.cs b/Kodi.Utilities/Playlist/Fields/Title.cs
+index 828916f..1469ec5 100644
+--- a/Kodi.Utilities/Playlist/Fields/Title.cs
++++ b/Kodi.Utilities/Playlist/Fields/Title.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("title",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.MusicVideos,
+diff --git a/Kodi.Utilities/Playlist/Fields/Tvshow.cs b/Kodi.Utilities/Playlist/Fields/Tvshow.cs
+index 77a0940..223acc3 100644
+--- a/Kodi.Utilities/Playlist/Fields/Tvshow.cs
++++ b/Kodi.Utilities/Playlist/Fields/Tvshow.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("tvshow",
+         typeof(string),
++        true,
+         SmartPlayList.Types.TVShows,
+         SmartPlayList.Types.Episodes,
+         SmartPlayList.Types.Mixed)]
+diff --git a/Kodi.Utilities/Playlist/Fields/VirtualFolder.cs b/Kodi.Utilities/Playlist/Fields/VirtualFolder.cs
+index 94ce5fa..de7221c 100644
+--- a/Kodi.Utilities/Playlist/Fields/VirtualFolder.cs
++++ b/Kodi.Utilities/Playlist/Fields/VirtualFolder.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("virtualfolder",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Albums,
+         SmartPlayList.Types.Artists,
+diff --git a/Kodi.Utilities/Playlist/Fields/Writers.cs b/Kodi.Utilities/Playlist/Fields/Writers.cs
+index a064e76..e5f01fc 100644
+--- a/Kodi.Utilities/Playlist/Fields/Writers.cs
++++ b/Kodi.Utilities/Playlist/Fields/Writers.cs
+@@ -9,6 +9,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("writers",
+         typeof(string),
++        true,
+         SmartPlayList.Types.Movies,
+         SmartPlayList.Types.Episodes,
+         SmartPlayList.Types.Mixed)]
+diff --git a/Kodi.Utilities/Playlist/Fields/Year.cs b/Kodi.Utilities/Playlist/Fields/Year.cs
+index b35aa9e..2056983 100644
+--- a/Kodi.Utilities/Playlist/Fields/Year.cs
++++ b/Kodi.Utilities/Playlist/Fields/Year.cs
+@@ -10,6 +10,7 @@ namespace Kodi.Utilities.Playlist.Fields
+     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+     [FieldAllocation("year",
+         typeof(int),
++        true,
+         SmartPlayList.Types.Songs,
+         SmartPlayList.Types.Albums,
+         SmartPlayList.Types.Movies,
+diff --git a/Kodi.Utilities/Playlist/Groups/Actors.cs b/Kodi.Utilities/Playlist/Groups/Actors.cs
+new file mode 100644
+index 0000000..100c9f6
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Actors.cs
+@@ -0,0 +1,31 @@
++﻿using Kodi.Utilities.Interfaces;
++using Kodi.Utilities.Playlist.Fields;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Actor Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Actors : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "actors";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Albums.cs b/Kodi.Utilities/Playlist/Groups/Albums.cs
+new file mode 100644
+index 0000000..4eb10b4
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Albums.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Albums Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Albums : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "albums";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Artists.cs b/Kodi.Utilities/Playlist/Groups/Artists.cs
+new file mode 100644
+index 0000000..2d04765
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Artists.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Artist Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Artists : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "artists";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Countries.cs b/Kodi.Utilities/Playlist/Groups/Countries.cs
+new file mode 100644
+index 0000000..7d8a093
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Countries.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Country Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Countries : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "countries";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Directors.cs b/Kodi.Utilities/Playlist/Groups/Directors.cs
+new file mode 100644
+index 0000000..15bfca4
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Directors.cs
+@@ -0,0 +1,31 @@
++﻿using Kodi.Utilities.Interfaces;
++using Kodi.Utilities.Playlist.Fields;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Directory Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Directors : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "directors";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Genres.cs b/Kodi.Utilities/Playlist/Groups/Genres.cs
+new file mode 100644
+index 0000000..079b2d8
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Genres.cs
+@@ -0,0 +1,31 @@
++﻿using Kodi.Utilities.Interfaces;
++using Kodi.Utilities.Playlist.Fields;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Genres Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Genres : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "genres";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Sets.cs b/Kodi.Utilities/Playlist/Groups/Sets.cs
+new file mode 100644
+index 0000000..bc7a1ed
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Sets.cs
+@@ -0,0 +1,45 @@
++﻿using Kodi.Utilities.Interfaces;
++using Kodi.Utilities.Playlist.Fields;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents groups set
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Sets : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "sets";
++            }
++        }
++
++        /// <summary>
++        /// Gets a value indicating whether [allow mixed].
++        /// </summary>
++        /// <value>
++        /// <c>true</c> if [allow mixed]; otherwise, <c>false</c>.
++        /// </value>
++        public override bool AllowMixed
++        {
++            get
++            {
++                return true;
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Studios.cs b/Kodi.Utilities/Playlist/Groups/Studios.cs
+new file mode 100644
+index 0000000..0bbdacc
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Studios.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Studio Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Studios : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "studios";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Tags.cs b/Kodi.Utilities/Playlist/Groups/Tags.cs
+new file mode 100644
+index 0000000..c871dab
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Tags.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Tags Group
++    /// </summary>  
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    class Tags : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "tags";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Writers.cs b/Kodi.Utilities/Playlist/Groups/Writers.cs
+new file mode 100644
+index 0000000..19af794
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Writers.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represent Writer Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Writers : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "writers";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/Years.cs b/Kodi.Utilities/Playlist/Groups/Years.cs
+new file mode 100644
+index 0000000..d4fbc4b
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/Years.cs
+@@ -0,0 +1,31 @@
++﻿using Kodi.Utilities.Interfaces;
++using Kodi.Utilities.Playlist.Fields;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents Year Group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class Years : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "years";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/Groups/none.cs b/Kodi.Utilities/Playlist/Groups/none.cs
+new file mode 100644
+index 0000000..b9ba4d1
+--- /dev/null
++++ b/Kodi.Utilities/Playlist/Groups/none.cs
+@@ -0,0 +1,30 @@
++﻿using Kodi.Utilities.Interfaces;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Kodi.Utilities.Playlist.Groups
++{
++    /// <summary>
++    /// Represents none group
++    /// </summary>
++    /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
++    public class None : IGroup
++    {
++        /// <summary>
++        /// Gets the name.
++        /// </summary>
++        /// <value>
++        /// The name.
++        /// </value>
++        public override string Name
++        {
++            get
++            {
++                return "none";
++            }
++        }
++    }
++}
+diff --git a/Kodi.Utilities/Playlist/SmartPlaylist.cs b/Kodi.Utilities/Playlist/SmartPlaylist.cs
+index 5d77b71..23ef3d2 100644
+--- a/Kodi.Utilities/Playlist/SmartPlaylist.cs
++++ b/Kodi.Utilities/Playlist/SmartPlaylist.cs
+@@ -184,18 +184,30 @@ namespace Kodi.Utilities.Playlist
+         {
+             if (_available == null)
+             {
+-                TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
+-                Assembly assembly = IRuleTInfo.Assembly;
+-
+                 _available = new RuleCollection();
+-
+-                _available.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
+-                                     .Select(r => (IRule)Activator.CreateInstance(r.AsType()))
+-                                     .Where(ri => ri.IsAllowedForPlaylistType(Type)));
++                _available.AddRange(SmartPlayList.GetAllFields()
++                                              .Where(ri => ri.IsAllowedForPlaylistType(Type)));
+             }
+             return _available;
+         }
+ 
++        public static RuleCollection GetAllFields()
++        {
++            TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
++            Assembly assembly = IRuleTInfo.Assembly;
++
++            RuleCollection rules = new RuleCollection();
++            rules.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
++                   .Select(r => (IRule)Activator.CreateInstance(r.AsType())));
++
++            return rules;
++        }
++
++        /// <summary>
++        /// Writes to stream.
++        /// </summary>
++        /// <param name="stream">The stream.</param>
++        /// <param name="parser">The parser.</param>
+         public void WriteToStream(Stream stream, IParser parser)
+         {
+             PlaylistValidator validator = new PlaylistValidator();
+@@ -204,11 +216,24 @@ namespace Kodi.Utilities.Playlist
+             parser.WriteToStream(stream, this);
+         }
+ 
++        /// <summary>
++        /// Writes to file.
++        /// </summary>
++        /// <param name="path">The path.</param>
++        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
++        /// <param name="parser">The parser.</param>
+         public void WriteToFile(string path, bool overwrite, IParser parser)
+         {
+             WriteToFileStream(path, overwrite, parser);
+         }
+ 
++        /// <summary>
++        /// Writes to file stream.
++        /// </summary>
++        /// <param name="path">The path.</param>
++        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
++        /// <param name="parser">The parser.</param>
++        /// <exception cref="System.IO.IOException"></exception>
+         internal async void WriteToFileStream(string path, bool overwrite, IParser parser)
+         {
+             IFile file = await FileSystem.Current.GetFileFromPathAsync(path);

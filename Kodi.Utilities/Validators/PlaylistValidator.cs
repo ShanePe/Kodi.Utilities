@@ -21,8 +21,8 @@ namespace Kodi.Utilities.Validators
 
             foreach (IRule rule in playList.Rules)
             {
-                if (CheckForValue(rule.Name))
-                    throw new MissingValueException(nameof(rule.Name), nameof(rule));
+                if (CheckForValue(rule.Field))
+                    throw new MissingValueException(nameof(rule.Field), nameof(rule));
 
                 if (rule.Values.Count == 0)
                     throw new MissingValueException(nameof(rule.Values), nameof(rule));

@@ -14,7 +14,7 @@ namespace Kodi.Utilities.Interfaces
     /// </summary>
     public abstract class IRule
     {
-        private FieldAllocationAttribute _attr = null;
+        private ListTypeAllocationAttribute _listAllocationAttr = null;
         private IFormatter _formatter = null;
         IOperator _operator = null;
         /// <summary>
@@ -62,10 +62,7 @@ namespace Kodi.Utilities.Interfaces
         /// <value>
         /// The name.
         /// </value>
-        public string Name
-        {
-            get { return GetFieldAllocation().FieldName; }
-        }
+        public abstract string Field { get; }
 
         /// <summary>
         /// Gets the underlying type.
@@ -73,10 +70,7 @@ namespace Kodi.Utilities.Interfaces
         /// <value>
         /// The underlying type.
         /// </value>
-        public Type UnderlyingType
-        {
-            get { return GetFieldAllocation().UnderlyingType; }
-        }
+        public abstract Type UnderlyingType { get; }
 
         /// <summary>
         /// Gets the user readable name.
@@ -86,7 +80,7 @@ namespace Kodi.Utilities.Interfaces
         /// </value>
         public virtual string FriendlyName
         {
-            get { return Name.SplitCamel().ToTitleCase(); }
+            get { return Field.SplitCamel().ToTitleCase(); }
         }
 
         /// <summary>
@@ -106,9 +100,9 @@ namespace Kodi.Utilities.Interfaces
         /// <value>
         /// <c>true</c> if this instance is allowed multiple values ; otherwise, <c>false</c>.
         /// </value>
-        public bool IsMultipleValuesAllowed
+        public virtual bool IsMultipleValuesAllowed
         {
-            get { return GetFieldAllocation().AllowMultipleValues; }
+            get { return false; }
         }
 
         #endregion
@@ -137,18 +131,19 @@ namespace Kodi.Utilities.Interfaces
         /// </summary>
         /// <returns></returns>
         /// <exception cref="MissingFieldAttributeException"></exception>
-        private FieldAllocationAttribute GetFieldAllocation()
+        private ListTypeAllocationAttribute GetFieldAllocation()
         {
-            if (_attr == null)
+            //FIx!!!
+            if (_listAllocationAttr == null)
             {
                 TypeInfo typeInfo = this.GetType().GetTypeInfo();
-                _attr = (FieldAllocationAttribute)
-                    typeInfo.GetCustomAttribute<FieldAllocationAttribute>();
+                _listAllocationAttr = (ListTypeAllocationAttribute)
+                    typeInfo.GetCustomAttribute<ListTypeAllocationAttribute>();
 
-                if (_attr == null)
+                if (_listAllocationAttr == null)
                     throw new MissingFieldAttributeException(this);
             }
-            return _attr;
+            return _listAllocationAttr;
         }
 
         /// <summary>

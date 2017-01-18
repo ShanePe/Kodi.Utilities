@@ -14,7 +14,7 @@ namespace Kodi.Utilities.Exceptions
     public class NoValueAllowedForRuleException : Exception
     {
         public NoValueAllowedForRuleException(IRule rule)
-            : base($"The rule {rule.Name} does not allow valus for the {rule.Operator.FriendlyName} operator.")
+            : base($"The rule {rule.Field} does not allow valus for the {rule.Operator.FriendlyName} operator.")
         {
         }
     }

@@ -1,17 +1,46 @@
-﻿using Kodi.Utilities.Attributes;
+using System;
+using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
+using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
-    [FieldAllocation("userrating",
-        typeof(double),
+    /// <summary>
+    /// Represents the UserRating Field
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
+    [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.TVShows,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.MusicVideos)]
-    public class UserRating:IRule
+		SmartPlayList.Types.Albums,
+		SmartPlayList.Types.Movies,
+		SmartPlayList.Types.TVShows,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.MusicVideos)]
+    public class UserRating : IRule
     {
+        /// <summary>
+        /// Gets the name of the field.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Field { get { return "userrating"; } }
+
+        /// <summary>
+        /// Gets the underlying type of the field.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(double); } }
+				/// <summary>
+        /// Gets the validator.
+        /// </summary>
+        /// <value>
+        /// The validator.
+        /// </value>
+        public override IValidator Validator { get { return new RatingValidator(); } }
+
     }
 }

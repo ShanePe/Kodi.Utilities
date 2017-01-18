@@ -105,7 +105,7 @@ namespace Kodi.Utilities.Parsers
             foreach (IRule rule in playlistToWrite.Rules)
             {
                 writer.WriteStartElement(XmlFileDefinition.RuleNode);
-                writer.WriteAttributeString(XmlFileDefinition.RuleFieldAttr, rule.Name);
+                writer.WriteAttributeString(XmlFileDefinition.RuleFieldAttr, rule.Field);
                 writer.WriteAttributeString(XmlFileDefinition.RuleOperatorAttr, rule.Operator.Name.ToLower());
 
                 if (!rule.Operator.NoValue)
@@ -124,7 +124,7 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteStartElement(XmlFileDefinition.OrderNode);
                 writer.WriteAttributeString(XmlFileDefinition.OrderDirectionAttr,
                     playlistToWrite.GetPlayListEnumAsString(typeof(IRule.SortOptions), playlistToWrite.SortField.Sort));
-                writer.WriteValue(playlistToWrite.SortField.Name);
+                writer.WriteValue(playlistToWrite.SortField.Field);
                 writer.WriteEndElement();
             }
 

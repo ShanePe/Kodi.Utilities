@@ -14,6 +14,6 @@ namespace Kodi.Utilities.Exceptions
         /// </summary>
         /// <param name="rule">The rule.</param>
         public FieldExistsException(IRule rule)
-            : base($"Field {rule.Name} is already assigned to playlist.") { }
+            : base($"Field {rule.Field} is already assigned to playlist.") { }
     }
 }

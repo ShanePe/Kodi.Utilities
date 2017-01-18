@@ -1,29 +1,47 @@
+using System;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Play Count Field
+    /// Represents the PlayCount Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocation("playcount",
-        typeof(int),
+    [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.TVShows,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Mixed)]
+		SmartPlayList.Types.Movies,
+		SmartPlayList.Types.TVShows,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.MusicVideos,
+		SmartPlayList.Types.Mixed)]
     public class PlayCount : IRule
     {
-        public override IValidator Validator
-        {
-            get
-            {
-                return new PositiveIntValidator();
-            }
-        }
+        /// <summary>
+        /// Gets the name of the field.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Field { get { return "playcount"; } }
+
+        /// <summary>
+        /// Gets the underlying type of the field.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(int); } }
+				
+		/// <summary>
+        /// Gets the validator.
+        /// </summary>
+        /// <value>
+        /// The validator.
+        /// </value>
+        public override IValidator Validator { get { return new PositiveIntValidator(); } }
+
     }
 }

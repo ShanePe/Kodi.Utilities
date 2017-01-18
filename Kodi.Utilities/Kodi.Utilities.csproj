@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FieldAllocationAttribute.cs" />
     <Compile Include="Attributes\FormatterTypeAttribute.cs" />
+    <Compile Include="Attributes\ListTypeAllocationAttribute.cs" />
     <Compile Include="Collection\RuleCollection.cs" />
     <Compile Include="Collection\ValueCollection.cs" />
     <Compile Include="Data\Duration.cs" />

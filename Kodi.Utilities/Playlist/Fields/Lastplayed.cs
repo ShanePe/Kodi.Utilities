@@ -1,20 +1,38 @@
+using System;
 using Kodi.Utilities.Attributes;
-using Kodi.Utilities.Data;
 using Kodi.Utilities.Interfaces;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
+using Kodi.Utilities.Data;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Last Played Field
+    /// Represents the LastPlayed Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocation("lastplayed",
-        typeof(Duration),
+    [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Songs,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Mixed)]
+		SmartPlayList.Types.Movies,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.MusicVideos,
+		SmartPlayList.Types.Mixed)]
     public class LastPlayed : IRule
-    { }
+    {
+        /// <summary>
+        /// Gets the name of the field.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Field { get { return "lastplayed"; } }
+
+        /// <summary>
+        /// Gets the underlying type of the field.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(Duration); } }
+		
+    }
 }

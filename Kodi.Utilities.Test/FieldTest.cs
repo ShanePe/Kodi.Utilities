@@ -15,7 +15,7 @@ namespace Kodi.Utilities.Test
         public void GenreFieldAllocation()
         {
             Genre field = new Genre();
-            Assert.AreEqual("genre", field.Name);
+            Assert.AreEqual("genre", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -33,7 +33,7 @@ namespace Kodi.Utilities.Test
         public void AlbumFieldAllocation()
         {
             Album field = new Album();
-            Assert.AreEqual("album", field.Name);
+            Assert.AreEqual("album", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -51,7 +51,7 @@ namespace Kodi.Utilities.Test
         public void ArtistFieldAllocation()
         {
             Artist field = new Artist();
-            Assert.AreEqual("artist", field.Name);
+            Assert.AreEqual("artist", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -69,7 +69,7 @@ namespace Kodi.Utilities.Test
         public void AlbumartistFieldAllocation()
         {
             AlbumArtist field = new AlbumArtist();
-            Assert.AreEqual("albumartist", field.Name);
+            Assert.AreEqual("albumartist", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -87,7 +87,7 @@ namespace Kodi.Utilities.Test
         public void TitleFieldAllocation()
         {
             Title field = new Title();
-            Assert.AreEqual("title", field.Name);
+            Assert.AreEqual("title", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -105,7 +105,7 @@ namespace Kodi.Utilities.Test
         public void YearFieldAllocation()
         {
             Year field = new Year();
-            Assert.AreEqual("year", field.Name);
+            Assert.AreEqual("year", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -123,7 +123,7 @@ namespace Kodi.Utilities.Test
         public void TimeFieldAllocation()
         {
             Time field = new Time();
-            Assert.AreEqual("time", field.Name);
+            Assert.AreEqual("time", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -141,7 +141,7 @@ namespace Kodi.Utilities.Test
         public void TrackintFieldAllocation()
         {
             TrackNumber field = new TrackNumber();
-            Assert.AreEqual("tracknumber", field.Name);
+            Assert.AreEqual("tracknumber", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -159,7 +159,7 @@ namespace Kodi.Utilities.Test
         public void FilenameFieldAllocation()
         {
             Filename field = new Filename();
-            Assert.AreEqual("filename", field.Name);
+            Assert.AreEqual("filename", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -177,7 +177,7 @@ namespace Kodi.Utilities.Test
         public void PathFieldAllocation()
         {
             Path field = new Path();
-            Assert.AreEqual("path", field.Name);
+            Assert.AreEqual("path", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -195,7 +195,7 @@ namespace Kodi.Utilities.Test
         public void PlaycountFieldAllocation()
         {
             PlayCount field = new PlayCount();
-            Assert.AreEqual("playcount", field.Name);
+            Assert.AreEqual("playcount", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -213,7 +213,7 @@ namespace Kodi.Utilities.Test
         public void LastplayedFieldAllocation()
         {
             LastPlayed field = new LastPlayed();
-            Assert.AreEqual("lastplayed", field.Name);
+            Assert.AreEqual("lastplayed", field.Field);
             Assert.AreEqual(typeof(Duration), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -231,7 +231,7 @@ namespace Kodi.Utilities.Test
         public void InprogressFieldAllocation()
         {
             InProgress field = new InProgress();
-            Assert.AreEqual("inprogress", field.Name);
+            Assert.AreEqual("inprogress", field.Field);
             Assert.AreEqual(typeof(bool), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -249,7 +249,7 @@ namespace Kodi.Utilities.Test
         public void RatingFieldAllocation()
         {
             Rating field = new Rating();
-            Assert.AreEqual("rating", field.Name);
+            Assert.AreEqual("rating", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -267,7 +267,7 @@ namespace Kodi.Utilities.Test
         public void CommentFieldAllocation()
         {
             Comment field = new Comment();
-            Assert.AreEqual("comment", field.Name);
+            Assert.AreEqual("comment", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -285,7 +285,7 @@ namespace Kodi.Utilities.Test
         public void DateAddedFieldAllocation()
         {
             DateAdded field = new DateAdded();
-            Assert.AreEqual("dateadded", field.Name);
+            Assert.AreEqual("dateadded", field.Field);
             Assert.AreEqual(typeof(DateTime), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -303,7 +303,7 @@ namespace Kodi.Utilities.Test
         public void PlotFieldAllocation()
         {
             Plot field = new Plot();
-            Assert.AreEqual("plot", field.Name);
+            Assert.AreEqual("plot", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -321,7 +321,7 @@ namespace Kodi.Utilities.Test
         public void PlotoutlineFieldAllocation()
         {
             PlotOutline field = new PlotOutline();
-            Assert.AreEqual("plotoutline", field.Name);
+            Assert.AreEqual("plotoutline", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -339,7 +339,7 @@ namespace Kodi.Utilities.Test
         public void TaglineFieldAllocation()
         {
             Tagline field = new Tagline();
-            Assert.AreEqual("tagline", field.Name);
+            Assert.AreEqual("tagline", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -357,7 +357,7 @@ namespace Kodi.Utilities.Test
         public void MpaaratingFieldAllocation()
         {
             MPAARating field = new MPAARating();
-            Assert.AreEqual("mpaarating", field.Name);
+            Assert.AreEqual("mpaarating", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -375,7 +375,7 @@ namespace Kodi.Utilities.Test
         public void Top250FieldAllocation()
         {
             Top250 field = new Top250();
-            Assert.AreEqual("top250", field.Name);
+            Assert.AreEqual("top250", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -393,7 +393,7 @@ namespace Kodi.Utilities.Test
         public void StatusFieldAllocation()
         {
             Status field = new Status();
-            Assert.AreEqual("status", field.Name);
+            Assert.AreEqual("status", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -411,7 +411,7 @@ namespace Kodi.Utilities.Test
         public void VotesFieldAllocation()
         {
             Votes field = new Votes();
-            Assert.AreEqual("votes", field.Name);
+            Assert.AreEqual("votes", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -429,7 +429,7 @@ namespace Kodi.Utilities.Test
         public void DirectorFieldAllocation()
         {
             Director field = new Director();
-            Assert.AreEqual("director", field.Name);
+            Assert.AreEqual("director", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -447,7 +447,7 @@ namespace Kodi.Utilities.Test
         public void ActorFieldAllocation()
         {
             Actor field = new Actor();
-            Assert.AreEqual("actor", field.Name);
+            Assert.AreEqual("actor", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -465,7 +465,7 @@ namespace Kodi.Utilities.Test
         public void StudioFieldAllocation()
         {
             Studio field = new Studio();
-            Assert.AreEqual("studio", field.Name);
+            Assert.AreEqual("studio", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -483,7 +483,7 @@ namespace Kodi.Utilities.Test
         public void CountryFieldAllocation()
         {
             Country field = new Country();
-            Assert.AreEqual("country", field.Name);
+            Assert.AreEqual("country", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -501,7 +501,7 @@ namespace Kodi.Utilities.Test
         public void NumepisodesFieldAllocation()
         {
             NumEpisodes field = new NumEpisodes();
-            Assert.AreEqual("numepisodes", field.Name);
+            Assert.AreEqual("numepisodes", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -519,7 +519,7 @@ namespace Kodi.Utilities.Test
         public void NumwatchedFieldAllocation()
         {
             NumWatched field = new NumWatched();
-            Assert.AreEqual("numwatched", field.Name);
+            Assert.AreEqual("numwatched", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -537,7 +537,7 @@ namespace Kodi.Utilities.Test
         public void WritersFieldAllocation()
         {
             Writers field = new Writers();
-            Assert.AreEqual("writers", field.Name);
+            Assert.AreEqual("writers", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -555,7 +555,7 @@ namespace Kodi.Utilities.Test
         public void AirDateFieldAllocation()
         {
             AirDate field = new AirDate();
-            Assert.AreEqual("airdate", field.Name);
+            Assert.AreEqual("airdate", field.Field);
             Assert.AreEqual(typeof(DateTime), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -573,7 +573,7 @@ namespace Kodi.Utilities.Test
         public void EpisodeFieldAllocation()
         {
             Episode field = new Episode();
-            Assert.AreEqual("episode", field.Name);
+            Assert.AreEqual("episode", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -591,7 +591,7 @@ namespace Kodi.Utilities.Test
         public void SeasonFieldAllocation()
         {
             Season field = new Season();
-            Assert.AreEqual("season", field.Name);
+            Assert.AreEqual("season", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -609,7 +609,7 @@ namespace Kodi.Utilities.Test
         public void TvshowFieldAllocation()
         {
             TVShow field = new TVShow();
-            Assert.AreEqual("tvshow", field.Name);
+            Assert.AreEqual("tvshow", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -627,7 +627,7 @@ namespace Kodi.Utilities.Test
         public void EpisodetitleFieldAllocation()
         {
             EpisodeTitle field = new EpisodeTitle();
-            Assert.AreEqual("episodetitle", field.Name);
+            Assert.AreEqual("episodetitle", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -645,7 +645,7 @@ namespace Kodi.Utilities.Test
         public void ReviewFieldAllocation()
         {
             Review field = new Review();
-            Assert.AreEqual("review", field.Name);
+            Assert.AreEqual("review", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -663,7 +663,7 @@ namespace Kodi.Utilities.Test
         public void ThemesFieldAllocation()
         {
             Themes field = new Themes();
-            Assert.AreEqual("themes", field.Name);
+            Assert.AreEqual("themes", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -681,7 +681,7 @@ namespace Kodi.Utilities.Test
         public void MoodsFieldAllocation()
         {
             Moods field = new Moods();
-            Assert.AreEqual("moods", field.Name);
+            Assert.AreEqual("moods", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -699,7 +699,7 @@ namespace Kodi.Utilities.Test
         public void StylesFieldAllocation()
         {
             Styles field = new Styles();
-            Assert.AreEqual("styles", field.Name);
+            Assert.AreEqual("styles", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -717,7 +717,7 @@ namespace Kodi.Utilities.Test
         public void TypeFieldAllocation()
         {
             MediaType field = new MediaType();
-            Assert.AreEqual("type", field.Name);
+            Assert.AreEqual("type", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -735,7 +735,7 @@ namespace Kodi.Utilities.Test
         public void LabelFieldAllocation()
         {
             Label field = new Label();
-            Assert.AreEqual("label", field.Name);
+            Assert.AreEqual("label", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -753,7 +753,7 @@ namespace Kodi.Utilities.Test
         public void HastrailerFieldAllocation()
         {
             HasTrailer field = new HasTrailer();
-            Assert.AreEqual("hastrailer", field.Name);
+            Assert.AreEqual("hastrailer", field.Field);
             Assert.AreEqual(typeof(bool), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -771,7 +771,7 @@ namespace Kodi.Utilities.Test
         public void VideoresolutionFieldAllocation()
         {
             VideoResolution field = new VideoResolution();
-            Assert.AreEqual("videoresolution", field.Name);
+            Assert.AreEqual("videoresolution", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -789,7 +789,7 @@ namespace Kodi.Utilities.Test
         public void AudiochannelsFieldAllocation()
         {
             AudioChannels field = new AudioChannels();
-            Assert.AreEqual("audiochannels", field.Name);
+            Assert.AreEqual("audiochannels", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -807,7 +807,7 @@ namespace Kodi.Utilities.Test
         public void VideocodecFieldAllocation()
         {
             VideoCodec field = new VideoCodec();
-            Assert.AreEqual("videocodec", field.Name);
+            Assert.AreEqual("videocodec", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -825,7 +825,7 @@ namespace Kodi.Utilities.Test
         public void AudiocodecFieldAllocation()
         {
             AudioCodec field = new AudioCodec();
-            Assert.AreEqual("audiocodec", field.Name);
+            Assert.AreEqual("audiocodec", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -844,7 +844,7 @@ namespace Kodi.Utilities.Test
         {
             AudioLanguage field = new AudioLanguage();
 
-            Assert.AreEqual("audiolanguage", field.Name);
+            Assert.AreEqual("audiolanguage", field.Field);
             Assert.AreEqual(typeof(ISO6392Language), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -862,7 +862,7 @@ namespace Kodi.Utilities.Test
         public void SubtitlelanguageFieldAllocation()
         {
             SubtitleLanguage field = new SubtitleLanguage();
-            Assert.AreEqual("subtitlelanguage", field.Name);
+            Assert.AreEqual("subtitlelanguage", field.Field);
             Assert.AreEqual(typeof(ISO6392Language), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -880,7 +880,7 @@ namespace Kodi.Utilities.Test
         public void VideoaspectFieldAllocation()
         {
             VideoAspect field = new VideoAspect();
-            Assert.AreEqual("videoaspect", field.Name);
+            Assert.AreEqual("videoaspect", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -898,7 +898,7 @@ namespace Kodi.Utilities.Test
         public void SetFieldAllocation()
         {
             Set field = new Set();
-            Assert.AreEqual("set", field.Name);
+            Assert.AreEqual("set", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -916,7 +916,7 @@ namespace Kodi.Utilities.Test
         public void TagFieldAllocation()
         {
             Tag field = new Tag();
-            Assert.AreEqual("tag", field.Name);
+            Assert.AreEqual("tag", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -934,7 +934,7 @@ namespace Kodi.Utilities.Test
         public void InstrumentsFieldAllocation()
         {
             Instruments field = new Instruments();
-            Assert.AreEqual("instruments", field.Name);
+            Assert.AreEqual("instruments", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -952,7 +952,7 @@ namespace Kodi.Utilities.Test
         public void BiographyFieldAllocation()
         {
             Biography field = new Biography();
-            Assert.AreEqual("biography", field.Name);
+            Assert.AreEqual("biography", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -970,7 +970,7 @@ namespace Kodi.Utilities.Test
         public void BornFieldAllocation()
         {
             Born field = new Born();
-            Assert.AreEqual("born", field.Name);
+            Assert.AreEqual("born", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -988,7 +988,7 @@ namespace Kodi.Utilities.Test
         public void BandformedFieldAllocation()
         {
             BandFormed field = new BandFormed();
-            Assert.AreEqual("bandformed", field.Name);
+            Assert.AreEqual("bandformed", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1006,7 +1006,7 @@ namespace Kodi.Utilities.Test
         public void DisbandedFieldAllocation()
         {
             Disbanded field = new Disbanded();
-            Assert.AreEqual("disbanded", field.Name);
+            Assert.AreEqual("disbanded", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1024,7 +1024,7 @@ namespace Kodi.Utilities.Test
         public void DiedFieldAllocation()
         {
             Died field = new Died();
-            Assert.AreEqual("died", field.Name);
+            Assert.AreEqual("died", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1042,7 +1042,7 @@ namespace Kodi.Utilities.Test
         public void PlaylistFieldAllocation()
         {
             PlayList field = new PlayList();
-            Assert.AreEqual("playlist", field.Name);
+            Assert.AreEqual("playlist", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1060,7 +1060,7 @@ namespace Kodi.Utilities.Test
         public void VirtualFolderFieldAllocation()
         {
             VirtualFolder field = new VirtualFolder();
-            Assert.AreEqual("virtualfolder", field.Name);
+            Assert.AreEqual("virtualfolder", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1078,7 +1078,7 @@ namespace Kodi.Utilities.Test
         public void RoleFieldAllocation()
         {
             Role field = new Role();
-            Assert.AreEqual("role", field.Name);
+            Assert.AreEqual("role", field.Field);
             Assert.AreEqual(typeof(string), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1096,7 +1096,7 @@ namespace Kodi.Utilities.Test
         public void CompilationFieldAllocation()
         {
             Compilation field = new Compilation();
-            Assert.AreEqual("compilation", field.Name);
+            Assert.AreEqual("compilation", field.Field);
             Assert.AreEqual(typeof(bool), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1114,7 +1114,7 @@ namespace Kodi.Utilities.Test
         public void UserRatingFieldAllocation()
         {
             UserRating field = new UserRating();
-            Assert.AreEqual("userrating", field.Name);
+            Assert.AreEqual("userrating", field.Field);
             Assert.AreEqual(typeof(double), field.UnderlyingType);
 
             Assert.IsTrue(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1132,7 +1132,7 @@ namespace Kodi.Utilities.Test
         public void AudioCountFieldAllocation()
         {
             AudioCount field = new AudioCount();
-            Assert.AreEqual("audiocount", field.Name);
+            Assert.AreEqual("audiocount", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));
@@ -1150,7 +1150,7 @@ namespace Kodi.Utilities.Test
         public void SubtitleCountFieldAllocation()
         {
             SubtitleCount field = new SubtitleCount();
-            Assert.AreEqual("subtitlecount", field.Name);
+            Assert.AreEqual("subtitlecount", field.Field);
             Assert.AreEqual(typeof(int), field.UnderlyingType);
 
             Assert.IsFalse(field.IsAllowedForPlaylistType(SmartPlayList.Types.Songs));

@@ -54,7 +54,7 @@ namespace Kodi.Utilities.Interfaces
             Assembly assembly = IRuleTInfo.Assembly;
 
             IRule field = playlist.GetAvailableFields()
-                                  .FirstOrDefault(ri => ri.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                                  .FirstOrDefault(ri => ri.Field.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (field == null)
                 throw new RuleParseException("Field", Enum.GetName(typeof(SmartPlayList.Types), playlist.Type), name);
@@ -77,7 +77,7 @@ namespace Kodi.Utilities.Interfaces
 
             IRule sortField = assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
                                  .Select(r => (IRule)Activator.CreateInstance(r.AsType()))
-                                 .FirstOrDefault(ri => ri.Name.Equals(field, StringComparison.OrdinalIgnoreCase));
+                                 .FirstOrDefault(ri => ri.Field.Equals(field, StringComparison.OrdinalIgnoreCase));
 
             if (sortField == null)
                 throw new RuleParseException("Field", "Sort", field);

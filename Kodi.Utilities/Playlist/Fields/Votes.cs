@@ -1,27 +1,45 @@
+using System;
 using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Interfaces;
+using static Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 using Kodi.Utilities.Validators;
 
 namespace Kodi.Utilities.Playlist.Fields
 {
     /// <summary>
-    /// Votes field
+    /// Represents the Votes Field
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
-    [FieldAllocation("votes",
-        typeof(int),
+    [ListTypeAllocation(AppliesTos.SmartPlaylist,
         SmartPlayList.Types.Movies,
-        SmartPlayList.Types.TVShows,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.Mixed)]
+		SmartPlayList.Types.TVShows,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.Mixed)]
     public class Votes : IRule
     {
-        public override IValidator Validator
-        {
-            get
-            {
-                return new PositiveIntValidator();
-            }
-        }
+        /// <summary>
+        /// Gets the name of the field.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public override string Field { get { return "votes"; } }
+
+        /// <summary>
+        /// Gets the underlying type of the field.
+        /// </summary>
+        /// <value>
+        /// The underlying type.
+        /// </value>
+        public override Type UnderlyingType { get { return typeof(int); } }
+				
+		/// <summary>
+        /// Gets the validator.
+        /// </summary>
+        /// <value>
+        /// The validator.
+        /// </value>
+        public override IValidator Validator { get { return new PositiveIntValidator(); } }
+
     }
 }
