@@ -41,6 +41,7 @@
     <Compile Include="Data\ISO6392LanguageFactory.cs" />
     <Compile Include="Exceptions\FieldExistsException.cs" />
     <Compile Include="Exceptions\InvalidFieldTypeValue.cs" />
+    <Compile Include="Exceptions\InvalidOrderByException.cs" />
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
     <Compile Include="Exceptions\InvalidTimeFormatException.cs" />
     <Compile Include="Exceptions\InvalidTypeException.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Exceptions\MissingFieldAttributeException.cs" />
     <Compile Include="Exceptions\MissingFormatterTypeAttrException.cs" />
     <Compile Include="Exceptions\MissingValueException.cs" />
+    <Compile Include="Exceptions\MultiValueViolationException.cs" />
     <Compile Include="Exceptions\NonPositiveIntegerException.cs" />
     <Compile Include="Exceptions\NoValueAllowedForRuleException.cs" />
     <Compile Include="Exceptions\RuleParseException.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="Formatters\DateFormatter.cs" />
     <Compile Include="Formatters\IntegerFormatter.cs" />
     <Compile Include="Formatters\StringFormatter.cs" />
+    <Compile Include="Interfaces\IAllocatable.cs" />
     <Compile Include="Interfaces\IFormatter.cs" />
     <Compile Include="Interfaces\IGroup.cs" />
     <Compile Include="Interfaces\IOperator.cs" />

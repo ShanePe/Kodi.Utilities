@@ -84,7 +84,7 @@ namespace Kodi.Utilities.Interfaces
 
             sortField.Sort = (IRule.SortOptions)Enum.Parse(typeof(IRule.SortOptions), direction, true);
 
-            playlist.SortField = sortField;
+            playlist.OrderBy = sortField;
         }
 
     }

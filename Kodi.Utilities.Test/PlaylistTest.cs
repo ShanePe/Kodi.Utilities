@@ -4,26 +4,50 @@ using Kodi.Utilities.Playlist;
 using Kodi.Utilities.Collection;
 using Kodi.Utilities.Playlist.Fields;
 using Kodi.Utilities.Parsers;
+using Kodi.Utilities.Interfaces;
+using System.Collections.Generic;
 
 namespace Kodi.Utilities.Test
 {
+    public class RuleHolder : Dictionary<Type, IRule>
+    {
+        public new IRule this[Type t]
+        {
+            get
+            {
+                if (this.ContainsKey(t))
+                    return base[t];
+                else
+                    return null;
+            }
+            set
+            {
+                base[t] = value;
+            }
+        }
+    }
     [TestClass]
     public class PlaylistTest
     {
-        private RuleCollection GetRulesForType(SmartPlayList.Types type)
+        private RuleHolder GetRulesForType(SmartPlayList.Types type)
         {
             SmartPlayList playlist = new SmartPlayList("Test")
             {
                 Type = type
             };
 
-            return playlist.GetAvailableFields();
+            RuleHolder rules = new RuleHolder();
+            
+            foreach (IRule rule in playlist.GetAvailableFields())
+                rules.Add(rule.GetType(), rule);
+
+            return rules;
         }
 
         [TestMethod]
         public void TestSongs()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.Songs);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Songs);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
@@ -94,7 +118,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestAlbums()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.Albums);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Albums);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
@@ -165,7 +189,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestArtist()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.Artists);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Artists);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -236,7 +260,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestMovies()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.Movies);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Movies);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -307,7 +331,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestTVShows()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.TVShows);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.TVShows);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -378,7 +402,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestEpisodes()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.Episodes);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Episodes);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -449,7 +473,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestMusicVideos()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.MusicVideos);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.MusicVideos);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
@@ -520,7 +544,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestMixed()
         {
-            RuleCollection rules = GetRulesForType(SmartPlayList.Types.Mixed);
+            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Mixed);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);

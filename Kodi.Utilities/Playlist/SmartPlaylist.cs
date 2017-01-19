@@ -1,4 +1,5 @@
 ﻿using Kodi.Utilities.Collection;
+using Kodi.Utilities.Exceptions;
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Validators;
 using PCLStorage;
@@ -17,8 +18,10 @@ namespace Kodi.Utilities.Playlist
     /// </summary>
     public class SmartPlayList
     {
-        private Dictionary<lta.AppliesTos, RuleCollection> _available = new Dictionary<lta.AppliesTos, RuleCollection>();
+        private Dictionary<lta.AppliesTos, Array> _available = new Dictionary<lta.AppliesTos, Array>();
         private Types _type = Types.Songs;
+        private IRule _orderBy = null;
+
         /// <summary>
         /// Playlist types
         /// </summary>
@@ -95,14 +98,25 @@ namespace Kodi.Utilities.Playlist
         /// <value>
         /// The limit.
         /// </value>
-        public int Limit { get; set; } = 50;
+        public int Limit { get; set; } = 100;
         /// <summary>
         /// Gets the sort field.
         /// </summary>
         /// <value>
         /// The sort field.
         /// </value>
-        public IRule SortField { get; set; }
+        public IRule OrderBy
+        {
+            get { return _orderBy; }
+            set
+            {
+                if (value != null)
+                    if (!value.IsOrderByForPlaylist(this.Type))
+                        throw new InvalidOrderByException(value, this.Type);
+            }
+        }
+
+
         #endregion
 
         #region Constructors
@@ -178,44 +192,63 @@ namespace Kodi.Utilities.Playlist
         /// Gets the available fields.
         /// </summary>
         /// <returns></returns>
-        public RuleCollection GetAvailableFields()
+        public IRule[] GetAvailableFields()
         {
             if (!_available.ContainsKey(lta.AppliesTos.SmartPlaylist))
             {
-                RuleCollection col = new RuleCollection();
-                col.AddRange(SmartPlayList.GetAllFields()
-                    .Where(ri => ri.IsFieldForPlaylist(Type)));
+                IRule[] col = SmartPlayList.GetAll<IRule>()
+                    .Where(ri => ri.IsFieldForPlaylist(Type)).ToArray();
+
                 _available.Add(lta.AppliesTos.SmartPlaylist, col);
             }
-            return _available[lta.AppliesTos.SmartPlaylist];
+            return (IRule[])_available[lta.AppliesTos.SmartPlaylist];
         }
 
         /// <summary>
         /// Gets the available order by.
         /// </summary>
         /// <returns></returns>
-        public RuleCollection GetAvailableOrderBy()
+        public IRule[] GetAvailableOrderBy()
         {
             if (!_available.ContainsKey(lta.AppliesTos.OrderBy))
             {
-                RuleCollection col = new RuleCollection();
-                col.AddRange(SmartPlayList.GetAllFields()
-                    .Where(ri => ri.IsOrderByForPlaylist(Type)));
+                IRule[] col = SmartPlayList.GetAll<IRule>()
+                    .Where(ri => ri.IsOrderByForPlaylist(Type)).ToArray();
+
                 _available.Add(lta.AppliesTos.SmartPlaylist, col);
             }
-            return _available[lta.AppliesTos.OrderBy];
+            return (IRule[])_available[lta.AppliesTos.OrderBy];
         }
 
-        public static RuleCollection GetAllFields()
+        /// <summary>
+        /// Gets the available groups.
+        /// </summary>
+        /// <returns></returns>
+        public IGroup[] GetAvailableGroups()
         {
-            TypeInfo IRuleTInfo = typeof(IRule).GetTypeInfo();
-            Assembly assembly = IRuleTInfo.Assembly;
+            if (!_available.ContainsKey(lta.AppliesTos.Group))
+            {
+                IGroup[] col = SmartPlayList.GetAll<IGroup>()
+                    .Where(ri => ri.IsGroupForPlaylist(Type)).ToArray();
 
-            RuleCollection rules = new RuleCollection();
-            rules.AddRange(assembly.DefinedTypes.Where(t => IRuleTInfo.IsAssignableFrom(t) && !t.IsAbstract)
-                   .Select(r => (IRule)Activator.CreateInstance(r.AsType())));
+                _available.Add(lta.AppliesTos.SmartPlaylist, col);
+            }
+            return (IGroup[])_available[lta.AppliesTos.OrderBy];
+        }
 
-            return rules;
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<T> GetAll<T>() where T : IAllocatable
+        {
+            TypeInfo tInfo = typeof(T).GetTypeInfo();
+            Assembly assembly = tInfo.Assembly;
+
+            foreach (T item in assembly.DefinedTypes.Where(t => tInfo.IsAssignableFrom(t) && !t.IsAbstract)
+                   .Select(r => (T)Activator.CreateInstance(r.AsType())))
+                yield return item;
         }
 
         /// <summary>

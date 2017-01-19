@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using lta = Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
+
 namespace Kodi.Utilities.Interfaces
 {
     /// <summary>
     /// Abstract class to define rule fields and functions
     /// </summary>
-    public abstract class IRule
+    public abstract class IRule:IAllocatable
     {
-        Dictionary<lta.AppliesTos, lta> _allocationAttr = new Dictionary<lta.AppliesTos, lta>();
         private IFormatter _formatter = null;
         IOperator _operator = null;
         /// <summary>
@@ -146,26 +146,8 @@ namespace Kodi.Utilities.Interfaces
             return GetAllocation(lta.AppliesTos.OrderBy);
         }
 
-        /// <summary>
-        /// Gets the allocation.
-        /// </summary>
-        /// <param name="appliesTo">The applies to.</param>
-        /// <returns></returns>
-        private ListTypeAllocationAttribute GetAllocation(lta.AppliesTos appliesTo)
-        {
-            if (!_allocationAttr.ContainsKey(appliesTo))
-            {
-                TypeInfo typeInfo = this.GetType().GetTypeInfo();
-                lta attr = typeInfo.GetCustomAttributes<lta>()
-                                        .FirstOrDefault(a => a.AppliesTo == appliesTo);
-                if (attr == null)
-                    attr = new lta(appliesTo, new SmartPlayList.Types[0]);
-
-                _allocationAttr.Add(appliesTo, attr);
-            }
-            return _allocationAttr[appliesTo];
-        }
-
+       
+        
         /// <summary>
         /// Gets the available operators.
         /// </summary>
@@ -200,6 +182,7 @@ namespace Kodi.Utilities.Interfaces
         {
             return GetOrderAllocation().AllowedTypes.Contains(type);
         }
+        
         #endregion
     }
 }

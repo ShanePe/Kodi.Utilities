@@ -119,12 +119,12 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteEndElement();
             }
 
-            if (playlistToWrite.SortField != null)
+            if (playlistToWrite.OrderBy != null)
             {
                 writer.WriteStartElement(XmlFileDefinition.OrderNode);
                 writer.WriteAttributeString(XmlFileDefinition.OrderDirectionAttr,
-                    playlistToWrite.GetPlayListEnumAsString(typeof(IRule.SortOptions), playlistToWrite.SortField.Sort));
-                writer.WriteValue(playlistToWrite.SortField.Field);
+                    playlistToWrite.GetPlayListEnumAsString(typeof(IRule.SortOptions), playlistToWrite.OrderBy.Sort));
+                writer.WriteValue(playlistToWrite.OrderBy.Field);
                 writer.WriteEndElement();
             }
 

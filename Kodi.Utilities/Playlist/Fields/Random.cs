@@ -12,14 +12,14 @@ namespace Kodi.Utilities.Playlist.Fields
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IRule" />
     [ListTypeAllocation(AppliesTos.OrderBy,
-        SmartPlayList.Types.Songs,
-        SmartPlayList.Types.Albums,
-        SmartPlayList.Types.Artists,
-        SmartPlayList.Types.Movies,
-        SmartPlayList.Types.TVShows,
-        SmartPlayList.Types.Episodes,
-        SmartPlayList.Types.MusicVideos,
-        SmartPlayList.Types.Mixed)]
+		SmartPlayList.Types.Songs,
+		SmartPlayList.Types.Albums,
+		SmartPlayList.Types.Artists,
+		SmartPlayList.Types.Movies,
+		SmartPlayList.Types.TVShows,
+		SmartPlayList.Types.Episodes,
+		SmartPlayList.Types.MusicVideos,
+		SmartPlayList.Types.Mixed)]
     public class Random : IRule
     {
         /// <summary>
@@ -37,6 +37,6 @@ namespace Kodi.Utilities.Playlist.Fields
         /// The underlying type.
         /// </value>
         public override Type UnderlyingType { get { return typeof(string); } }
-
+		
     }
 }

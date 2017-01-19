@@ -16,24 +16,30 @@ namespace Kodi.Utilities.Validators
         {
             if (CheckForValue(playList.Name))
                 throw new MissingValueException(nameof(playList.Name), nameof(SmartPlayList));
-
-            RuleCollection rules = playList.GetAvailableFields();
-
+            
             foreach (IRule rule in playList.Rules)
             {
                 if (CheckForValue(rule.Field))
                     throw new MissingValueException(nameof(rule.Field), nameof(rule));
 
-                if (rule.Values.Count == 0)
-                    throw new MissingValueException(nameof(rule.Values), nameof(rule));
-
                 if (rule.Operator == null)
                     throw new MissingValueException(nameof(rule.Operator), nameof(rule));
 
+                if (rule.Operator.NoValue && rule.Values.Count > 0)
+                    throw new NoValueAllowedForRuleException(rule);
 
+                if (rule.Values.Count == 0)
+                    throw new MissingValueException(nameof(rule.Values), nameof(rule));
+
+                if (!rule.IsMultipleValuesAllowed && rule.Values.Count > 1)
+                    throw new MultiValueViolationException(rule);
 
                 if (!rule.IsFieldForPlaylist(playList.Type))
                     throw new FieldNotValidForTypeException(rule, playList);
+
+                if (playList.OrderBy != null)
+                    if (!playList.OrderBy.IsOrderByForPlaylist(playList.Type))
+                        throw new InvalidOrderByException(rule, playList.Type);
             }
         }
 

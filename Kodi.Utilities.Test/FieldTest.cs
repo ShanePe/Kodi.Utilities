@@ -1636,10 +1636,11 @@ namespace Kodi.Utilities.Test
             Assert.IsTrue(field.IsOrderByForPlaylist(SmartPlayList.Types.Mixed));
         }
 
+
         [TestMethod]
         public void TestMultiValues()
         {
-            foreach (IRule rule in SmartPlayList.GetAllFields()
+            foreach (IRule rule in SmartPlayList.GetAll<IRule>()
                                         .Where(r => r.IsMultipleValuesAllowed))
             {
                 object[] o = GetTestValue(rule.UnderlyingType);
@@ -1649,7 +1650,7 @@ namespace Kodi.Utilities.Test
                 Assert.AreEqual(rule.Values.Count, 2);
             }
 
-            foreach (IRule rule in SmartPlayList.GetAllFields()
+            foreach (IRule rule in SmartPlayList.GetAll<IRule>()
                                         .Where(r => !r.IsMultipleValuesAllowed && !r.Operator.NoValue))
             {
                 object[] o = GetTestValue(rule.UnderlyingType);

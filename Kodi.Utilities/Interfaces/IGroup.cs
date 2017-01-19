@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Kodi.Utilities.Playlist;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using lta = Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Interfaces
 {
@@ -10,7 +12,7 @@ namespace Kodi.Utilities.Interfaces
     /// Defines a group
     /// </summary>
     /// <typeparam name="R"></typeparam>
-    public abstract class IGroup
+    public abstract class IGroup : IAllocatable
     {
         private bool _mixed = false;
 
@@ -46,6 +48,27 @@ namespace Kodi.Utilities.Interfaces
                     throw new Exception($"Group {Name} cannot be set to mixed mode.");
                 _mixed = value;
             }
+        }
+
+        /// <summary>
+        /// Determines whether [is group for playlist] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [is group for playlist] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsGroupForPlaylist(SmartPlayList.Types type)
+        {
+            return GetGroupAllocation().AllowedTypes.Contains(type);
+        }
+
+        /// <summary>
+        /// Gets the group allocation.
+        /// </summary>
+        /// <returns></returns>
+        private lta GetGroupAllocation()
+        {
+            return GetAllocation(lta.AppliesTos.Group);
         }
     }
 }
