@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using lta = Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
+using Kodi.Utilities.Extensions;
 
 namespace Kodi.Utilities.Interfaces
 {
@@ -23,6 +24,14 @@ namespace Kodi.Utilities.Interfaces
         /// The name.
         /// </value>
         public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the friendly name.
+        /// </summary>
+        /// <value>
+        /// The friendly name.
+        /// </value>
+        public virtual string FriendlyName { get { return Name.SplitCamel().ToTitleCase(); } }
 
         /// <summary>
         /// Gets a value indicating whether [allow mixed].

@@ -37,12 +37,32 @@ namespace Kodi.Utilities.Interfaces
             playlist.Match = (SmartPlayList.MatchOptions)Enum.Parse(typeof(SmartPlayList.MatchOptions), value, true);
         }
 
+        public virtual void SetPlaylistGroup(string value,string mixed, ref SmartPlayList playlist)
+        {
+            if (playlist == null)
+                playlist = new SmartPlayList();
+
+            IGroup group = playlist.GetAvailableGroups()
+                                  .FirstOrDefault(ri => ri.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
+
+            if (group == null)
+                throw new RuleParseException("Group", "Group", value);
+
+            bool bMix = false;
+            if (bool.TryParse(mixed, out bMix))
+                group.Mixed = bMix;
+
+            playlist.Group = group;
+        }
+
         public virtual void SetPlaylistLimit(string value, ref SmartPlayList playlist)
         {
             if (playlist == null)
                 playlist = new SmartPlayList();
 
-            playlist.Limit = int.Parse(value);
+            int lim = 0;
+            if (int.TryParse(value, out lim))
+                playlist.Limit = lim;
         }
 
         public virtual void AddPlaylistRule(string name, string oper, List<string> values, ref SmartPlayList playlist)
@@ -62,10 +82,11 @@ namespace Kodi.Utilities.Interfaces
             IOperator operatr = field.GetAvailableOperators()
                                       .FirstOrDefault(t => t.Name.Equals(oper, StringComparison.OrdinalIgnoreCase));
 
-            if (oper == null)
+            if (operatr == null)
                 throw new RuleParseException("Operator", field.FriendlyName, oper);
 
-            field.Values.AddRange(values);
+            if (!operatr.NoValue)
+                field.Values.AddRange(values);
             field.Operator = operatr;
             playlist.Rules.Add(field);
         }

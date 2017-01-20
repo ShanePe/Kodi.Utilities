@@ -41,6 +41,7 @@
     <Compile Include="Data\ISO6392LanguageFactory.cs" />
     <Compile Include="Exceptions\FieldExistsException.cs" />
     <Compile Include="Exceptions\InvalidFieldTypeValue.cs" />
+    <Compile Include="Exceptions\InvalidGroupException.cs" />
     <Compile Include="Exceptions\InvalidOrderByException.cs" />
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
     <Compile Include="Exceptions\InvalidTimeFormatException.cs" />

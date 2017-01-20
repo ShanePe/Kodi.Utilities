@@ -17,6 +17,9 @@ namespace Kodi.Utilities.Parsers
             public const string NameNode = "name";
             public const string MatchNode = "match";
             public const string OrderNode = "order";
+            public const string GroupNode = "group";
+            public const string GroupMixedAttr = "mixed";
+            public const string LimitNode = "limit";
             public const string OrderDirectionAttr = "direction";
             public const string RuleNode = "rule";
             public const string RuleOperatorAttr = "operator";
@@ -46,6 +49,17 @@ namespace Kodi.Utilities.Parsers
                     string sortField = reader.ReadElementContentAsString();
 
                     SetPlayListSortField(sortField, direction, ref playlist);
+                    break;
+
+                case XmlFileDefinition.GroupNode:
+                    string mixed = reader.HasAttributes ?
+                                    reader.GetAttribute(XmlFileDefinition.GroupMixedAttr) :
+                                    "";
+                    SetPlaylistGroup(reader.ReadElementContentAsString(), mixed, ref playlist);
+                    break;
+
+                case XmlFileDefinition.LimitNode:
+                    SetPlaylistLimit(reader.ReadElementContentAsString(), ref playlist);
                     break;
 
                 case XmlFileDefinition.RuleNode:
@@ -119,6 +133,23 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteEndElement();
             }
 
+            if (playlistToWrite.Limit > 0)
+            {
+                writer.WriteStartElement(XmlFileDefinition.LimitNode);
+                writer.WriteValue(playlistToWrite.Limit.ToString());
+                writer.WriteEndElement();
+            }
+
+            if (playlistToWrite.Group != null)
+            {
+                writer.WriteStartElement(XmlFileDefinition.GroupNode);
+                if (playlistToWrite.Group.Mixed)
+                    writer.WriteAttributeString(XmlFileDefinition.GroupMixedAttr, playlistToWrite.Group.Mixed.ToString().ToLower());
+                
+                writer.WriteValue(playlistToWrite.Group.Name);
+                writer.WriteEndElement();
+            }
+
             if (playlistToWrite.OrderBy != null)
             {
                 writer.WriteStartElement(XmlFileDefinition.OrderNode);
@@ -127,6 +158,8 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteValue(playlistToWrite.OrderBy.Field);
                 writer.WriteEndElement();
             }
+
+
 
             writer.WriteEndElement();
             writer.WriteEndDocument();

@@ -17,7 +17,7 @@ namespace Kodi.Utilities.Playlist.Groups
         SmartPlayList.Types.MusicVideos,
         SmartPlayList.Types.Movies,
         SmartPlayList.Types.TVShows)]
-    class Tags : IGroup
+    public class Tags : IGroup
     {
         /// <summary>
         /// Gets the name.

@@ -16,7 +16,7 @@ namespace Kodi.Utilities.Validators
         {
             if (CheckForValue(playList.Name))
                 throw new MissingValueException(nameof(playList.Name), nameof(SmartPlayList));
-            
+
             foreach (IRule rule in playList.Rules)
             {
                 if (CheckForValue(rule.Field))
@@ -28,7 +28,7 @@ namespace Kodi.Utilities.Validators
                 if (rule.Operator.NoValue && rule.Values.Count > 0)
                     throw new NoValueAllowedForRuleException(rule);
 
-                if (rule.Values.Count == 0)
+                if (!rule.Operator.NoValue && rule.Values.Count == 0)
                     throw new MissingValueException(nameof(rule.Values), nameof(rule));
 
                 if (!rule.IsMultipleValuesAllowed && rule.Values.Count > 1)
@@ -40,6 +40,10 @@ namespace Kodi.Utilities.Validators
                 if (playList.OrderBy != null)
                     if (!playList.OrderBy.IsOrderByForPlaylist(playList.Type))
                         throw new InvalidOrderByException(rule, playList.Type);
+
+                if (playList.Group != null)
+                    if (!playList.Group.IsGroupForPlaylist(playList.Type))
+                        throw new InvalidGroupException(playList.Group, playList.Type);
             }
         }
 

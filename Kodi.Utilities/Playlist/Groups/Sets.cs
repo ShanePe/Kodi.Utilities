@@ -15,7 +15,7 @@ namespace Kodi.Utilities.Playlist.Groups
     /// </summary>
     /// <seealso cref="Kodi.Utilities.Interfaces.IGroup" />
     [ListTypeAllocation(AppliesTos.Group,
-        SmartPlayList.Types.MusicVideos)]
+        SmartPlayList.Types.Movies)]
     public class Sets : IGroup
     {
         /// <summary>

@@ -21,6 +21,7 @@ namespace Kodi.Utilities.Playlist
         private Dictionary<lta.AppliesTos, Array> _available = new Dictionary<lta.AppliesTos, Array>();
         private Types _type = Types.Songs;
         private IRule _orderBy = null;
+        private IGroup _group = null;
 
         /// <summary>
         /// Playlist types
@@ -74,7 +75,7 @@ namespace Kodi.Utilities.Playlist
             get { return _type; }
             set
             {
-                _available.Clear();
+                Reset();
                 _type = value;
             }
         }
@@ -98,7 +99,7 @@ namespace Kodi.Utilities.Playlist
         /// <value>
         /// The limit.
         /// </value>
-        public int Limit { get; set; } = 100;
+        public int Limit { get; set; }
         /// <summary>
         /// Gets the sort field.
         /// </summary>
@@ -113,9 +114,26 @@ namespace Kodi.Utilities.Playlist
                 if (value != null)
                     if (!value.IsOrderByForPlaylist(this.Type))
                         throw new InvalidOrderByException(value, this.Type);
+                _orderBy = value;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the group.
+        /// </summary>
+        /// <value>
+        /// The group.
+        /// </value>
+        public IGroup Group
+        {
+            get { return _group; }
+            set
+            {
+                if (value != null)
+                    if (!value.IsGroupForPlaylist(this.Type))
+                        throw new InvalidGroupException(value, this.Type);
+                _group = value;
+            }
+        }
 
         #endregion
 
@@ -215,7 +233,7 @@ namespace Kodi.Utilities.Playlist
                 IRule[] col = SmartPlayList.GetAll<IRule>()
                     .Where(ri => ri.IsOrderByForPlaylist(Type)).ToArray();
 
-                _available.Add(lta.AppliesTos.SmartPlaylist, col);
+                _available.Add(lta.AppliesTos.OrderBy, col);
             }
             return (IRule[])_available[lta.AppliesTos.OrderBy];
         }
@@ -231,9 +249,9 @@ namespace Kodi.Utilities.Playlist
                 IGroup[] col = SmartPlayList.GetAll<IGroup>()
                     .Where(ri => ri.IsGroupForPlaylist(Type)).ToArray();
 
-                _available.Add(lta.AppliesTos.SmartPlaylist, col);
+                _available.Add(lta.AppliesTos.Group, col);
             }
-            return (IGroup[])_available[lta.AppliesTos.OrderBy];
+            return (IGroup[])_available[lta.AppliesTos.Group];
         }
 
         /// <summary>
@@ -302,6 +320,16 @@ namespace Kodi.Utilities.Playlist
         internal string GetPlayListEnumAsString(Type enumType, object value)
         {
             return Enum.GetName(enumType, value).ToLower();
+        }
+
+        public void Reset()
+        {
+            _available.Clear();
+            _orderBy = null;
+            _group = null;
+            Limit = 0;
+            Rules.Clear();
+            Match = MatchOptions.All;
         }
 
         #endregion

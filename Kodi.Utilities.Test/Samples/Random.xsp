@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<smartplaylist type="songs">
-  <name>Random Animation</name>
+<smartplaylist type="movies">
+  <name>test</name>
   <match>all</match>
-  <rule field="genre" operator="is">
-    <value>Animation</value>
+  <rule field="title" operator="contains">
+    <value>21 Jump Street</value>
+    <value>22 Jump Street</value>
+    <value>30 Nights of Paranormal Activity With the Devil Inside the Girl With the Dragon Tattoo</value>
   </rule>
-  <rule field="tracknumber" operator="is">
+  <rule field="videoaspect" operator="is">
     <value>1</value>
   </rule>
-  <order direction="descending">random</order>
+  <rule field="audiochannels" operator="greaterthan">
+    <value>1</value>
+  </rule>
+  <rule field="dateadded" operator="after">
+    <value>2010-10-19</value>
+  </rule>
+  <rule field="lastplayed" operator="after">
+    <value>1955-08-05</value>
+  </rule>
+  <rule field="hastrailer" operator="true" />
+  <rule field="director" operator="is">
+    <value>Adam McKay</value>
+    <value>Akiva Goldsman</value>
+    <value>Al Giddings</value>
+  </rule>
+  <rule field="writers" operator="is">
+    <value>Adam F. Goldberg</value>
+    <value>Adam Herz</value>
+    <value>Adam Mazer</value>
+  </rule>
+  <rule field="plot" operator="contains">
+    <value>rtdr</value>
+  </rule>
+  <group mixed="true">sets</group>
+  <limit>1000</limit>
+  <order direction="descending">studio</order>
 </smartplaylist>

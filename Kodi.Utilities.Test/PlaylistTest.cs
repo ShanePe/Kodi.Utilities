@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 namespace Kodi.Utilities.Test
 {
-    public class RuleHolder : Dictionary<Type, IRule>
+    public class Holder : Dictionary<Type, IAllocatable>
     {
-        public new IRule this[Type t]
+        public new IAllocatable this[Type t]
         {
             get
             {
@@ -29,14 +29,14 @@ namespace Kodi.Utilities.Test
     [TestClass]
     public class PlaylistTest
     {
-        private RuleHolder GetRulesForType(SmartPlayList.Types type)
+        private Holder GetRulesForType(SmartPlayList.Types type)
         {
             SmartPlayList playlist = new SmartPlayList("Test")
             {
                 Type = type
             };
 
-            RuleHolder rules = new RuleHolder();
+            Holder rules = new Holder();
             
             foreach (IRule rule in playlist.GetAvailableFields())
                 rules.Add(rule.GetType(), rule);
@@ -47,7 +47,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestSongs()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Songs);
+            Holder rules = GetRulesForType(SmartPlayList.Types.Songs);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
@@ -118,7 +118,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestAlbums()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Albums);
+            Holder rules = GetRulesForType(SmartPlayList.Types.Albums);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
@@ -189,7 +189,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestArtist()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Artists);
+            Holder rules = GetRulesForType(SmartPlayList.Types.Artists);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -260,7 +260,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestMovies()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Movies);
+            Holder rules = GetRulesForType(SmartPlayList.Types.Movies);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -331,7 +331,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestTVShows()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.TVShows);
+            Holder rules = GetRulesForType(SmartPlayList.Types.TVShows);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -402,7 +402,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestEpisodes()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Episodes);
+            Holder rules = GetRulesForType(SmartPlayList.Types.Episodes);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNull(rules[typeof(Album)]);
@@ -473,7 +473,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestMusicVideos()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.MusicVideos);
+            Holder rules = GetRulesForType(SmartPlayList.Types.MusicVideos);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
@@ -544,7 +544,7 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void TestMixed()
         {
-            RuleHolder rules = GetRulesForType(SmartPlayList.Types.Mixed);
+            Holder rules = GetRulesForType(SmartPlayList.Types.Mixed);
 
             Assert.IsNotNull(rules[typeof(Genre)]);
             Assert.IsNotNull(rules[typeof(Album)]);
