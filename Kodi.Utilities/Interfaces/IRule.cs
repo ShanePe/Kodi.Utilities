@@ -14,7 +14,7 @@ namespace Kodi.Utilities.Interfaces
     /// <summary>
     /// Abstract class to define rule fields and functions
     /// </summary>
-    public abstract class IRule:IAllocatable
+    public abstract class IRule : IAllocatable
     {
         private IFormatter _formatter = null;
         IOperator _operator = null;
@@ -117,13 +117,18 @@ namespace Kodi.Utilities.Interfaces
             Values = new ValueCollection(this);
             Operator = GetAvailableOperators()?[0];
         }
-        #endregion
 
-        #region Abstract
-        #endregion
-
-        #region Virtual
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IRule"/> class.
+        /// </summary>
+        /// <param name="operatr">The operator.</param>
+        /// <param name="values">The values.</param>
+        public IRule(IOperator operatr, params string[] values)
+            : this()
+        {
+            Operator = operatr;
+            Values.AddRange(values);
+        }
         #endregion
 
         #region Methods
@@ -146,8 +151,8 @@ namespace Kodi.Utilities.Interfaces
             return GetAllocation(lta.AppliesTos.OrderBy);
         }
 
-       
-        
+
+
         /// <summary>
         /// Gets the available operators.
         /// </summary>
@@ -182,7 +187,7 @@ namespace Kodi.Utilities.Interfaces
         {
             return GetOrderAllocation().AllowedTypes.Contains(type);
         }
-        
+
         #endregion
     }
 }
