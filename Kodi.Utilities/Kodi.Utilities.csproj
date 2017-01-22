@@ -43,6 +43,7 @@
     <Compile Include="Exceptions\InvalidFieldTypeValue.cs" />
     <Compile Include="Exceptions\InvalidGroupException.cs" />
     <Compile Include="Exceptions\InvalidOrderByException.cs" />
+    <Compile Include="Exceptions\InvalidPlayListFileException.cs" />
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />
     <Compile Include="Exceptions\InvalidTimeFormatException.cs" />
     <Compile Include="Exceptions\InvalidTypeException.cs" />

@@ -11,7 +11,7 @@ namespace Kodi.Utilities.Exceptions
     class FieldNotValidForTypeException : Exception
     {
         public FieldNotValidForTypeException(IRule rule, SmartPlayList playlist) :
-            base($"Field {rule.FriendlyName} not valid for playlist type {playlist.GetPlayListEnumAsString(typeof(SmartPlayList.Types), playlist.Type)}")
+            base($"Field {rule.FriendlyName} not valid for playlist type {playlist.GetPlayListEnumAsString(typeof(SmartPlayList.Types), playlist.MediaType)}")
         {
         }
     }

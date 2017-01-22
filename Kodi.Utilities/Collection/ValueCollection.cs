@@ -2,6 +2,7 @@
 using Kodi.Utilities.Interfaces;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Kodi.Utilities.Collection
 {
@@ -35,10 +36,10 @@ namespace Kodi.Utilities.Collection
 
             if (_parentRule.Operator.NoValue)
                 throw new NoValueAllowedForRuleException(_parentRule);
-
+            
             if (o.GetType() != _parentRule.UnderlyingType)
                 o = IFormatter.GetFormatter(_parentRule.UnderlyingType).SetToType(o.ToString());
-
+            
             if (_parentRule.Validator != null)
                 _parentRule.Validator.Validate(o);
 
@@ -60,14 +61,34 @@ namespace Kodi.Utilities.Collection
                     Add(o);
         }
 
+
         /// <summary>
-        /// Gets the formatted value.
+        /// Gets the values as string.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<string> GetFormattedValue()
+        public IEnumerable<string> GetValuesAsString()
         {
             foreach (object o in this)
                 yield return IFormatter.Format(_parentRule.UnderlyingType, o);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (object value in this)
+            {
+                if (sb.Length != 0)
+                    sb.Append(" / ");
+                sb.Append(IFormatter.Format(_parentRule.UnderlyingType, value));
+            }
+
+            return sb.ToString();
         }
     }
 }

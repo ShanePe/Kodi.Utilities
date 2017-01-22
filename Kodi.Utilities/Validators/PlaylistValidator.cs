@@ -34,16 +34,16 @@ namespace Kodi.Utilities.Validators
                 if (!rule.IsMultipleValuesAllowed && rule.Values.Count > 1)
                     throw new MultiValueViolationException(rule);
 
-                if (!rule.IsFieldForPlaylist(playList.Type))
+                if (!rule.IsFieldForPlaylist(playList.MediaType))
                     throw new FieldNotValidForTypeException(rule, playList);
 
                 if (playList.OrderBy != null)
-                    if (!playList.OrderBy.IsOrderByForPlaylist(playList.Type))
-                        throw new InvalidOrderByException(rule, playList.Type);
+                    if (!playList.OrderBy.IsOrderByForPlaylist(playList.MediaType))
+                        throw new InvalidOrderByException(rule, playList.MediaType);
 
                 if (playList.Group != null)
-                    if (!playList.Group.IsGroupForPlaylist(playList.Type))
-                        throw new InvalidGroupException(playList.Group, playList.Type);
+                    if (!playList.Group.IsGroupForPlaylist(playList.MediaType))
+                        throw new InvalidGroupException(playList.Group, playList.MediaType);
             }
         }
 

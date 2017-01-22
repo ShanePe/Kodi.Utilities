@@ -14,14 +14,14 @@ namespace Kodi.Utilities.Interfaces
     /// <summary>
     /// Abstract class to define rule fields and functions
     /// </summary>
-    public abstract class IRule : IAllocatable
+    public abstract class IRule : IAllocatable, IComparable<IRule>
     {
         private IFormatter _formatter = null;
         IOperator _operator = null;
         /// <summary>
         /// Sort options
         /// </summary>
-        public enum SortOptions { None, Ascending, Descending }
+        public enum SortOptions { Ascending, Descending }
 
         #region Private
         #endregion
@@ -49,7 +49,7 @@ namespace Kodi.Utilities.Interfaces
         /// <value>
         /// The sort.
         /// </value>
-        public SortOptions Sort { get; set; } = SortOptions.None;
+        public SortOptions Sort { get; set; }
         /// <summary>
         /// Gets or sets the values.
         /// </summary>
@@ -81,7 +81,7 @@ namespace Kodi.Utilities.Interfaces
         /// </value>
         public virtual string FriendlyName
         {
-            get { return Field.SplitCamel().ToTitleCase(); }
+            get { return this.GetType().GetTypeInfo().Name.SplitCamel().ToTitleCase(); }
         }
 
         /// <summary>
@@ -186,6 +186,46 @@ namespace Kodi.Utilities.Interfaces
         public bool IsOrderByForPlaylist(SmartPlayList.Types type)
         {
             return GetOrderAllocation().AllowedTypes.Contains(type);
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other" /> parameter.Zero This object is equal to <paramref name="other" />. Greater than zero This object is greater than <paramref name="other" />.
+        /// </returns>
+        public int CompareTo(IRule other)
+        {
+            return this.Field.CompareTo(other.Field);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Values.Count == 0
+                ? FriendlyName
+                : $"{FriendlyName} {_operator.ToString()} {Values.ToString()}";
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is IRule)
+                return (obj as IRule).Field == this.Field;
+
+            return base.Equals(obj);
         }
 
         #endregion

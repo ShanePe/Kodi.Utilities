@@ -5,9 +5,14 @@ using System.IO;
 using System.Xml;
 using System;
 using System.Text;
+using Kodi.Utilities.Exceptions;
 
 namespace Kodi.Utilities.Parsers
 {
+    /// <summary>
+    /// Write and reads the playlist via xml
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IParser" />
     public class XmlParser : IParser
     {
         internal struct XmlFileDefinition
@@ -28,6 +33,11 @@ namespace Kodi.Utilities.Parsers
         }
 
 
+        /// <summary>
+        /// Handles the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="playlist">The playlist.</param>
         public void Handle(XmlReader reader, ref SmartPlayList playlist)
         {
             switch (reader.Name.ToLower())
@@ -82,19 +92,41 @@ namespace Kodi.Utilities.Parsers
             }
         }
 
+        /// <summary>
+        /// Parsers the stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns></returns>
+        /// <exception cref="Kodi.Utilities.Exceptions.InvalidPlayListFileException"></exception>
         public override SmartPlayList ParserStream(Stream stream)
         {
-            SmartPlayList playList = null;
-            stream.Position = 0;
-            XmlReader reader = XmlReader.Create(stream);
+            try
+            {
+                SmartPlayList playList = null;
+                stream.Position = 0;
+                XmlReader reader = XmlReader.Create(stream);
 
-            while (reader.Read())
-                if (reader.NodeType == XmlNodeType.Element)
-                    Handle(reader, ref playList);
+                while (reader.Read())
+                    if (reader.NodeType == XmlNodeType.Element)
+                        Handle(reader, ref playList);
 
-            return playList;
+                return playList;
+            }
+            catch (XmlException)
+            {
+                throw new InvalidPlayListFileException();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
+        /// <summary>
+        /// Writes to stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="playlistToWrite">The playlist to write.</param>
         public override void WriteToStream(Stream stream, SmartPlayList playlistToWrite)
         {
             XmlWriterSettings settings = new XmlWriterSettings()
@@ -106,14 +138,14 @@ namespace Kodi.Utilities.Parsers
             writer.WriteStartDocument(true);
             writer.WriteStartElement(XmlFileDefinition.PlaylistNode);
             writer.WriteAttributeString(XmlFileDefinition.PlaylistTypeAttr,
-                playlistToWrite.GetPlayListEnumAsString(typeof(SmartPlayList.Types), playlistToWrite.Type));
+                playlistToWrite.GetPlayListEnumAsString(typeof(SmartPlayList.Types), playlistToWrite.MediaType));
 
             writer.WriteStartElement(XmlFileDefinition.NameNode);
             writer.WriteValue(playlistToWrite.Name);
             writer.WriteEndElement();
 
             writer.WriteStartElement(XmlFileDefinition.MatchNode);
-            writer.WriteValue(playlistToWrite.GetPlayListEnumAsString(typeof(SmartPlayList.MatchOptions), playlistToWrite.Match));
+            writer.WriteValue(playlistToWrite.GetPlayListEnumAsString(typeof(SmartPlayList.MatchOptions), playlistToWrite.MatchOn));
             writer.WriteEndElement();
 
             foreach (IRule rule in playlistToWrite.Rules)
@@ -145,7 +177,7 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteStartElement(XmlFileDefinition.GroupNode);
                 if (playlistToWrite.Group.Mixed)
                     writer.WriteAttributeString(XmlFileDefinition.GroupMixedAttr, playlistToWrite.Group.Mixed.ToString().ToLower());
-                
+
                 writer.WriteValue(playlistToWrite.Group.Name);
                 writer.WriteEndElement();
             }
@@ -158,8 +190,6 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteValue(playlistToWrite.OrderBy.Field);
                 writer.WriteEndElement();
             }
-
-
 
             writer.WriteEndElement();
             writer.WriteEndDocument();

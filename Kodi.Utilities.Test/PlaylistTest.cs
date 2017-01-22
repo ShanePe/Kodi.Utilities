@@ -31,9 +31,9 @@ namespace Kodi.Utilities.Test
     {
         private Holder GetRulesForType(SmartPlayList.Types type)
         {
-            SmartPlayList playlist = new SmartPlayList("Test")
+            SmartPlayList playlist = new SmartPlayList()
             {
-                Type = type
+                MediaType = type
             };
 
             Holder rules = new Holder();
@@ -616,7 +616,7 @@ namespace Kodi.Utilities.Test
         public void ParseXmlPlaylist()
         {
             SmartPlayList playlist = SmartPlayList.LoadFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Random.xsp", new XmlParser());
-            playlist.WriteToFile(
+            playlist.Save(
                 AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Test.xsp",
                 true,
                 new XmlParser());

@@ -1,6 +1,7 @@
 ﻿using Kodi.Utilities.Collection;
 using Kodi.Utilities.Exceptions;
 using Kodi.Utilities.Interfaces;
+using Kodi.Utilities.Parsers;
 using Kodi.Utilities.Validators;
 using PCLStorage;
 using System;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml;
 using lta = Kodi.Utilities.Attributes.ListTypeAllocationAttribute;
 
 namespace Kodi.Utilities.Playlist
@@ -70,12 +72,13 @@ namespace Kodi.Utilities.Playlist
         /// <value>
         /// The type.
         /// </value>
-        public Types Type
+        public Types MediaType
         {
             get { return _type; }
             set
             {
-                Reset();
+                if (_type != value)
+                    Reset();
                 _type = value;
             }
         }
@@ -92,7 +95,7 @@ namespace Kodi.Utilities.Playlist
         /// <value>
         /// The match.
         /// </value>
-        public MatchOptions Match { get; set; } = MatchOptions.All;
+        public MatchOptions MatchOn { get; set; } = MatchOptions.All;
         /// <summary>
         /// Gets or sets the limit.
         /// </summary>
@@ -112,8 +115,8 @@ namespace Kodi.Utilities.Playlist
             set
             {
                 if (value != null)
-                    if (!value.IsOrderByForPlaylist(this.Type))
-                        throw new InvalidOrderByException(value, this.Type);
+                    if (!value.IsOrderByForPlaylist(this.MediaType))
+                        throw new InvalidOrderByException(value, this.MediaType);
                 _orderBy = value;
             }
         }
@@ -129,8 +132,8 @@ namespace Kodi.Utilities.Playlist
             set
             {
                 if (value != null)
-                    if (!value.IsGroupForPlaylist(this.Type))
-                        throw new InvalidGroupException(value, this.Type);
+                    if (!value.IsGroupForPlaylist(this.MediaType))
+                        throw new InvalidGroupException(value, this.MediaType);
                 _group = value;
             }
         }
@@ -138,17 +141,7 @@ namespace Kodi.Utilities.Playlist
         #endregion
 
         #region Constructors
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SmartPlayList"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        public SmartPlayList(string name)
-            : this()
-        {
-            this.Name = name;
-        }
-
-        internal SmartPlayList()
+        public SmartPlayList()
         {
             Rules = new RuleCollection(this);
         }
@@ -167,6 +160,16 @@ namespace Kodi.Utilities.Playlist
         }
 
         /// <summary>
+        /// Loads from stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns></returns>
+        public static SmartPlayList LoadFromStream(Stream stream)
+        {
+            return LoadFromStream(stream, new XmlParser());
+        }
+
+        /// <summary>
         /// Loads from file.
         /// </summary>
         /// <param name="path">The path.</param>
@@ -174,15 +177,34 @@ namespace Kodi.Utilities.Playlist
         /// <returns></returns>
         public static SmartPlayList LoadFromFile(string path, IParser parser)
         {
-            Task<SmartPlayList> playlistTask = LoadFromFileSystem(path, parser);
+            try
+            {
+                Task<SmartPlayList> runTask = Task.Run<SmartPlayList>(() => { return LoadFromFileSystem(path, parser); });
+                runTask.Wait();
 
-            playlistTask.Wait();
+                if (runTask.IsFaulted)
+                    throw runTask.Exception;
 
-            if (playlistTask.IsFaulted)
-                throw playlistTask.Exception;
+                return runTask.Result;
+            }
+            catch (AggregateException aggEX)
+            {
+                throw aggEX.GetBaseException();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-            return playlistTask.Result;
-
+        /// <summary>
+        /// Loads from file.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
+        public static SmartPlayList LoadFromFile(string path)
+        {
+            return LoadFromFile(path, new XmlParser());
         }
 
         /// <summary>
@@ -215,7 +237,7 @@ namespace Kodi.Utilities.Playlist
             if (!_available.ContainsKey(lta.AppliesTos.SmartPlaylist))
             {
                 IRule[] col = SmartPlayList.GetAll<IRule>()
-                    .Where(ri => ri.IsFieldForPlaylist(Type)).ToArray();
+                    .Where(ri => ri.IsFieldForPlaylist(MediaType)).ToArray();
 
                 _available.Add(lta.AppliesTos.SmartPlaylist, col);
             }
@@ -231,7 +253,7 @@ namespace Kodi.Utilities.Playlist
             if (!_available.ContainsKey(lta.AppliesTos.OrderBy))
             {
                 IRule[] col = SmartPlayList.GetAll<IRule>()
-                    .Where(ri => ri.IsOrderByForPlaylist(Type)).ToArray();
+                    .Where(ri => ri.IsOrderByForPlaylist(MediaType)).ToArray();
 
                 _available.Add(lta.AppliesTos.OrderBy, col);
             }
@@ -247,7 +269,7 @@ namespace Kodi.Utilities.Playlist
             if (!_available.ContainsKey(lta.AppliesTos.Group))
             {
                 IGroup[] col = SmartPlayList.GetAll<IGroup>()
-                    .Where(ri => ri.IsGroupForPlaylist(Type)).ToArray();
+                    .Where(ri => ri.IsGroupForPlaylist(MediaType)).ToArray();
 
                 _available.Add(lta.AppliesTos.Group, col);
             }
@@ -274,7 +296,7 @@ namespace Kodi.Utilities.Playlist
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="parser">The parser.</param>
-        public void WriteToStream(Stream stream, IParser parser)
+        public void Save(Stream stream, IParser parser)
         {
             PlaylistValidator validator = new PlaylistValidator();
             validator.Validate(this);
@@ -283,14 +305,44 @@ namespace Kodi.Utilities.Playlist
         }
 
         /// <summary>
+        /// Saves the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public void Save(Stream stream)
+        {
+            Save(stream, new XmlParser());
+        }
+
+        /// <summary>
         /// Writes to file.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
         /// <param name="parser">The parser.</param>
-        public void WriteToFile(string path, bool overwrite, IParser parser)
+        public void Save(string path, bool overwrite, IParser parser)
         {
-            WriteToFileStream(path, overwrite, parser);
+            PlaylistValidator validator = new PlaylistValidator();
+            validator.Validate(this);
+            SaveAsync(path, overwrite, new XmlParser());
+        }
+
+        /// <summary>
+        /// Saves the specified path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+        public void Save(string path, bool overwrite)
+        {
+            Save(path, overwrite, new XmlParser());
+        }
+
+        /// <summary>
+        /// Saves the specified path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public void Save(string path)
+        {
+            Save(path, false);
         }
 
         /// <summary>
@@ -300,7 +352,7 @@ namespace Kodi.Utilities.Playlist
         /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
         /// <param name="parser">The parser.</param>
         /// <exception cref="System.IO.IOException"></exception>
-        internal async void WriteToFileStream(string path, bool overwrite, IParser parser)
+        internal async void SaveAsync(string path, bool overwrite, IParser parser)
         {
             IFile file = await FileSystem.Current.GetFileFromPathAsync(path);
             if (file != null && !overwrite)
@@ -312,7 +364,7 @@ namespace Kodi.Utilities.Playlist
 
             using (Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
             {
-                WriteToStream(stream, parser);
+                Save(stream, parser);
             }
             file = null;
         }
@@ -322,6 +374,9 @@ namespace Kodi.Utilities.Playlist
             return Enum.GetName(enumType, value).ToLower();
         }
 
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
         public void Reset()
         {
             _available.Clear();
@@ -329,7 +384,7 @@ namespace Kodi.Utilities.Playlist
             _group = null;
             Limit = 0;
             Rules.Clear();
-            Match = MatchOptions.All;
+            MatchOn = MatchOptions.All;
         }
 
         #endregion

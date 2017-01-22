@@ -18,7 +18,7 @@ namespace Kodi.Utilities.Interfaces
             if (playlist == null)
                 playlist = new SmartPlayList();
 
-            playlist.Type = (SmartPlayList.Types)Enum.Parse(typeof(SmartPlayList.Types), type, true);
+            playlist.MediaType = (SmartPlayList.Types)Enum.Parse(typeof(SmartPlayList.Types), type, true);
         }
 
         public virtual void SetPlaylistName(string value, ref SmartPlayList playlist)
@@ -34,7 +34,7 @@ namespace Kodi.Utilities.Interfaces
             if (playlist == null)
                 playlist = new SmartPlayList();
 
-            playlist.Match = (SmartPlayList.MatchOptions)Enum.Parse(typeof(SmartPlayList.MatchOptions), value, true);
+            playlist.MatchOn = (SmartPlayList.MatchOptions)Enum.Parse(typeof(SmartPlayList.MatchOptions), value, true);
         }
 
         public virtual void SetPlaylistGroup(string value,string mixed, ref SmartPlayList playlist)
@@ -77,7 +77,7 @@ namespace Kodi.Utilities.Interfaces
                                   .FirstOrDefault(ri => ri.Field.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (field == null)
-                throw new RuleParseException("Field", Enum.GetName(typeof(SmartPlayList.Types), playlist.Type), name);
+                throw new RuleParseException("Field", Enum.GetName(typeof(SmartPlayList.Types), playlist.MediaType), name);
 
             IOperator operatr = field.GetAvailableOperators()
                                       .FirstOrDefault(t => t.Name.Equals(oper, StringComparison.OrdinalIgnoreCase));

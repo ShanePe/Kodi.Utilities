@@ -12,9 +12,9 @@ namespace Kodi.Utilities.Test
     {
         private Holder GetGroupForType(SmartPlayList.Types type)
         {
-            SmartPlayList playlist = new SmartPlayList("Test")
+            SmartPlayList playlist = new SmartPlayList()
             {
-                Type = type
+                MediaType = type
             };
 
             Holder groups = new Holder();
