@@ -1,5 +1,6 @@
 ﻿using Kodi.Utilities.Attributes;
 using Kodi.Utilities.Data;
+using Kodi.Utilities.Exceptions;
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Operators;
 using System;
@@ -47,17 +48,24 @@ namespace Kodi.Utilities.Formatters
             return cult.Code;
         }
 
+        /// <summary>
+        /// Sets the value to the correct underlying type.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        /// <exception cref="Kodi.Utilities.Exceptions.InvalidLanguageException">
+        /// </exception>
         public override object SetToType(string value)
         {
             if (string.IsNullOrEmpty(value))
-                throw new InvalidCastException($"{value} is not a valid language code or name.");
+                throw new InvalidLanguageException(value);
 
             ISO6392Language language = ISO6392LanguageFactory.GetByCode(value.Trim());
             if (language == null)
                 language = ISO6392LanguageFactory.GetByName(value.Trim());
 
             if (language == null)
-                throw new InvalidCastException($"{value} is not a valid language code or name.");
+                throw new InvalidLanguageException(value);
 
             return language;
         }

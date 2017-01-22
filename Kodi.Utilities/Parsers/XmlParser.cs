@@ -81,6 +81,12 @@ namespace Kodi.Utilities.Parsers
                     {
                         if (reader.Name.ToLower() == XmlFileDefinition.RuleNode && reader.NodeType == XmlNodeType.EndElement)
                             break;
+                        if (reader.Name.ToLower() == XmlFileDefinition.RuleNode && reader.NodeType == XmlNodeType.Element)
+                        {
+                            AddPlaylistRule(field, op, values, ref playlist);
+                            Handle(reader, ref playlist);
+                            break;
+                        }
                         if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == XmlFileDefinition.ValueNode)
                             values.Add(reader.ReadElementContentAsString());
                     }
@@ -165,13 +171,6 @@ namespace Kodi.Utilities.Parsers
                 writer.WriteEndElement();
             }
 
-            if (playlistToWrite.Limit > 0)
-            {
-                writer.WriteStartElement(XmlFileDefinition.LimitNode);
-                writer.WriteValue(playlistToWrite.Limit.ToString());
-                writer.WriteEndElement();
-            }
-
             if (playlistToWrite.Group != null)
             {
                 writer.WriteStartElement(XmlFileDefinition.GroupNode);
@@ -179,6 +178,13 @@ namespace Kodi.Utilities.Parsers
                     writer.WriteAttributeString(XmlFileDefinition.GroupMixedAttr, playlistToWrite.Group.Mixed.ToString().ToLower());
 
                 writer.WriteValue(playlistToWrite.Group.Name);
+                writer.WriteEndElement();
+            }
+
+            if (playlistToWrite.Limit > 0)
+            {
+                writer.WriteStartElement(XmlFileDefinition.LimitNode);
+                writer.WriteValue(playlistToWrite.Limit.ToString());
                 writer.WriteEndElement();
             }
 

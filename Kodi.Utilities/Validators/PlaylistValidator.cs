@@ -10,8 +10,29 @@ using System.Threading.Tasks;
 
 namespace Kodi.Utilities.Validators
 {
+    /// <summary>
+    /// Validates the playlist
+    /// </summary>
     public class PlaylistValidator
     {
+        /// <summary>
+        /// Validates the specified play list.
+        /// </summary>
+        /// <param name="playList">The play list.</param>
+        /// <exception cref="MissingValueException">
+        /// Name - SmartPlayList
+        /// or
+        /// Field - rule
+        /// or
+        /// Operator - rule
+        /// or
+        /// Values - rule
+        /// </exception>
+        /// <exception cref="NoValueAllowedForRuleException"></exception>
+        /// <exception cref="MultiValueViolationException"></exception>
+        /// <exception cref="FieldNotValidForTypeException"></exception>
+        /// <exception cref="InvalidOrderByException"></exception>
+        /// <exception cref="InvalidGroupException"></exception>
         public void Validate(SmartPlayList playList)
         {
             if (CheckForValue(playList.Name))
@@ -47,6 +68,11 @@ namespace Kodi.Utilities.Validators
             }
         }
 
+        /// <summary>
+        /// Checks if the value is valid.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         private bool CheckForValue(string value)
         {
             return (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value));

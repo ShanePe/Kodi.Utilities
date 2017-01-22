@@ -151,8 +151,6 @@ namespace Kodi.Utilities.Interfaces
             return GetAllocation(lta.AppliesTos.OrderBy);
         }
 
-
-
         /// <summary>
         /// Gets the available operators.
         /// </summary>

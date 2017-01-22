@@ -3,8 +3,19 @@ using Kodi.Utilities.Interfaces;
 
 namespace Kodi.Utilities.Validators
 {
+    /// <summary>
+    /// Validate that the rating a a number between 0 and 10
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IValidator" />
     public class RatingValidator : IValidator
     {
+        /// <summary>
+        /// Validates the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <exception cref="InvalidRatingException">
+        /// </exception>
+        /// <exception cref="InvalidTypeException"></exception>
         public void Validate(object value)
         {
             if (value == null)

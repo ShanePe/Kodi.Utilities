@@ -42,6 +42,7 @@
     <Compile Include="Exceptions\FieldExistsException.cs" />
     <Compile Include="Exceptions\InvalidFieldTypeValue.cs" />
     <Compile Include="Exceptions\InvalidGroupException.cs" />
+    <Compile Include="Exceptions\InvalidLanguageException.cs" />
     <Compile Include="Exceptions\InvalidOrderByException.cs" />
     <Compile Include="Exceptions\InvalidPlayListFileException.cs" />
     <Compile Include="Exceptions\InvalidRuleCollectionType.cs" />

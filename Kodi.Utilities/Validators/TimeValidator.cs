@@ -5,8 +5,19 @@ using System.Globalization;
 
 namespace Kodi.Utilities.Validators
 {
+    /// <summary>
+    /// Validates that the time is in either x min or hh:mm:ss
+    /// </summary>
+    /// <seealso cref="Kodi.Utilities.Interfaces.IValidator" />
     public class TimeValidator : IValidator
     {
+        /// <summary>
+        /// Validates the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <exception cref="InvalidTypeException"></exception>
+        /// <exception cref="InvalidTimeFormatException">
+        /// </exception>
         public void Validate(object value)
         {
             //Supported formats : X min, hh:mm:ss
