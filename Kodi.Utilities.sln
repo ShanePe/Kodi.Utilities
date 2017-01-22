@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodi.Utilities", "Kodi.Utilities.csproj", "{F1413001-EBFB-4F91-BAD8-6595B863194C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodi.Utilities", "Kodi.Utilities\Kodi.Utilities.csproj", "{F1413001-EBFB-4F91-BAD8-6595B863194C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodi.Utilities.Test", "..\Kodi.Utilities.Test\Kodi.Utilities.Test.csproj", "{0D33A727-442F-476B-BE48-AC154280B1A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodi.Utilities.Test", "Kodi.Utilities.Test\Kodi.Utilities.Test.csproj", "{0D33A727-442F-476B-BE48-AC154280B1A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodi.Utilities.SampleApp", "..\Kodi.Utilities.SampleApp\Kodi.Utilities.SampleApp.csproj", "{8CD534FC-3139-47BC-8F6B-78492F22D99E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodi.Utilities.SampleApp", "Kodi.Utilities.SampleApp\Kodi.Utilities.SampleApp.csproj", "{8CD534FC-3139-47BC-8F6B-78492F22D99E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
