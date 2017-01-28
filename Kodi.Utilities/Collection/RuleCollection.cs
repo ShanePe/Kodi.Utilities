@@ -67,6 +67,28 @@ namespace Kodi.Utilities.Collection
                 Type key = _dataStore.Keys.ElementAt(index);
                 if (key != null)
                     _dataStore[key] = value;
+                else
+                    Add(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IRule"/> with the specified field.
+        /// </summary>
+        /// <value>
+        /// The <see cref="IRule"/>.
+        /// </value>
+        /// <param name="field">The field.</param>
+        /// <returns></returns>
+        public IRule this[string field]
+        {
+            get {
+                IRule rule = getRuleFromField(field);
+                return this[rule.GetType()];
+            }
+            set {
+                IRule rule = getRuleFromField(field);
+                this[rule.GetType()] = value;
             }
         }
 
@@ -114,6 +136,39 @@ namespace Kodi.Utilities.Collection
                 throw new FieldExistsException(item);
 
             _dataStore.Add(item.GetType(), item);
+        }
+
+        /// <summary>
+        /// Adds the specified field.
+        /// </summary>
+        /// <param name="field">The field.</param>
+        /// <param name="value">The value.</param>
+        public void Add(string field, string value)
+        {
+            IRule rule = getRuleFromField(field);
+            rule.Values.Add(value);
+
+            Add(rule);
+        }
+
+        /// <summary>
+        /// Gets the rule from field.
+        /// </summary>
+        /// <param name="field">The field.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Playlist cannot be null</exception>
+        /// <exception cref="FieldNotValidForTypeException"></exception>
+        private IRule getRuleFromField(string field)
+        {
+            if (_playlist == null)
+                throw new ArgumentException("Playlist cannot be null");
+
+            IRule rule = _playlist.GetAvailableFields()
+                            .FirstOrDefault(r => r.Field.Equals(field, StringComparison.OrdinalIgnoreCase));
+            if (rule == null)
+                throw new FieldNotValidForTypeException(field, _playlist);
+
+            return rule;
         }
 
         /// <summary>

@@ -3,7 +3,6 @@ using Kodi.Utilities.Exceptions;
 using Kodi.Utilities.Interfaces;
 using Kodi.Utilities.Parsers;
 using Kodi.Utilities.Validators;
-using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -169,62 +168,7 @@ namespace Kodi.Utilities.Playlist
             return LoadFromStream(stream, new XmlParser());
         }
 
-        /// <summary>
-        /// Loads from file.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="parser">The parser.</param>
-        /// <returns></returns>
-        public static SmartPlayList LoadFromFile(string path, IParser parser)
-        {
-            try
-            {
-                Task<SmartPlayList> runTask = Task.Run<SmartPlayList>(() => { return LoadFromFileSystem(path, parser); });
-                runTask.Wait();
-
-                if (runTask.IsFaulted)
-                    throw runTask.Exception;
-
-                return runTask.Result;
-            }
-            catch (AggregateException aggEX)
-            {
-                throw aggEX.GetBaseException();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Loads from file.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns></returns>
-        public static SmartPlayList LoadFromFile(string path)
-        {
-            return LoadFromFile(path, new XmlParser());
-        }
-
-        /// <summary>
-        /// Loads from file system.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="parser">The parser.</param>
-        /// <returns></returns>
-        /// <exception cref="System.IO.FileNotFoundException">Could not load file</exception>
-        internal static async Task<SmartPlayList> LoadFromFileSystem(string path, IParser parser)
-        {
-            IFile file = await FileSystem.Current.GetFileFromPathAsync(path);
-            if (file == null)
-                throw new FileNotFoundException("Could not load file", path);
-
-            using (Stream filestream = await file.OpenAsync(FileAccess.Read))
-            {
-                return LoadFromStream(filestream, parser);
-            }
-        }
+        
         #endregion
 
         #region Methods
@@ -312,63 +256,7 @@ namespace Kodi.Utilities.Playlist
         {
             Save(stream, new XmlParser());
         }
-
-        /// <summary>
-        /// Writes to file.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
-        /// <param name="parser">The parser.</param>
-        public void Save(string path, bool overwrite, IParser parser)
-        {
-            PlaylistValidator validator = new PlaylistValidator();
-            validator.Validate(this);
-            SaveAsync(path, overwrite, new XmlParser());
-        }
-
-        /// <summary>
-        /// Saves the specified path.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
-        public void Save(string path, bool overwrite)
-        {
-            Save(path, overwrite, new XmlParser());
-        }
-
-        /// <summary>
-        /// Saves the specified path.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        public void Save(string path)
-        {
-            Save(path, false);
-        }
-
-        /// <summary>
-        /// Writes to file stream.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
-        /// <param name="parser">The parser.</param>
-        /// <exception cref="System.IO.IOException"></exception>
-        internal async void SaveAsync(string path, bool overwrite, IParser parser)
-        {
-            IFile file = await FileSystem.Current.GetFileFromPathAsync(path);
-            if (file != null && !overwrite)
-                throw new IOException($"{path} already exists.");
-            else if (file != null && overwrite)
-                await file.DeleteAsync();
-
-            file = await FileSystem.Current.LocalStorage.CreateFileAsync(path, CreationCollisionOption.ReplaceExisting);
-
-            using (Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
-            {
-                Save(stream, parser);
-            }
-            file = null;
-        }
-
+        
         internal string GetPlayListEnumAsString(Type enumType, object value)
         {
             return Enum.GetName(enumType, value).ToLower();

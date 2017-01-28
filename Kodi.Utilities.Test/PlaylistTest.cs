@@ -6,6 +6,7 @@ using Kodi.Utilities.Playlist.Fields;
 using Kodi.Utilities.Parsers;
 using Kodi.Utilities.Interfaces;
 using System.Collections.Generic;
+using IO = System.IO;
 
 namespace Kodi.Utilities.Test
 {
@@ -37,7 +38,7 @@ namespace Kodi.Utilities.Test
             };
 
             Holder rules = new Holder();
-            
+
             foreach (IRule rule in playlist.GetAvailableFields())
                 rules.Add(rule.GetType(), rule);
 
@@ -615,13 +616,20 @@ namespace Kodi.Utilities.Test
         [TestMethod]
         public void ParseXmlPlaylist()
         {
-            SmartPlayList playlist = SmartPlayList.LoadFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Random.xsp", new XmlParser());
-            playlist.Save(
-                AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Test.xsp",
-                true,
-                new XmlParser());
+            SmartPlayList playlist = null;
+            using (IO.FileStream fs = IO.File.Open(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Random.xsp", IO.FileMode.Open))
+            {
+                playlist = SmartPlayList.LoadFromStream(fs);
+                fs.Close();
+            }
+            if (IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Test.xsp"))
+                IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Test.xsp");
+
+            using (IO.FileStream fs = IO.File.Create(AppDomain.CurrentDomain.BaseDirectory + "\\Samples\\Test.xsp"))
+            {
+                playlist.Save(fs);
+                fs.Close();
+            }
         }
     }
-
-
 }

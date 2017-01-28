@@ -14,5 +14,10 @@ namespace Kodi.Utilities.Exceptions
             base($"Field {rule.FriendlyName} not valid for playlist type {playlist.GetPlayListEnumAsString(typeof(SmartPlayList.Types), playlist.MediaType)}")
         {
         }
+
+        public FieldNotValidForTypeException(string field, SmartPlayList playlist) :
+            base($"Field {field} not valid for playlist type {playlist.GetPlayListEnumAsString(typeof(SmartPlayList.Types), playlist.MediaType)}")
+        {
+        }
     }
 }

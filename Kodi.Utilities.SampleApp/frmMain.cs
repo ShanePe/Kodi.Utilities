@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -172,7 +173,13 @@ namespace Kodi.Utilities.SampleApp
                 return;
             try
             {
-                _playList.Save(saveFileDialog1.FileName, true);
+                if (File.Exists(saveFileDialog1.FileName))
+                    File.Delete(saveFileDialog1.FileName);
+                using (FileStream fs = File.Create(saveFileDialog1.FileName))
+                {
+                    _playList.Save(fs);
+                    fs.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -198,7 +205,12 @@ namespace Kodi.Utilities.SampleApp
             _loading = true;
             try
             {
-                _playList = SmartPlayList.LoadFromFile(sFile);
+                using (FileStream fs = File.Open(sFile, FileMode.Open))
+                {
+                    _playList = SmartPlayList.LoadFromStream(fs);
+                    fs.Close();
+                }
+
                 cmbType.Set<SmartPlayList.Types>(_playList.MediaType);
 
                 txtName.Text = _playList.Name;
