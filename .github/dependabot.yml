@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /Kodi.Utilities
+    schedule:
+      interval: weekly
+  - package-ecosystem: nuget
+    directory: /Kodi.Utilities.SampleApp
+    schedule:
+      interval: weekly
+  - package-ecosystem: nuget
+    directory: /Kodi.Utilities.Test
+    schedule:
+      interval: weekly
